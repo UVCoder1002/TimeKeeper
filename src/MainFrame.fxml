@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <GridPane layoutY="49.0" prefHeight="274.0" prefWidth="138.0" AnchorPane.leftAnchor="10.0">
+        <columnConstraints>
+          <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints maxHeight="83.4" minHeight="10.0" prefHeight="41.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="83.4" minHeight="10.0" prefHeight="41.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="159.40000762939454" minHeight="10.0" prefHeight="39.20000000000001" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="200.4000076293945" minHeight="10.0" prefHeight="39.2" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="200.4000076293945" minHeight="10.0" prefHeight="39.2" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Button mnemonicParsing="false" text="StopWatch" GridPane.rowIndex="1" />
+            <Button mnemonicParsing="false" text="Timer" GridPane.rowIndex="2" />
+            <Button mnemonicParsing="false" text="Alarm" GridPane.rowIndex="3" />
+            <Button mnemonicParsing="false" text="TimeTable" GridPane.rowIndex="4" />
+            <Button mnemonicParsing="false" text="HOME" />
+         </children>
+      </GridPane>
+      <Pane id="clock" layoutX="220.0" layoutY="69.0" prefHeight="200.0" prefWidth="200.0" />
+   </children>
+</AnchorPane>
