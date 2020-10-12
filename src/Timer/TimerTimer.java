@@ -1,17 +1,17 @@
-package src.Timer;
+package Timer;
 
 public class TimerTimer implements Runnable{
-    My_Timer stwt;
+    My_Timer myTm;
     volatile boolean flag=true;
-    public TimerTimer(My_Timer sw){
-        stwt = sw;
+    public TimerTimer(My_Timer tm){
+        myTm = tm;
     }
 
     @Override
     public void run() {
-        int hr=Integer.parseInt(stwt.getHr().getText());
-        int min=Integer.parseInt(stwt.getMin().getText());
-        int sec=Integer.parseInt(stwt.getSec().getText());;
+        int hr=Integer.parseInt(myTm.getHr().getText());
+        int min=Integer.parseInt(myTm.getMin().getText());
+        int sec=Integer.parseInt(myTm.getSec().getText());
         try {
             while (flag) {
                 if(sec==0&&min==0&&hr==0){
@@ -33,13 +33,12 @@ public class TimerTimer implements Runnable{
                     }
 
                 Thread.sleep(1000);
-                stwt.setCountdown(hr, min, sec);}
+                myTm.setTime(hr, min, sec);
+                }
             }
         }
         catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
-
-
 }
