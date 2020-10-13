@@ -1,0 +1,7 @@
+Etc/GMT+9
+Africa/TunisAmerica/Marigot
+Asia/Aqtau
+Etc/GMT+8
+America/Guatemala
+Pacific/Honolulu
+Asia/Kuching

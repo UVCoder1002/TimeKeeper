@@ -1,14 +1,13 @@
-package src;
+
 
 import javax.swing.*;
 import java.awt.*;
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.TimeZone;
 
 public class StandardClock extends JPanel implements Runnable {
-    SimpleDateFormat dateFormat=new SimpleDateFormat("s");
+   // SimpleDateFormat dateFormat=new SimpleDateFormat("s");
     JLabel currentTime;
+    CurrentTime time;
     Date currentDate;
     String selectedtimezone;
     Thread thread = null;
@@ -16,6 +15,7 @@ public class StandardClock extends JPanel implements Runnable {
 
     public StandardClock(String timezone) {
         selectedtimezone= timezone;
+        time=new CurrentTime(selectedtimezone);
         currentTime = new JLabel("Test");
         currentTime.setForeground(Color.BLACK);
         this.setPreferredSize(new Dimension(400,400));
@@ -44,20 +44,10 @@ public class StandardClock extends JPanel implements Runnable {
         g.clearRect(0,0,400,400);
         g.setColor(new Color(118, 73, 190));
         g.fillRect(0,0,400,400);
-        int hx,hy,mx,my,sx,sy,min,hr,sec;
-        String ampm;
+        int hx,hy,mx,my,sx,sy,min=0,hr=0,sec=0;
+        String ampm="AM";
         drawClock(g);
-        currentDate =new Date();
-        dateFormat.setTimeZone(TimeZone.getTimeZone(selectedtimezone));
-        dateFormat.applyPattern("s");
-        sec=Integer.parseInt(dateFormat.format(currentDate));
-        dateFormat.applyPattern("m");
-        min=Integer.parseInt(dateFormat.format(currentDate));
-        System.out.println(min);
-        dateFormat.applyPattern("h");
-        hr=Integer.parseInt(dateFormat.format(currentDate));
-        dateFormat.applyPattern("a");
-        ampm=dateFormat.format(currentDate);
+        time.setCurrentTime(hr,min,sec,ampm);
 //       g.setColor(Color.WHITE);
 //       JLabel time= new JLabel("HII");
 //       JPanel panel= new JPanel();
