@@ -25,7 +25,7 @@
         </constraints>
         <properties>
           <font size="20"/>
-          <text value="Label"/>
+          <text value="Timer"/>
         </properties>
       </component>
       <component id="8f72a" class="javax.swing.JLabel">

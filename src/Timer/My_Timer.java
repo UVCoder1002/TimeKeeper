@@ -36,7 +36,7 @@ public class My_Timer  {
     public My_Timer() {
 
         TimerTimer tt = new TimerTimer(this);
-        Thread t1=new Thread(tt);
+        Thread t1 =new Thread(tt);
         //timer=this;
 
         startBT.addActionListener(new ActionListener() {
@@ -84,26 +84,12 @@ public class My_Timer  {
         resetBT.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+
                 t1.stop();
                 setTime(0,0,0);
             }
         });
     }
-    /*@Override
-    public void run() {
-        int i=60;
-        while (i>-1) {
-            try {
-                                    *//*UpdateTime(i);*//*
-                    sec.setText(""+i--);
-                    Thread.sleep(1000);
-
-                //t1=null;
-            } catch (InterruptedException interruptedException) {
-                interruptedException.printStackTrace();
-            }
-        }
-    }*/
 
     public static void main(String[] args) {
         My_Timer tCD = new My_Timer();

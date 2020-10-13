@@ -1,4 +1,6 @@
-package src.Menu;
+package Menu;
+
+import Menu.Countdown;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
