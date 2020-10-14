@@ -1,8 +1,8 @@
-package Menu;
+package Stopwatch;
 
-public class Countdown implements Runnable{
+public class StopwatchTimer implements Runnable{
     Stopwatch stwt;
-    public Countdown (Stopwatch sw){
+    public StopwatchTimer (Stopwatch sw){
         stwt = sw;
     }
 
@@ -21,7 +21,7 @@ public class Countdown implements Runnable{
                     hr++;
                     min=0;
                 }
-                stwt.setCountdown(hr, min, sec);
+                stwt.setTimer(hr, min, sec);
             }
         }
         catch (Exception e) {
