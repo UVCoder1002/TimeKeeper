@@ -1,10 +1,27 @@
 import java.io.Serializable;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 public class AlarmClock implements Serializable {
     int hr;
     int min;
     int sec;
     String ampm;
+    ZonedDateTime dt;
+
+    boolean isfired;
+    AlarmClock(int hr,int min,int sec,int day,int month,int year,String zone){
+        isfired=false;
+        dt= ZonedDateTime.of(year,month,day,hr,min,sec,0, ZoneId.of(zone));
+    }
+
+    public ZonedDateTime getDt() {
+        return dt;
+    }
+
+    public boolean isIsfired() {
+        return isfired;
+    }
 
     public int getHr() {
         return hr;

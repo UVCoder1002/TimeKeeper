@@ -47,7 +47,11 @@ public class StandardClock extends JPanel implements Runnable {
         int hx,hy,mx,my,sx,sy,min=0,hr=0,sec=0;
         String ampm="AM";
         drawClock(g);
-        time.setCurrentTime(hr,min,sec,ampm);
+        time.setCurrentTime();
+        hr=time.getHr();
+        min=time.getMin();
+        sec=time.getSec();
+        ampm=time.getAmpm();
 //       g.setColor(Color.WHITE);
 //       JLabel time= new JLabel("HII");
 //       JPanel panel= new JPanel();
@@ -105,7 +109,7 @@ public class StandardClock extends JPanel implements Runnable {
             try
             {
                 Thread.sleep(100);
-                System.out.println("repaint");
+//                System.out.println("repaint");
             }
             catch (InterruptedException e) {}
             repaint();
