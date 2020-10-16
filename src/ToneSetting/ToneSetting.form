@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="Menu.Tone_Setting">
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="ToneSetting.Tone_Setting">
   <grid id="27dc6" binding="settingJP" layout-manager="GridLayoutManager" row-count="3" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="0" left="0" bottom="0" right="0"/>
     <constraints>
@@ -16,8 +16,6 @@
           <model>
             <item value="Tone1"/>
             <item value="Tone2"/>
-            <item value="Tone3"/>
-            <item value="Tone4"/>
           </model>
         </properties>
       </component>
