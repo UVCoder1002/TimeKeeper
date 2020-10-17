@@ -3,8 +3,9 @@ package Timer;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileInputStream;
 
-public class My_Timer  {
+public class TimerUI extends JPanel  {
     private JPanel panel1;
     private JTextField hr;
     private JTextField min;
@@ -12,55 +13,71 @@ public class My_Timer  {
     private JButton startBT;
     private JButton pauseBT;
     private JButton resetBT;
-    //My_Timer timer;
+    //TimerUI timer;
     int flag=1;
+    int temp=1;
+    TimerListener listener;
 
-
-    public JTextField getHr() {
-        return hr;
+    public Integer getHr() {
+        return Integer.parseInt(hr.getText());
     }
 
-    public JTextField getMin() {
-        return min;
+    public Integer getMin() {
+        return Integer.parseInt(min.getText());
     }
 
-    public JTextField getSec() {
-        return sec;
+    public Integer getSec() {
+        return Integer.parseInt(sec.getText());
     }
+
     public void setTime(int hr, int min, int sec) {
         this.hr.setText(""+hr);
         this.min.setText(""+min);
         this.sec.setText(""+sec);
     }
 
-    public My_Timer() {
+    public TimerUI() {
 
-        TimerTimer tt = new TimerTimer(this);
-        Thread t1 =new Thread(tt);
+        TimerBackEnd tt = new TimerBackEnd();
+        Thread t1 = new Thread(tt);
+        t1.start();
         //timer=this;
+
 
         startBT.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                //System.out.println("start");
+                int min=getMin();
+                int sec=getMin();
+                if (min>=0&&min<60&&sec>=0&&sec<60) {
+                    tt.addTimeListener(listener = new TimerListener(getHr(), getMin(), getSec()) {
+                        @Override
+                        public void updateTimer(int hr, int min, int sec) {
+                            setTime(hr, min, sec);
+                        }
+                    });
+                    flag = 0;
+                }
+                else {
+                    tt.removeListener(listener);
+                    setTime(0,0,0);
+                    flag=1;
+                }
+
+            /*
                 int min=Integer.parseInt(getMin().getText());
                 int sec=Integer.parseInt(getSec().getText());
                 if (min>=0&&min<60&&sec>=0&&sec<60) {
-                    /*if(t1.getState())
-                    { t1.resume(); }*/
+                    *//*if(t1.getState())
+                    { t1.resume(); }*//*
                     if (!t1.isAlive()) {
                         System.out.println("New Thread");
-                        /*TimerTimer tt = new TimerTimer(timer);
-                        Thread t1 = new Thread(tt);
-                        try {
-                            t1.join();
-                        } catch (InterruptedException interruptedException) {
-                            interruptedException.printStackTrace();
-                        }*/
                         t1.start();
                         flag=0;
                 }
             } else
-                setTime(0,0,0);
+                setTime(0,0,0);*/
             }
 
         });
@@ -72,6 +89,7 @@ public class My_Timer  {
                     t1.suspend();
                     pauseBT.setText("Resume");
                     flag=1;
+
                 }
                 else{
                     t1.resume();
@@ -84,18 +102,19 @@ public class My_Timer  {
         resetBT.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
-                t1.stop();
+                tt.removeListener(listener);
                 setTime(0,0,0);
+                flag=1;
             }
         });
     }
 
+
     public static void main(String[] args) {
-        My_Timer tCD = new My_Timer();
+        TimerUI tCD = new TimerUI();
         //tCD.setLayout(new GridLayout());
         JFrame frame = new JFrame("Time Keeper");
-        frame.setContentPane(new My_Timer().panel1);
+        frame.setContentPane(new TimerUI().panel1);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setSize(500, 300);
