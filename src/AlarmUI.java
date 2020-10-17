@@ -9,7 +9,7 @@ import java.util.Iterator;
 
 public class AlarmUI extends JPanel {
     Alarm al;
-    JLabel hourLabel;
+    JLabel hourLabel,yrLabel,dayLabel,monLabel;
     JLabel minLabel;
     JLabel secLabel;
     JComboBox<String> ampmDrop;
@@ -25,7 +25,7 @@ public class AlarmUI extends JPanel {
     CurrentTime time;
     ArrayList<AlarmClock> alarmArr;
     int hr = 0, min = 0, sec = 0;
-    Button snooze;
+    Button snooze,stop;
     String amOrpm;
     FileOutputStream fos;
     ObjectOutputStream oos;
@@ -33,7 +33,6 @@ public class AlarmUI extends JPanel {
     ObjectInputStream ois;
     Iterator<AlarmClock> iter;
     Iterator<AlarmClock> iter2;
-
 
     public Alarm getAl() {
         return al;
@@ -44,29 +43,29 @@ public class AlarmUI extends JPanel {
     }
 
     public Integer getMonText() {
-        return Integer.parseInt(hrText.getText());
+        return Integer.parseInt(monText.getText());
     }
 
     public Integer getYrText() {
-        return Integer.parseInt(hrText.getText());
+        return Integer.parseInt(yrText.getText());
     }
 
     public Integer getDayText() {
-        return Integer.parseInt(hrText.getText());
+        return Integer.parseInt(dayText.getText());
     }
 
     public Integer getMinText() {
-        return Integer.parseInt(hrText.getText());
+        return Integer.parseInt(minText.getText());
     }
 
     public Integer getSecText() {
-        return Integer.parseInt(hrText.getText());
+        return Integer.parseInt(secText.getText());
     }
 
-    AlarmUI(Alarm al, String zone) throws IOException, ClassNotFoundException {
+    AlarmUI(Alarm al) throws IOException, ClassNotFoundException {
+
         snooze = new Button();
         snooze.setLabel("Snooze");
-        System.out.println(zone);
         alarmArr = new ArrayList<AlarmClock>();
         JPanel currentJpanel = this;
         //Alarm newAlarm = new Alarm(zone);
@@ -77,6 +76,9 @@ public class AlarmUI extends JPanel {
 
         ampm = new String[]{"AM", "PM"};
         ampmDrop = new JComboBox<String>(ampm);
+        yrLabel = new JLabel();
+        monLabel = new JLabel();
+        dayLabel = new JLabel();
         hourLabel = new JLabel();
         minLabel = new JLabel();
         secLabel = new JLabel();
@@ -86,14 +88,32 @@ public class AlarmUI extends JPanel {
         monText = new JTextField();
         yrText = new JTextField();
         dayText = new JTextField();
+        yrText.setText("2020");
+        monText.setText("10");
+        dayText.setText("17");
+        hrText.setText("12");
+        yrText.setPreferredSize(new Dimension(20, 30));
+        monText.setPreferredSize(new Dimension(20, 30));
+        dayText.setPreferredSize(new Dimension(20, 30));
         hrText.setPreferredSize(new Dimension(20, 30));
         minText.setPreferredSize(new Dimension(20, 30));
         secText.setPreferredSize(new Dimension(20, 30));
         set = new Button();
+        snooze=new Button("Snooze");
+        stop=new Button("Stop");
+        yrLabel.setText("Year :");
+        monLabel.setText("Month :");
+        dayLabel.setText("Day :");
         hourLabel.setText("Hr :");
         minLabel.setText("Min :");
         secLabel.setText("Sec :");
         set.setLabel("SET");
+        this.add(yrLabel);
+        this.add(yrText);
+        this.add(monLabel);
+        this.add(monText);
+        this.add(dayLabel);
+        this.add(dayText);
         this.add(hourLabel);
         this.add(hrText);
         this.add(minLabel);
@@ -107,20 +127,31 @@ public class AlarmUI extends JPanel {
         set.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+
                 al.setAlarm(getYrText(),getMonText(),getDayText(),getHrText(),getMinText(),getSecText());
+
             }
 
         });
+        AlarmUI alui = this;
+        al.afl = new AlarmFireListener() {
+            @Override
+            public void fire() {
+               alui.add(snooze);
+            }
+        };
     }
 
-//    public static void main(String[] args) throws IOException, ClassNotFoundException {
-//        JFrame jframe = new JFrame();
-//        TimeZones timezon = new TimeZones();
-//       Alarm alarm = new Alarm(timezon.dateFormat.getTimeZone().toString());
-//      //  System.out.println(alarm);
-//    //    Alarm alarm = new Alarm(TimeZone.getDefault().toString());
-//        jframe.add(alarm);
-//        jframe.setVisible(true);
-//
-//    }
+    public static void main(String[] args) throws IOException, ClassNotFoundException {
+        JFrame jframe = new JFrame();
+        TimeZones timezon = new TimeZones();
+        TimeManager tm = new TimeManager();
+        Alarm al = new Alarm(tm,timezon.dateFormat.getTimeZone().getID());
+       AlarmUI alarm = new AlarmUI(al);
+      //  System.out.println(alarm);
+    //    Alarm alarm = new Alarm(TimeZone.getDefault().toString());
+        jframe.add(alarm);
+        jframe.setVisible(true);
+
+    }
 }

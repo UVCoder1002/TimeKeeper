@@ -1,17 +1,17 @@
 import java.io.Serializable;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.UUID;
 
 public class AlarmClock implements Serializable {
-    int hr;
-    int min;
-    int sec;
-    String ampm;
-    ZonedDateTime dt;
 
+    ZonedDateTime dt;
+    UUID id;
     boolean isfired;
-    AlarmClock(int hr,int min,int sec,int day,int month,int year,String zone){
+
+    AlarmClock(int year,int month,int day,int hr,int min,int sec,String zone,UUID uni){
         isfired=false;
+        id=uni;
         dt= ZonedDateTime.of(year,month,day,hr,min,sec,0, ZoneId.of(zone));
     }
 
@@ -21,37 +21,5 @@ public class AlarmClock implements Serializable {
 
     public boolean isIsfired() {
         return isfired;
-    }
-
-    public int getHr() {
-        return hr;
-    }
-
-    public void setHr(int hr) {
-        this.hr = hr;
-    }
-
-    public int getMin() {
-        return min;
-    }
-
-    public void setMin(int min) {
-        this.min = min;
-    }
-
-    public int getSec() {
-        return sec;
-    }
-
-    public void setSec(int sec) {
-        this.sec = sec;
-    }
-
-    public String getAmpm() {
-        return ampm;
-    }
-
-    public void setAmpm(String ampm) {
-        this.ampm = ampm;
     }
 }
