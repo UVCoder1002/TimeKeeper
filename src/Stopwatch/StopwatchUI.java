@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class Stopwatch extends JPanel{
+public class StopwatchUI extends JPanel{
     private JTextArea hrTxt;
     private JTextArea minTxt;
     private JTextArea secTxt;
@@ -21,33 +21,45 @@ public class Stopwatch extends JPanel{
     //private JTextArea milTxt;
     int noOfClickLap=0;
     int flag = 1;
+    StopwatchListener listener;
 
-    public JTextArea getHr() {
-        return hrTxt;
+    public Integer getHr() {
+        return Integer.parseInt(hrTxt.getText());
     }
 
-    public JTextArea getMin() {
-        return minTxt;
+    public Integer getMin() {
+        return Integer.parseInt(minTxt.getText());
     }
 
-    public JTextArea getSec() {
-        return secTxt;
+    public Integer getSec() {
+        return Integer.parseInt(secTxt.getText());
     }
     /*public JTextArea getMil() {
         return milTxt;
     }*/
+    public void setTimer(int hr, int min, int sec) {
+        hrTxt.setText(""+hr);
+        minTxt.setText(""+min);
+        secTxt.setText(""+sec);
+    }
 
 
-    public Stopwatch() {
-        StopwatchTimer swTimer = new StopwatchTimer(this);
-        Thread t1 =new Thread(swTimer);
+    public StopwatchUI() {
+        StopwatchBackEnd sw = new StopwatchBackEnd();
+        Thread t1 =new Thread(sw);
+        t1.start();
+
         startBT.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(!t1.isAlive()) {
-                    t1.start();
-                    flag = 0;
-                }
+                startBT.setEnabled(false);
+                sw.addStopwatchListener(listener = new StopwatchListener() {
+                    @Override
+                    public void updateTime(int hr,int min,int sec) {
+                        setTimer(hr,min,sec);
+                    }
+                });
+                flag = 0;
             }
         });
         pauseBT.addActionListener(new ActionListener() {
@@ -69,34 +81,32 @@ public class Stopwatch extends JPanel{
             @Override
             public void actionPerformed(ActionEvent e) {
                 noOfClickLap++;
-                lapOutput.append(noOfClickLap+". "+getHr().getText()+" : "+getMin().getText()+" : "+getSec().getText()+"\n");
+                lapOutput.append(noOfClickLap+". "+getHr()+":"+getMin()+":"+getSec()+"\n");
             }
         });
         resetBT.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                t1.stop();
+                sw.removeListener(listener);
                 lapOutput.setText("");
                 noOfClickLap=0;
+                flag=1;
                 setTimer(0,0,0);
+                startBT.setEnabled(true);
             }
         });
     }
 
-    public void setTimer(int hr, int min, int sec) {
-    hrTxt.setText(""+hr);
-    minTxt.setText(""+min);
-    secTxt.setText(""+sec);
-    }
+
 
     public static void main(String[] args) {
-        Stopwatch tCD = new Stopwatch();
+        StopwatchUI tCD = new StopwatchUI();
         //tCD.setLayout(new GridLayout());
         JFrame frame = new JFrame("Time Keeper");
-        frame.setContentPane(new Stopwatch().stopwatchJp);
+        frame.setContentPane(new StopwatchUI().stopwatchJp);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
-        frame.setSize(750, 300);
+        frame.setSize(750, 400);
         frame.setLocation(250,100);
         //frame.add(tCD);
         frame.setVisible(true);

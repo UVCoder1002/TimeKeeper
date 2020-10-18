@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="Stopwatch.Stopwatch">
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="Stopwatch.StopwatchUI">
   <grid id="27dc6" binding="stopwatchJp" layout-manager="GridLayoutManager" row-count="6" column-count="4" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="0" left="0" bottom="0" right="0"/>
     <constraints>
@@ -42,7 +42,7 @@
         </constraints>
         <properties>
           <editable value="false"/>
-          <font name="Monospaced" size="18" style="1"/>
+          <font name="JetBrains Mono" size="20" style="3"/>
           <opaque value="false"/>
           <text value="" noi18n="true"/>
           <visible value="true"/>
@@ -145,7 +145,9 @@
       </component>
       <component id="6ae62" class="javax.swing.JButton" binding="resetBT">
         <constraints>
-          <grid row="3" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+          <grid row="3" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
+            <preferred-size width="78" height="35"/>
+          </grid>
         </constraints>
         <properties>
           <text value="Reset"/>
