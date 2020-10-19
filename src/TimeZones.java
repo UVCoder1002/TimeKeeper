@@ -84,12 +84,12 @@ public class TimeZones extends JPanel{
         // Tz.setVisible(true);
     }
 
-//    public static void main(String[] args) throws IOException {
-//        JFrame frame=new JFrame();
-//        TimeZones timez=new TimeZones();
-//        frame.add(timez);
-//        timez.displayZones();
-//        frame.setVisible(true);
-//    }
+    public static void main(String[] args) throws IOException {
+        JFrame frame=new JFrame();
+        TimeZones timez=new TimeZones();
+        frame.add(timez);
+        timez.displayZones();
+        frame.setVisible(true);
+    }
 
 }

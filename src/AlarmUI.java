@@ -6,6 +6,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.UUID;
 
 public class AlarmUI extends JPanel {
     Alarm al;
@@ -134,12 +135,21 @@ public class AlarmUI extends JPanel {
 
         });
         AlarmUI alui = this;
+        UUID code=al.id;
         al.afl = new AlarmFireListener() {
             @Override
-            public void fire() {
+            public void fire(UUID id) {
                alui.add(snooze);
+                snooze.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+
+                    }
+                });
+
             }
         };
+
     }
 
     public static void main(String[] args) throws IOException, ClassNotFoundException {

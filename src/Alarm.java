@@ -56,6 +56,11 @@ public class Alarm  {
                     }
 
                     @Override
+                    public void deleteListener(AlarmListener listener) {
+
+                    }
+
+                    @Override
                     public void timeUpdated(int hr, int min, int sec) {
 
                     }
@@ -79,7 +84,12 @@ public class Alarm  {
                @Override
                public void fireAlarm(UUID alarmid) {
                    System.out.println("Alarm Fired");
-                   afl.fire();
+                   afl.fire(alarmid);
+               }
+
+               @Override
+               public void deleteListener(AlarmListener listener) {
+
                }
 
                @Override
