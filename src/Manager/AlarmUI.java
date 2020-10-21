@@ -11,6 +11,8 @@ import java.util.Iterator;
 import java.util.UUID;
 
 public class AlarmUI extends JPanel {
+    ScrollPane scrollPane;
+    TextArea textArea;
     Alarm al;
     JLabel hourLabel,yrLabel,dayLabel,monLabel;
     JLabel minLabel;
@@ -36,6 +38,7 @@ public class AlarmUI extends JPanel {
     ObjectInputStream ois;
     Iterator<AlarmClock> iter;
     Iterator<AlarmClock> iter2;
+
 
     public Alarm getAl() {
         return al;
@@ -93,8 +96,8 @@ public class AlarmUI extends JPanel {
         dayText = new JTextField();
         yrText.setText("2020");
         monText.setText("10");
-        dayText.setText("17");
-        hrText.setText("12");
+        dayText.setText("21");
+        hrText.setText("22");
         yrText.setPreferredSize(new Dimension(20, 30));
         monText.setPreferredSize(new Dimension(20, 30));
         dayText.setPreferredSize(new Dimension(20, 30));
@@ -133,6 +136,7 @@ public class AlarmUI extends JPanel {
 
                 al.setAlarm(getYrText(),getMonText(),getDayText(),getHrText(),getMinText(),getSecText());
 
+
             }
 
         });
@@ -142,15 +146,20 @@ public class AlarmUI extends JPanel {
             @Override
             public void fire(UUID id) {
                alui.add(snooze);
+
                 snooze.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                      al.setSnooze(code);
+                      al.setSnooze(id);
+                      alui.remove(snooze);
+                      alui.revalidate();
                     }
                 });
+                alui.revalidate();
 
             }
         };
+
 
     }
 
@@ -160,6 +169,7 @@ public class AlarmUI extends JPanel {
         TimeManager tm = new TimeManager();
         Alarm al = new Alarm(tm,timezon.dateFormat.getTimeZone().getID());
        AlarmUI alarm = new AlarmUI(al);
+       alarm.setLayout();
       //  System.out.println(alarm);
     //    Alarm alarm = new Alarm(TimeZone.getDefault().toString());
         jframe.add(alarm);

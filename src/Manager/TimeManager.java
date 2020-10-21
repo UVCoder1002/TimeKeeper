@@ -29,7 +29,7 @@ public class TimeManager implements Runnable {
                                     if (checkAlarm(listener)) {
                                         ((AlarmListener) listener).alarmClock.isfired = true;
                                         ((AlarmListener) listener).fireAlarm(ac.id);
-                                        listeners.remove(listener);
+//                                        listeners.remove(listener);
                                     }
 
                                 } else if (listener instanceof CountdownListener) {

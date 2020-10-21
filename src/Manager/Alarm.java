@@ -141,7 +141,7 @@ public class Alarm  {
             AlarmClock clock=i.next();
             if(clock.id.toString().compareTo(alarmID.toString())==0){
                 System.out.println("here");
-                clock.dt.plusMinutes(1);
+                clock.dt = clock.dt.plusMinutes(1);
 
                 System.out.println(clock.dt.getMinute());
                 try {
