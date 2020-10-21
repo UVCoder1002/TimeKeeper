@@ -1,5 +1,9 @@
 package Stopwatch;
 
+import Manager.StopwatchListener;
+import Manager.TimeListener;
+import Manager.TimeManager;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,10 +22,12 @@ public class StopwatchUI extends JPanel{
     private JLabel minL;
     private JLabel secL;
     private JPanel stopwatchJp;
+    private JTextField millisec;
     //private JTextArea milTxt;
     int noOfClickLap=0;
     int flag = 1;
-    StopwatchListener listener;
+    TimeManager timeManager;
+    TimeListener listener;
 
     public Integer getHr() {
         return Integer.parseInt(hrTxt.getText());
@@ -34,6 +40,9 @@ public class StopwatchUI extends JPanel{
     public Integer getSec() {
         return Integer.parseInt(secTxt.getText());
     }
+    public Integer getmilli(){
+        return Integer.parseInt(millisec.getText());
+    }
     /*public JTextArea getMil() {
         return milTxt;
     }*/
@@ -41,23 +50,33 @@ public class StopwatchUI extends JPanel{
         hrTxt.setText(""+hr);
         minTxt.setText(""+min);
         secTxt.setText(""+sec);
+
+    }
+    public void setmilli(int milli){
+        millisec.setText(""+milli);
     }
 
 
-    public StopwatchUI() {
-        StopwatchBackEnd sw = new StopwatchBackEnd();
-        Thread t1 =new Thread(sw);
-        t1.start();
+    public StopwatchUI(TimeManager tm) {
+        timeManager = tm;
 
         startBT.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 startBT.setEnabled(false);
-                sw.addStopwatchListener(listener = new StopwatchListener() {
+                timeManager.addTimeListener(listener = new StopwatchListener() {
+
                     @Override
-                    public void updateTime(int hr,int min,int sec) {
+                    public void timeUpdated(int hr, int min, int sec) {
                         setTimer(hr,min,sec);
                     }
+
+
+                    @Override
+                    public void timeUpdated(int milli) {
+                      setmilli(milli);
+                    }
+
                 });
                 flag = 0;
             }
@@ -66,12 +85,12 @@ public class StopwatchUI extends JPanel{
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(flag==0) {
-                    t1.suspend();
+                   listener.ispaused=true;
                     pauseBT.setText("Resume");
                     flag=1;
                 }
                 else{
-                    t1.resume();
+                    listener.ispaused=false;
                     pauseBT.setText("Pause");
                     flag=0;
                 }
@@ -81,17 +100,18 @@ public class StopwatchUI extends JPanel{
             @Override
             public void actionPerformed(ActionEvent e) {
                 noOfClickLap++;
-                lapOutput.append(noOfClickLap+". "+getHr()+":"+getMin()+":"+getSec()+"\n");
+                lapOutput.append(noOfClickLap+". "+getHr()+":"+getMin()+":"+getSec()+"."+getmilli()+"\n");
             }
         });
         resetBT.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                sw.removeListener(listener);
+                timeManager.removeListener(listener);
                 lapOutput.setText("");
                 noOfClickLap=0;
                 flag=1;
                 setTimer(0,0,0);
+                setmilli(0);
                 startBT.setEnabled(true);
             }
         });
@@ -100,10 +120,11 @@ public class StopwatchUI extends JPanel{
 
 
     public static void main(String[] args) {
-        StopwatchUI tCD = new StopwatchUI();
+        TimeManager timeManager = new TimeManager();
+        StopwatchUI tCD = new StopwatchUI(timeManager);
         //tCD.setLayout(new GridLayout());
         JFrame frame = new JFrame("Time Keeper");
-        frame.setContentPane(new StopwatchUI().stopwatchJp);
+        frame.setContentPane(tCD.stopwatchJp);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setSize(750, 400);

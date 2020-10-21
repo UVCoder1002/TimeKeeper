@@ -1,3 +1,5 @@
+package Manager;
+
 import javax.swing.*;
 import java.awt.*;
 import java.io.*;
@@ -60,8 +62,15 @@ public class Alarm  {
 
                     }
 
+
+
                     @Override
                     public void timeUpdated(int hr, int min, int sec) {
+
+                    }
+
+                    @Override
+                    public void timeUpdated(int milli) {
 
                     }
 
@@ -92,8 +101,14 @@ public class Alarm  {
 
                }
 
+
                @Override
                public void timeUpdated(int hr, int min, int sec) {
+
+               }
+
+               @Override
+               public void timeUpdated(int milli) {
 
                }
            });
@@ -118,5 +133,28 @@ public class Alarm  {
            }
        }
    }
-//   void setSnooze()
+  void setSnooze(UUID alarmID)  {
+      System.out.println("in");
+        Iterator<AlarmClock> i=alarmArr.iterator();
+        while(i.hasNext()){
+            System.out.println("in2");
+            AlarmClock clock=i.next();
+            if(clock.id.toString().compareTo(alarmID.toString())==0){
+                System.out.println("here");
+                clock.dt.plusMinutes(1);
+
+                System.out.println(clock.dt.getMinute());
+                try {
+                    fos = new FileOutputStream("Alarm.dat");
+                    oos = new ObjectOutputStream(fos);
+                    for(AlarmClock alarm:alarmArr){
+                        oos.writeObject(alarm);
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+
+            }
+        }
+    }
 }

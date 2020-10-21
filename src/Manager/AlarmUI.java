@@ -1,3 +1,5 @@
+package Manager;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -143,7 +145,7 @@ public class AlarmUI extends JPanel {
                 snooze.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-
+                      al.setSnooze(code);
                     }
                 });
 
