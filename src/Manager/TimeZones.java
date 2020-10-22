@@ -21,7 +21,7 @@ public class TimeZones extends JPanel{
     BufferedReader bRead;
     BufferedWriter bWrite;
     String line;
-    TimeZones() throws IOException {
+    public TimeZones() throws IOException {
         setLayout(new GridBagLayout());
         dateFormat=new SimpleDateFormat("s");
         clocks = new JPanel();

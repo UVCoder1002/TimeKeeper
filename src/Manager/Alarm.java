@@ -3,6 +3,7 @@ package Manager;
 import javax.swing.*;
 import java.awt.*;
 import java.io.*;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -141,13 +142,33 @@ public class Alarm  {
             AlarmClock clock=i.next();
             if(clock.id.toString().compareTo(alarmID.toString())==0){
                 System.out.println("here");
-                clock.dt = clock.dt.plusMinutes(1);
-
+                clock.dt = ZonedDateTime.now().plusMinutes(1);
                 System.out.println(clock.dt.getMinute());
                 try {
                     fos = new FileOutputStream("Alarm.dat");
                     oos = new ObjectOutputStream(fos);
                     for(AlarmClock alarm:alarmArr){
+                        oos.writeObject(alarm);
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+
+            }
+        }
+    }
+    void deleteAlarm(UUID id){
+        ArrayList<AlarmClock> arrayList=new ArrayList<>(alarmArr);
+        Iterator<AlarmClock> i=arrayList.iterator();
+        while(i.hasNext()) {
+//            System.out.println("in2");
+            AlarmClock clock = i.next();
+            if(clock.id.toString().compareTo(id.toString())==0){
+                alarmArr.remove(clock);
+                try {
+                    fos = new FileOutputStream("Alarm.dat");
+                    oos = new ObjectOutputStream(fos);
+                    for(AlarmClock alarm:arrayList){
                         oos.writeObject(alarm);
                     }
                 }catch (Exception e){
