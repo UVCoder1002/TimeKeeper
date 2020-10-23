@@ -5,10 +5,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.UUID;
+import java.util.*;
 
 public class AlarmUI extends JPanel {
     TextArea textArea;
@@ -39,6 +36,10 @@ public class AlarmUI extends JPanel {
     Iterator<AlarmClock> iter;
     Iterator<AlarmClock> iter2;
     JScrollPane scrollPane;
+    JPanel scrollPaneContent;
+    AlarmItem alarmItem;
+    AlarmUI alui;
+    HashMap<UUID,AlarmItem> map;
 
     public Alarm getAl() {
         return al;
@@ -71,8 +72,9 @@ public class AlarmUI extends JPanel {
     public AlarmUI(Alarm al) throws IOException, ClassNotFoundException {
 //        this.setLayout(new BoxLayout(this,BoxLayout.LINE_AXIS));
 //        this.setLayout(new GridLayout(0,0));
-        this.setLayout(new FlowLayout());
 
+        this.setLayout(new FlowLayout());
+        alui = this;
         snooze = new Button();
         snooze.setLabel("Snooze");
         alarmArr =al.alarmArr;
@@ -97,9 +99,11 @@ public class AlarmUI extends JPanel {
         monText = new JTextField();
         yrText = new JTextField();
         dayText = new JTextField();
-        scrollPane=new JScrollPane();
-        scrollPane.setPreferredSize(new Dimension(200,200));
-        scrollPane.setBackground(Color.red);
+        scrollPaneContent=new JPanel();
+        scrollPane=new JScrollPane(scrollPaneContent);
+        scrollPane.setPreferredSize(new Dimension(400,400));
+        scrollPaneContent.setPreferredSize(new Dimension(400,400));
+        scrollPaneContent.setBackground(Color.RED);
         delete=new Button("Stop");
         yrText.setText("2020");
         monText.setText("10");
@@ -136,32 +140,37 @@ public class AlarmUI extends JPanel {
         this.add(ampmDrop);
         this.add(set);
         this.add(scrollPane);
+        map = new HashMap<>();
+        printAlarmitem();
 
         set.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
                 al.setAlarm(getYrText(),getMonText(),getDayText(),getHrText(),getMinText(),getSecText());
+                printAlarmitem();
 
 
             }
 
         });
-        AlarmUI alui = this;
+
         UUID code=al.id;
         al.afl = new AlarmFireListener() {
             @Override
             public void fire(UUID id) {
-               alui.add(snooze);
-               alui.add(delete);
+               map.get(id).add(snooze);
+               map.get(id).add(delete);
                 snooze.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                      al.setSnooze(id);
-                      alui.remove(snooze);
-                      JLabel msg=new JLabel("Alarm snoozed for 5 minutes");
-                      alui.add(msg);
-                      alui.revalidate();
+                        al.setSnooze(id);
+                        map.get(id).remove(snooze);
+                        JLabel msg = new JLabel("Alarm snoozed for 5 minutes");
+                        map.get(id).add(msg);
+//                      map.get(id).revalidate();
+                        alui.revalidate();
+                        alui.repaint();
                     }
                 });
                 delete.addActionListener(new ActionListener() {
@@ -169,10 +178,14 @@ public class AlarmUI extends JPanel {
                     public void actionPerformed(ActionEvent e) {
                         al.deleteAlarm(id);
                         printAlarmitem();
-                        alui.revalidate();
+//                        alui.revalidate();
                     }
                 });
-                alui.revalidate();
+//                alui.revalidate();
+                 map.get(id).revalidate();
+//                 alui.revalidate();
+                 map.get(id).repaint();
+                 scrollPaneContent.revalidate();
 
             }
         };
@@ -180,14 +193,18 @@ public class AlarmUI extends JPanel {
 
     }
      void printAlarmitem(){
-        scrollPane.removeAll();
+        scrollPaneContent.removeAll();
         Iterator<AlarmClock> iter=alarmArr.iterator();
-
         while(iter.hasNext()) {
+            System.out.println("print");
             AlarmClock clock=iter.next();
-            AlarmItem alarmList = new AlarmItem(clock);
-            scrollPane.add(alarmList);
+            AlarmItem alarmItem = new AlarmItem(alui,clock);
+            map.put(clock.id,alarmItem);
+            scrollPaneContent.add(alarmItem);
         }
+         scrollPaneContent.repaint();
+         scrollPane.revalidate();
+//        revalidate();
 
      }
     public static void main(String[] args) throws IOException, ClassNotFoundException {

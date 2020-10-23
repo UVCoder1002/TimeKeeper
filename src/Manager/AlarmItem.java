@@ -1,6 +1,7 @@
 package Manager;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class AlarmItem extends JPanel {
     JLabel date;
@@ -9,15 +10,22 @@ public class AlarmItem extends JPanel {
     JLabel hour;
     JLabel min;
     JLabel sec;
-    AlarmItem(AlarmClock alarmclock){
+    Button snooze;
+    Button delete;
+    AlarmItem(AlarmUI alarmUI,AlarmClock alarmclock){
+        AlarmItem alarmItem=this;
         date=new JLabel();
         month=new JLabel();
         year=new JLabel();
         hour=new JLabel();
         min=new JLabel();
         sec=new JLabel();
-        this.setLayout(new BoxLayout(this,BoxLayout.LINE_AXIS));
+        snooze=new Button("Snooze");
+        delete=new Button("delete");
+//        this.setLayout(new BoxLayout(this,BoxLayout.LINE_AXIS));
+        this.setPreferredSize(new Dimension(200,20));
         date.setText(alarmclock.getDt().getDayOfMonth()+"");
+        System.out.println(date.getText());
         month.setText(alarmclock.getDt().getMonth().toString());
         year.setText(alarmclock.getDt().getYear()+"");
         hour.setText(alarmclock.getDt().getHour()+"");
@@ -29,6 +37,7 @@ public class AlarmItem extends JPanel {
         this.add(hour);
         this.add(min);
         this.add(sec);
+        this.setBackground(Color.BLUE);
 
 
     }

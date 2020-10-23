@@ -2,6 +2,7 @@ package Manager;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.TimeZone;
 
 public class CurrentTime {
@@ -9,22 +10,27 @@ public class CurrentTime {
     int min;
     int sec;
     String ampm;
-    SimpleDateFormat dateFormat=new SimpleDateFormat("s");
+    SimpleDateFormat dateFormat;
    String zone;
-    Date currentDate=new Date();
+    Date currentDate;
     CurrentTime(String zone){
+
         this.zone=zone;
     }
     void setCurrentTime() {
-        currentDate=new Date();
+       currentDate=new Date();
+        dateFormat =new SimpleDateFormat("s", Locale.getDefault());
+//        System.out.println(currentDate);
         dateFormat.setTimeZone(TimeZone.getTimeZone(zone));
         dateFormat.applyPattern("s");
         sec = Integer.parseInt(dateFormat.format(currentDate));
         dateFormat.applyPattern("m");
         min = Integer.parseInt(dateFormat.format(currentDate));
-//        System.out.println(min);
+//       System.out.println(min);
         dateFormat.applyPattern("h");
         hr = Integer.parseInt(dateFormat.format(currentDate));
+//        System.out.println(hr);
+
         dateFormat.applyPattern("a");
         ampm = dateFormat.format(currentDate);
     }

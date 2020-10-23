@@ -168,7 +168,7 @@ public class Alarm  {
                 try {
                     fos = new FileOutputStream("Alarm.dat");
                     oos = new ObjectOutputStream(fos);
-                    for(AlarmClock alarm:arrayList){
+                    for(AlarmClock alarm:alarmArr){
                         oos.writeObject(alarm);
                     }
                 }catch (Exception e){
