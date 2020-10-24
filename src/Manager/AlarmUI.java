@@ -14,7 +14,7 @@ public class AlarmUI extends JPanel {
     JLabel hourLabel,yrLabel,dayLabel,monLabel;
     JLabel minLabel;
     JLabel secLabel;
-    JComboBox<String> ampmDrop;
+//    JComboBox<String> ampmDrop;
     Date date;
     String[] ampm;
     JLabel timeLeft;
@@ -40,6 +40,7 @@ public class AlarmUI extends JPanel {
     AlarmItem alarmItem;
     AlarmUI alui;
     HashMap<UUID,AlarmItem> map;
+    Notifications notify;
 
     public Alarm getAl() {
         return al;
@@ -86,7 +87,7 @@ public class AlarmUI extends JPanel {
         //TimeZones tzone=new TimeZones();
 
         ampm = new String[]{"AM", "PM"};
-        ampmDrop = new JComboBox<String>(ampm);
+//        ampmDrop = new JComboBox<String>(ampm);
         yrLabel = new JLabel();
         monLabel = new JLabel();
         dayLabel = new JLabel();
@@ -137,7 +138,7 @@ public class AlarmUI extends JPanel {
         this.add(minText);
         this.add(secLabel);
         this.add(secText);
-        this.add(ampmDrop);
+//        this.add(ampmDrop);
         this.add(set);
         this.add(scrollPane);
         map = new HashMap<>();
@@ -166,11 +167,18 @@ public class AlarmUI extends JPanel {
                     public void actionPerformed(ActionEvent e) {
                         al.setSnooze(id);
                         map.get(id).remove(snooze);
-                        JLabel msg = new JLabel("Alarm snoozed for 5 minutes");
-                        map.get(id).add(msg);
+                        notify=new Notifications(alui,id,map);
+                        Thread t=new Thread(notify);
+                        t.start();
+//                        JLabel msg = new JLabel("Alarm snoozed for 5 minutes");
+//                        map.get(id).add(msg);
 //                      map.get(id).revalidate();
                         alui.revalidate();
                         alui.repaint();
+//                        map.get(id).remove(msg);
+//                        alui.revalidate();
+//                        alui.repaint();
+
                     }
                 });
                 delete.addActionListener(new ActionListener() {
@@ -184,8 +192,9 @@ public class AlarmUI extends JPanel {
 //                alui.revalidate();
                  map.get(id).revalidate();
 //                 alui.revalidate();
-                 map.get(id).repaint();
+//                 map.get(id).repaint();
                  scrollPaneContent.revalidate();
+                 scrollPane.revalidate();
 
             }
         };

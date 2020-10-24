@@ -23,7 +23,7 @@ public class AlarmItem extends JPanel {
         snooze=new Button("Snooze");
         delete=new Button("delete");
 //        this.setLayout(new BoxLayout(this,BoxLayout.LINE_AXIS));
-        this.setPreferredSize(new Dimension(200,20));
+        this.setPreferredSize(new Dimension(400,100));
         date.setText(alarmclock.getDt().getDayOfMonth()+"");
         System.out.println(date.getText());
         month.setText(alarmclock.getDt().getMonth().toString());
