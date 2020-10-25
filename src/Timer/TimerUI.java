@@ -1,9 +1,13 @@
 package Timer;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileInputStream;
+import Manager.*;
+import Manager.Menu;
+
 
 public class TimerUI extends JPanel  {
     private JPanel panel1;
@@ -13,10 +17,12 @@ public class TimerUI extends JPanel  {
     private JButton startBT;
     private JButton pauseBT;
     private JButton resetBT;
+    private JButton backBT;
     //TimerUI timer;
     int flag=1;
     int temp=1;
     TimerListener listener;
+    Menu menu;
 
     public Integer getHr() {
         return Integer.parseInt(hr.getText());
@@ -36,7 +42,18 @@ public class TimerUI extends JPanel  {
         this.sec.setText(""+sec);
     }
 
-    public TimerUI() {
+    public TimerUI(JFrame jFrame) {
+
+        //TimerUI tCD = new TimerUI();
+        //tCD.setLayout(new GridLayout());
+        JFrame frame = new JFrame("Time Keeper");
+        frame.add(panel1);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.pack();
+        frame.setSize(1010, 500);
+        frame.setLocation(200,100);
+        //frame.add(tCD);
+        frame.setVisible(true);
 
         TimerBackEnd tt = new TimerBackEnd();
         Thread t1 = new Thread(tt);
@@ -51,9 +68,12 @@ public class TimerUI extends JPanel  {
                 int min=getMin();
                 int sec=getMin();
                 if (min>=0&&min<60&&sec>=0&&sec<60) {
+                    startBT.setEnabled(false);
                     tt.addTimeListener(listener = new TimerListener(getHr(), getMin(), getSec()) {
                         @Override
                         public void updateTimer(int hr, int min, int sec) {
+                            if(hr==0&&min==0&&sec==0)
+                                startBT.setEnabled(true);
                             setTime(hr, min, sec);
                         }
                     });
@@ -102,25 +122,24 @@ public class TimerUI extends JPanel  {
         resetBT.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                startBT.setEnabled(true);
                 tt.removeListener(listener);
                 setTime(0,0,0);
                 flag=1;
+            }
+        });
+        backBT.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                frame.setVisible(false);
+                jFrame.setVisible(true);
             }
         });
     }
 
 
     public static void main(String[] args) {
-        TimerUI tCD = new TimerUI();
-        //tCD.setLayout(new GridLayout());
-        JFrame frame = new JFrame("Time Keeper");
-        frame.setContentPane(new TimerUI().panel1);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.pack();
-        frame.setSize(500, 300);
-        frame.setLocation(250,100);
-        //frame.add(tCD);
-        frame.setVisible(true);
+        //new TimerUI();
         //tCD.start();
     }
 }
