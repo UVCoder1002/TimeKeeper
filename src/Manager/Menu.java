@@ -2,8 +2,10 @@ package Manager;
 
 
 import Timer.TimerUI;
+import Stopwatch.*;
 
 import javax.swing.*;
+import javax.swing.plaf.basic.BasicSplitPaneUI;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,15 +16,16 @@ public class Menu extends JPanel{
     private JButton stopwatchButton;
     private JButton timerButton;
     private JButton timeZonesButton;
-    private JButton settingButton;
     private JButton alarmButton;
+    private JPanel jPanelCal1;
     TimeManager timeManager;
     JFrame frame;
-
-
+    String[] s;
+    FlowLayout flowLayout;
 
     public Menu() {
-
+        jPanelCal1=new JPanel();
+        flowLayout= new FlowLayout();
         FCalendar calendarObj = new FCalendar();
         StandardClock standardClock= new StandardClock("Asia/Kolkata");
         standardClock.start();
@@ -30,20 +33,27 @@ public class Menu extends JPanel{
         frame = new JFrame("Time Keeper");
         //frame.setContentPane(new Menu().jPanelMenu);
         //frame.setBackground(new Color(255,255,255));
+        frame.setLayout(flowLayout);
+        frame.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
         frame.add(jPanelMenu);
         try {
             UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
             e.printStackTrace();
         }
-
+        jPanelCal1.setPreferredSize(new Dimension(310,310));
+        //jPanelCal.setPreferredSize(new Dimension(310,310));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
-        frame.setSize(1010, 500);
+        frame.setSize(900, 500);
         frame.setLocation(200,100);
-
+        //setBackground(Color.BLACK);
+        jPanelCal1.add(calendarObj);
         frame.add(standardClock,BorderLayout.EAST);
-        frame.add(calendarObj,BorderLayout.CENTER);
+        frame.add(jPanelCal1,BorderLayout.CENTER);
+        //frame.add(calendarObj,BorderLayout.CENTER);
+
+
         //frame.add(tCD);
         frame.setVisible(true);
 
@@ -62,7 +72,7 @@ public class Menu extends JPanel{
         stopwatchButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //new StopwatchUI(frame);
+                StopwatchUI.main(s);
                 frame.setVisible(false);
             }
         });
@@ -70,7 +80,7 @@ public class Menu extends JPanel{
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    new TimeZones();
+                    TimeZones.main(s);
                     frame.setVisible(false);
                 } catch (IOException ioException) {
                     ioException.printStackTrace();

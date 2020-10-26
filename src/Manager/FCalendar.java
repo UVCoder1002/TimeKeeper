@@ -45,7 +45,7 @@ public class FCalendar extends JPanel {
         task = new JPanel();
         lp = new JLayeredPane();
         lp.setLayout(new FlowLayout());
-        lp.setPreferredSize(new Dimension(300, 310));
+        lp.setPreferredSize(new Dimension(310, 310));
         calendar=this;
         map=new HashMap<>();
         map.put("MONDAY",0);
@@ -64,10 +64,9 @@ public class FCalendar extends JPanel {
         lp.add(details,-1);
         lp.add(arrows,0);
         lp.add(cal,0);
-        lp.setBorder(BorderFactory.createTitledBorder(
-                "CALY"));
+        lp.setBorder(BorderFactory.createTitledBorder("CALY"));
         this.add(lp);
-        this.setPreferredSize(new Dimension(300,500));
+        this.setPreferredSize(new Dimension(300,300));
         SimpleDateFormat dateFormat = new SimpleDateFormat("y", Locale.getDefault());
         dateFormat.applyPattern("y");
 

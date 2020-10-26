@@ -21,7 +21,17 @@ public class TimeZones extends JPanel{
     BufferedReader bRead;
     BufferedWriter bWrite;
     String line;
+    private JButton backButton;
+    private JPanel jPanelTimeZone;
+    FlowLayout flowLayout= new FlowLayout();
+    String[] s;
+
+
+
     public TimeZones() throws IOException {
+
+
+
         setLayout(new GridBagLayout());
         dateFormat=new SimpleDateFormat("s");
         clocks = new JPanel();
@@ -40,12 +50,15 @@ public class TimeZones extends JPanel{
           stdclock.start();
       }
       bRead.close();
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Menu.main(s);
+            }
+        });
     }
 
-
     void displayZones(){
-
-
 
         List<String> timezones = new ArrayList<>();
         Set<String> zoneIds = ZoneId.getAvailableZoneIds();
@@ -60,6 +73,8 @@ public class TimeZones extends JPanel{
         Tz.setPreferredSize(new Dimension(100,20));
         this.add(Tz);
         this.add(clocks);
+        this.setLayout(flowLayout);
+        this.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
         TimeZones timezone = this;
         Tz.addActionListener(new ActionListener() {
             @Override
@@ -78,7 +93,6 @@ public class TimeZones extends JPanel{
                     timezone.revalidate();
                     stdclock.start();
                 }
-
             }
         });
 
@@ -86,11 +100,19 @@ public class TimeZones extends JPanel{
     }
 
     public static void main(String[] args) throws IOException {
-        JFrame frame=new JFrame();
-        TimeZones timez=new TimeZones();
-        frame.add(timez);
-        timez.displayZones();
+        TimeZones timeZone = new TimeZones();
+        JFrame frame=new JFrame("Time Keeper");
+        frame.add(timeZone,BorderLayout.CENTER);
+        frame.add(timeZone.jPanelTimeZone,BorderLayout.WEST);
+        frame.setLocation(0,0);
+        JScrollBar jScrollBar = new JScrollBar();
+        jScrollBar.setOrientation(Adjustable.VERTICAL);
+        frame.add(jScrollBar,BorderLayout.EAST);
+        frame.setSize(1010, 500);
+        frame.setLocation(200,100);
+        timeZone.displayZones();
         frame.setVisible(true);
+
     }
 
 }

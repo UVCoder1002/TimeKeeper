@@ -72,11 +72,7 @@ public class TimeManager implements Runnable {
                         }
                         Thread.sleep(1000);
                     }
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (ClassNotFoundException e) {
+                } catch (InterruptedException | ClassNotFoundException | IOException e) {
                     e.printStackTrace();
                 }
             }
