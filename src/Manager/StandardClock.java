@@ -20,7 +20,7 @@ public class StandardClock extends JPanel implements Runnable {
 //        System.out.println(time.zone);
         currentTime = new JLabel("Test");
         currentTime.setForeground(Color.BLACK);
-        this.setPreferredSize(new Dimension(400,400));
+        this.setPreferredSize(new Dimension(350,350));
         this.setLayout(new FlowLayout());
         currentTime.setBackground(Color.RED);
         this.add(currentTime);
@@ -43,7 +43,7 @@ public class StandardClock extends JPanel implements Runnable {
         g.drawString("6", xcenter - 10, ycenter + 143);
     }
     public void paint(Graphics g){
-        g.clearRect(0,0,300,300);
+        g.clearRect(0,0,250,250);
         g.setColor(new Color(118, 73, 190));
         g.fillRect(0,0,400,400);
         int hx,hy,mx,my,sx,sy,min=0,hr=0,sec=0;
@@ -122,18 +122,18 @@ public class StandardClock extends JPanel implements Runnable {
     {
         paint(g);
     }
-    public static void main(String args[])
-    {
-        JFrame window = new JFrame();
-        Color c = new Color(118, 73, 190);
-//        window.setBackground(Color.white);
-        window.setBackground(c);
-        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        window.setBounds(0, 0, 400, 400);
-        StandardClock clock = new StandardClock("Asia/Kolkata");
-        window.getContentPane().add(clock);
-        window.setVisible(true);
-        clock.start();
-    }
+//    public static void main(String args[])
+//    {
+//        JFrame window = new JFrame();
+//        Color c = new Color(118, 73, 190);
+////        window.setBackground(Color.white);
+//        window.setBackground(c);
+//        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        window.setBounds(0, 0, 400, 400);
+//        StandardClock clock = new StandardClock("Asia/Kolkata");
+//        window.getContentPane().add(clock);
+//        window.setVisible(true);
+//        clock.start();
+//    }
 
 }

@@ -32,7 +32,7 @@ public class FCalendar extends JPanel {
     Button prev;
     Button next;
     HashMap<String,Integer> map;
-    FCalendar() {
+    FCalendar(){
         details=new JPanel(new GridLayout(1,2,5,5));
         arrows=new JPanel(new GridLayout(1,2));
         prev=new Button("<");
@@ -67,6 +67,7 @@ public class FCalendar extends JPanel {
         lp.setBorder(BorderFactory.createTitledBorder(
                 "CALY"));
         this.add(lp);
+        this.setPreferredSize(new Dimension(300,500));
         SimpleDateFormat dateFormat = new SimpleDateFormat("y", Locale.getDefault());
         dateFormat.applyPattern("y");
 
@@ -235,15 +236,15 @@ public class FCalendar extends JPanel {
                 return map.get(day);
 
     }
-    public static void main(String[] args) {
-        JFrame window = new JFrame();
-        Color c = new Color(118, 73, 190);
-        window.setBackground(c);
-        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        window.setBounds(0, 0, 1000, 1000);
-        FCalendar fCal = new FCalendar();
-        window.add(fCal);
-        window.setVisible(true);
-    }
-    
+//    public static void main(String[] args) {
+//        JFrame window = new JFrame();
+//        Color c = new Color(118, 73, 190);
+//        window.setBackground(c);
+//        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        window.setBounds(0, 0, 1000, 1000);
+//        FCalendar fCal = new FCalendar();
+//        window.add(fCal);
+//        window.setVisible(true);
+//    }
+//
 }

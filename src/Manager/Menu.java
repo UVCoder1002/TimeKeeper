@@ -1,14 +1,13 @@
 package Manager;
 
 
+import Timer.TimerUI;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-
-import Stopwatch.StopwatchUI;
-import Timer.*;
 
 public class Menu extends JPanel{
     private JPanel jPanelMenu;
@@ -26,6 +25,7 @@ public class Menu extends JPanel{
 
         FCalendar calendarObj = new FCalendar();
         StandardClock standardClock= new StandardClock("Asia/Kolkata");
+        standardClock.start();
         //tCD.setLayout(new GridLayout());
         frame = new JFrame("Time Keeper");
         //frame.setContentPane(new Menu().jPanelMenu);
@@ -41,8 +41,9 @@ public class Menu extends JPanel{
         frame.pack();
         frame.setSize(1010, 500);
         frame.setLocation(200,100);
-        frame.add(calendarObj,BorderLayout.CENTER);
+
         frame.add(standardClock,BorderLayout.EAST);
+        frame.add(calendarObj,BorderLayout.CENTER);
         //frame.add(tCD);
         frame.setVisible(true);
 
