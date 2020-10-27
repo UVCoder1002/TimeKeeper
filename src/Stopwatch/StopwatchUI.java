@@ -6,6 +6,7 @@ import Manager.TimeListener;
 import Manager.TimeManager;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -31,6 +32,7 @@ public class StopwatchUI extends JPanel{
     TimeListener listener;
     Thread thread = null;
     String[] s;
+    Menu menu;
 
     public Integer getHr() {
         return Integer.parseInt(hrTxt.getText());
@@ -67,13 +69,15 @@ public class StopwatchUI extends JPanel{
         //tCD.setLayout(new GridLayout());
         JFrame frame = new JFrame("Time Keeper");
         frame.setContentPane(stopwatchJp);
+        //JScrollPane jScrollPane = new JScrollPane(stopwatchJp);
+        //scrollBar1.setOrientation(Adjustable.VERTICAL);
+        //frame.getContentPane().add(jScrollPane);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setSize(1010, 500);
         frame.setLocation(250,100);
         //frame.add(tCD);
         frame.setVisible(true);
-
         timeManager = tm;
 
         startBT.addActionListener(new ActionListener() {
@@ -134,7 +138,7 @@ public class StopwatchUI extends JPanel{
             @Override
             public void actionPerformed(ActionEvent e) {
                 frame.setVisible(false);
-                Menu.main(s);
+                menu.frameVisible();
             }
         });
     }

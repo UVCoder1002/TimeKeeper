@@ -19,11 +19,15 @@ public class Menu extends JPanel{
     private JButton alarmButton;
     private JPanel jPanelCal1;
     TimeManager timeManager;
+    TimerUI timerUI=null;
+    StopwatchUI stopwatchUI= null;
+    TimeZones timeZones = null;
     JFrame frame;
     String[] s;
     FlowLayout flowLayout;
 
     public Menu() {
+
         jPanelCal1=new JPanel();
         flowLayout= new FlowLayout();
         FCalendar calendarObj = new FCalendar();
@@ -31,6 +35,7 @@ public class Menu extends JPanel{
         standardClock.start();
         //tCD.setLayout(new GridLayout());
         frame = new JFrame("Time Keeper");
+        //timerUI=new TimerUI(frame);
         //frame.setContentPane(new Menu().jPanelMenu);
         //frame.setBackground(new Color(255,255,255));
         frame.setLayout(flowLayout);
@@ -52,8 +57,6 @@ public class Menu extends JPanel{
         frame.add(standardClock,BorderLayout.EAST);
         frame.add(jPanelCal1,BorderLayout.CENTER);
         //frame.add(calendarObj,BorderLayout.CENTER);
-
-
         //frame.add(tCD);
         frame.setVisible(true);
 
@@ -62,17 +65,22 @@ public class Menu extends JPanel{
         timerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new TimerUI(frame);
-                frame.setVisible(false);
-                /*JFrame timerFrame = new JFrame("Time Keeper");
-                frame.setContentPane(new TimerUI());
-                timerFrame.setVisible(true);*/
+                if (timerUI == null)
+                    timerUI = new TimerUI(frame);
+                else
+                    timerUI.timerFrameVisible();
+            frame.setVisible(false);
             }
         });
         stopwatchButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                StopwatchUI.main(s);
+                if (stopwatchUI == null) {
+                    timeManager = new TimeManager();
+                    stopwatchUI = new StopwatchUI(timeManager);
+                }
+                else
+                    timerUI.timerFrameVisible();
                 frame.setVisible(false);
             }
         });
@@ -87,6 +95,24 @@ public class Menu extends JPanel{
                 }
             }
         });
+        alarmButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    AlarmUI.main(s);
+                    frame.setVisible(false);
+                } catch (IOException | ClassNotFoundException ioException) {
+                    ioException.printStackTrace();
+                }
+
+            }
+        });
+    }
+
+    public void frameVisible()
+    {
+            frame.setVisible(true);
+
     }
 
     public static void main(String[] args) {

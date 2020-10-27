@@ -1,10 +1,15 @@
 package Timer;
 
+import javax.sound.sampled.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+
 import Manager.*;
 import Manager.Menu;
 
@@ -18,11 +23,20 @@ public class TimerUI extends JPanel  {
     private JButton pauseBT;
     private JButton resetBT;
     private JButton backBT;
+    private JComboBox comboBox1;
+    JFrame frame=null;
+    TimerBackEnd tt;
+    Thread t1;
     //TimerUI timer;
     int flag=1;
     int temp=1;
     TimerListener listener;
-    Menu menu;
+    File file;
+    String path, tone;
+    FileWriter fileWrite;
+    AudioInputStream audioTnSt;
+    Clip clip;
+
 
     public Integer getHr() {
         return Integer.parseInt(hr.getText());
@@ -46,18 +60,25 @@ public class TimerUI extends JPanel  {
 
         //TimerUI tCD = new TimerUI();
         //tCD.setLayout(new GridLayout());
-        JFrame frame = new JFrame("Time Keeper");
-        frame.add(panel1);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.pack();
-        frame.setSize(1010, 500);
-        frame.setLocation(200,100);
-        //frame.add(tCD);
-        frame.setVisible(true);
+        tone = comboBox1.getSelectedItem().toString();
+        System.out.println( comboBox1.getSelectedItem().toString());
+        if(frame==null) {
+            frame = new JFrame("Time Keeper");
+            frame.add(panel1);
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.pack();
+            frame.setSize(1010, 500);
+            frame.setLocation(200, 100);
+            //frame.add(tCD);
+            frame.setVisible(true);
 
-        TimerBackEnd tt = new TimerBackEnd();
-        Thread t1 = new Thread(tt);
-        t1.start();
+            tt = new TimerBackEnd();
+            t1 = new Thread(tt);
+            t1.start();
+
+        } else frame.setVisible(true);
+
+
         //timer=this;
 
 
@@ -73,7 +94,10 @@ public class TimerUI extends JPanel  {
                         @Override
                         public void updateTimer(int hr, int min, int sec) {
                             if(hr==0&&min==0&&sec==0)
+                            {
                                 startBT.setEnabled(true);
+                                clip.start();
+                            }
                             setTime(hr, min, sec);
                         }
                     });
@@ -135,11 +159,51 @@ public class TimerUI extends JPanel  {
                 jFrame.setVisible(true);
             }
         });
+        comboBox1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                tone = comboBox1.getSelectedItem().toString();
+                System.out.println("tone is"+tone);
+
+            }
+        });
+        if (tone.compareToIgnoreCase("Tone1")==0) {
+            path = "src\\ToneSetting\\sounds\\alarm2.wav";
+        } else if (tone.compareTo("Tone2")==0) {
+            path = "src\\ToneSetting\\sounds\\ringtone1.wav";
+        }
+        file = new File(path);
+        if(file.exists())
+        {
+            try {
+                fileWrite=new FileWriter("src\\ToneSetting\\toneSetting.txt");
+                fileWrite.write(path);
+                fileWrite.close();
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
+
+            try {
+                audioTnSt = AudioSystem.getAudioInputStream(file);
+                clip = AudioSystem.getClip();
+                clip.open(audioTnSt);
+            } catch (UnsupportedAudioFileException | LineUnavailableException | IOException unsupportedAudioFileException) {
+                unsupportedAudioFileException.printStackTrace();
+            }
+        } else
+        {
+            System.out.println("File doesn't exist");
+        }
+    }
+
+    public void timerFrameVisible()
+    {
+        frame.setVisible(true);
     }
 
 
-    public static void main(String[] args) {
-        //new TimerUI();
-        //tCD.start();
-    }
+//    public static void main(String[] args) {
+//        //new TimerUI();
+//        //tCD.start();
+//    }
 }
