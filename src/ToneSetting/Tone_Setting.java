@@ -21,14 +21,15 @@ public class Tone_Setting extends JFrame{
     public static Tone_Setting instance;
     private URL urlFile;
 
-    FileReader fileRead;
-    FileWriter fileWrite;
     BufferedReader buffRead;
     BufferedWriter buffWrite;
+    FileReader fileRead;
+    FileWriter fileWrite;
     AudioInputStream audioTnSt;
+    Clip clip;
     AudioFormat format;
     DataLine.Info info;
-    Clip clip;
+
     String path, tone;
     File file;
 

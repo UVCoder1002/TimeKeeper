@@ -1,1 +1,1 @@
-F:\Coding\Avishkar2020\softablitz\project\TimeKeeper\src\ToneSetting\sounds\ringtone1.wav
+src\ToneSetting\sounds\alarm2.wav

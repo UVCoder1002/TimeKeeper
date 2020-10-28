@@ -22,17 +22,30 @@ public class TimeZones extends JPanel{
     BufferedWriter bWrite;
     JScrollPane scrollPane;
     String line;
+    JScrollBar jScrollBar;
+    JScrollPane jScrollPaneTimeZOne;
+    private JButton backButton;
+    private JPanel jPanelTimeZone;
+    FlowLayout flowLayout= new FlowLayout();
+    String[] s;
+    JFrame frame=null;
+    Menu menu;
+
+
     public TimeZones() throws IOException {
+
         setLayout(new GridBagLayout());
         dateFormat=new SimpleDateFormat("s");
         clocks = new JPanel();
         clocks.setLayout(new GridLayout(0,2));
+        jScrollPaneTimeZOne=new JScrollPane(clocks);
         dateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Kolkata"));
         File file=new File("TimeZones.txt");
         fWrite=new FileWriter(file,true);
         fRead=new FileReader(file);
         bRead=new BufferedReader(fRead);
         bWrite=new BufferedWriter(fWrite);
+//        jPanelTimeZone.add(this);
 
       while((line= bRead.readLine())!=null){
           stdclock = new StandardClock(line);
@@ -41,12 +54,16 @@ public class TimeZones extends JPanel{
           stdclock.start();
       }
       bRead.close();
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                frame.setVisible(false);
+                menu.frameVisible();
+            }
+        });
     }
 
-
     void displayZones(){
-
-
 
         List<String> timezones = new ArrayList<>();
         Set<String> zoneIds = ZoneId.getAvailableZoneIds();
@@ -61,7 +78,10 @@ public class TimeZones extends JPanel{
         Tz.setPreferredSize(new Dimension(100,20));
         this.add(Tz);
         this.add(clocks);
-        TimeZones timezone = this;
+        jPanelTimeZone.add(this);
+        this.setLayout(flowLayout);
+        this.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
+        //timezone = this;
         Tz.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -76,21 +96,37 @@ public class TimeZones extends JPanel{
                 finally {
                     stdclock = new StandardClock(Tz.getSelectedItem().toString());
                     clocks.add(stdclock);
-                    timezone.revalidate();
+                    jScrollBar.revalidate();
                     stdclock.start();
                 }
-
             }
         });
 
         // Tz.setVisible(true);
     }
 
+    public void displayFrame(TimeZones timeZone,JFrame jFrame)
+    {
+
+    }
+
     public static void main(String[] args) throws IOException {
-        JFrame frame=new JFrame();
-        TimeZones timez=new TimeZones();
-        frame.add(timez);
-        timez.displayZones();
+
+        JFrame frame=new JFrame("Time Keeper");
+        TimeZones timeZone = new TimeZones();
+        frame.add(timeZone.jPanelTimeZone,BorderLayout.WEST);
+        frame.add(timeZone,BorderLayout.CENTER);
+        frame.add(timeZone.jScrollPaneTimeZOne);
+//        timeZone.jPanelTimeZone.add(timeZone.timezone);
+//        timeZone.jPanelTimeZone=new JPanel();
+//        timeZone.jPanelTimeZone.add(timeZone.jScrollBar);
+        frame.setLocation(0,0);
+//        timeZone.jScrollBar = new JScrollBar();
+//        timeZone.jScrollBar.setOrientation(Adjustable.VERTICAL);
+//        frame.add(timeZone.jScrollBar,BorderLayout.EAST);
+        frame.setSize(1010, 500);
+        frame.setLocation(200,100);
+        timeZone.displayZones();
         frame.setVisible(true);
     }
 

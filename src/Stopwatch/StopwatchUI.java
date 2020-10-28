@@ -1,10 +1,12 @@
 package Stopwatch;
 
+import Manager.Menu;
 import Manager.StopwatchListener;
 import Manager.TimeListener;
 import Manager.TimeManager;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -22,12 +24,15 @@ public class StopwatchUI extends JPanel{
     private JLabel minL;
     private JLabel secL;
     private JPanel stopwatchJp;
-    private JTextField millisec;
-    //private JTextArea milTxt;
+    //private JTextField millisec;
+    private JTextArea milliTxt;
     int noOfClickLap=0;
     int flag = 1;
     TimeManager timeManager;
     TimeListener listener;
+    Thread thread = null;
+    String[] s;
+    Menu menu;
 
     public Integer getHr() {
         return Integer.parseInt(hrTxt.getText());
@@ -41,7 +46,7 @@ public class StopwatchUI extends JPanel{
         return Integer.parseInt(secTxt.getText());
     }
     public Integer getmilli(){
-        return Integer.parseInt(millisec.getText());
+        return Integer.parseInt(milliTxt.getText());
     }
     /*public JTextArea getMil() {
         return milTxt;
@@ -53,11 +58,26 @@ public class StopwatchUI extends JPanel{
 
     }
     public void setmilli(int milli){
-        millisec.setText(""+milli);
+        milliTxt.setText(""+milli);
     }
 
 
     public StopwatchUI(TimeManager tm) {
+
+        timeManager = new TimeManager();
+
+        //tCD.setLayout(new GridLayout());
+        JFrame frame = new JFrame("Time Keeper");
+        frame.setContentPane(stopwatchJp);
+        //JScrollPane jScrollPane = new JScrollPane(stopwatchJp);
+        //scrollBar1.setOrientation(Adjustable.VERTICAL);
+        //frame.getContentPane().add(jScrollPane);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.pack();
+        frame.setSize(1010, 500);
+        frame.setLocation(250,100);
+        //frame.add(tCD);
+        frame.setVisible(true);
         timeManager = tm;
 
         startBT.addActionListener(new ActionListener() {
@@ -71,12 +91,10 @@ public class StopwatchUI extends JPanel{
                         setTimer(hr,min,sec);
                     }
 
-
                     @Override
                     public void timeUpdated(int milli) {
                       setmilli(milli);
                     }
-
                 });
                 flag = 0;
             }
@@ -115,22 +133,21 @@ public class StopwatchUI extends JPanel{
                 startBT.setEnabled(true);
             }
         });
-    }
 
+        Back.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                frame.setVisible(false);
+                menu.frameVisible();
+            }
+        });
+    }
 
 
     public static void main(String[] args) {
-        TimeManager timeManager = new TimeManager();
-        StopwatchUI tCD = new StopwatchUI(timeManager);
-        //tCD.setLayout(new GridLayout());
-        JFrame frame = new JFrame("Time Keeper");
-        frame.setContentPane(tCD.stopwatchJp);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.pack();
-        frame.setSize(750, 400);
-        frame.setLocation(250,100);
-        //frame.add(tCD);
-        frame.setVisible(true);
+        StopwatchUI tCD = new StopwatchUI(new TimeManager());
+
         //tCD.start();
     }
+
 }
