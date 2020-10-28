@@ -51,7 +51,7 @@ public class TimeManager implements Runnable {
                                             cl.sec--;
                                         }
 
-                                        notifyListeners(cl.hr, cl.min, cl.sec);
+                                        notifyListeners(cl.hr, cl.min, cl.sec,0);
                                     }
                                 }
 //                                if (listener instanceof StopwatchListener) {
@@ -108,8 +108,8 @@ public class TimeManager implements Runnable {
                                     new Thread(){
                                         @Override
                                         public void run() {
-                                            notifyListeners(stopwatchListener.hr,stopwatchListener.min,stopwatchListener.sec);
-                                            notifyListeners(stopwatchListener.milli);
+                                            notifyListeners(stopwatchListener.hr,stopwatchListener.min,stopwatchListener.sec,stopwatchListener.milli);
+//                                            notifyListeners(stopwatchListener.milli);
                                         }
                                    }.start();
 
@@ -134,11 +134,11 @@ public class TimeManager implements Runnable {
         listeners.add(listener);
     }
 
-    private void notifyListeners(int hr, int min, int sec) {
+    private void notifyListeners(int hr, int min, int sec,int milli) {
         for (TimeListener listener :
                 listeners) {
             if (listener instanceof StopwatchListener) {
-                listener.timeUpdated(hr, min, sec);
+                listener.timeUpdated(hr, min, sec,milli);
             }
         }
     }

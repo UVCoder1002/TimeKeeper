@@ -11,7 +11,7 @@ public class StandardClock extends JPanel implements Runnable {
     Date currentDate;
     String selectedtimezone;
     Thread thread = null;
-    int xcenter=180, ycenter=180, endsx=0, endsy=0, endmx=0, endmy=0, endhx=0, endhy=0;
+    int xcenter=230, ycenter=200, endsx=0, endsy=0, endmx=0, endmy=0, endhx=0, endhy=0;
 
     public StandardClock(String timezone) {
         selectedtimezone= timezone;
@@ -20,7 +20,8 @@ public class StandardClock extends JPanel implements Runnable {
 //        System.out.println(time.zone);
         currentTime = new JLabel("Test");
         currentTime.setForeground(Color.BLACK);
-        this.setPreferredSize(new Dimension(350,350));
+        this.setPreferredSize(new Dimension(500,500));
+        this.setMinimumSize(new Dimension(500,500));
         this.setLayout(new FlowLayout());
         currentTime.setBackground(Color.RED);
         this.add(currentTime);
@@ -45,7 +46,7 @@ public class StandardClock extends JPanel implements Runnable {
     public void paint(Graphics g){
         g.clearRect(0,0,250,250);
         g.setColor(new Color(118, 73, 190));
-        g.fillRect(0,0,400,400);
+        g.fillRect(0,0,500,500);
         int hx,hy,mx,my,sx,sy,min=0,hr=0,sec=0;
         String ampm="AM";
         drawClock(g);
@@ -62,6 +63,7 @@ public class StandardClock extends JPanel implements Runnable {
         g.setColor(Color.BLACK);
         String s=hr + " : "+ min + " : "+ sec+" "+ampm;
         g.drawString(s, xcenter - 55,ycenter + 200);
+        g.drawString(" "+selectedtimezone,xcenter - 60,ycenter+250);
 //       String s=hr + " : "+ min + " : "+ sec;
 //       time.setText(s);
         // g.setFont(new Font("TimesRoman",Font.BOLD,20));
@@ -124,18 +126,18 @@ public class StandardClock extends JPanel implements Runnable {
     {
         paint(g);
     }
-//    public static void main(String args[])
-//    {
-//        JFrame window = new JFrame();
-//        Color c = new Color(118, 73, 190);
-////        window.setBackground(Color.white);
-//        window.setBackground(c);
-//        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//        window.setBounds(0, 0, 400, 400);
-//        StandardClock clock = new StandardClock("Asia/Kolkata");
-//        window.getContentPane().add(clock);
-//        window.setVisible(true);
-//        clock.start();
-//    }
+    public static void main(String args[])
+    {
+        JFrame window = new JFrame();
+        Color c = new Color(118, 73, 190);
+//        window.setBackground(Color.white);
+        window.setBackground(c);
+        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        window.setBounds(0, 0, 400, 400);
+        StandardClock clock = new StandardClock("Asia/Kolkata");
+        window.getContentPane().add(clock);
+        window.setVisible(true);
+        clock.start();
+    }
 
 }

@@ -64,9 +64,8 @@ public class Alarm  {
                     }
 
 
-
                     @Override
-                    public void timeUpdated(int hr, int min, int sec) {
+                    public void timeUpdated(int hr, int min, int sec, int milli) {
 
                     }
 
@@ -104,7 +103,7 @@ public class Alarm  {
 
 
                @Override
-               public void timeUpdated(int hr, int min, int sec) {
+               public void timeUpdated(int hr, int min, int sec, int milli) {
 
                }
 
@@ -141,7 +140,7 @@ public class Alarm  {
             System.out.println("in2");
             AlarmClock clock=i.next();
             if(clock.id.toString().compareTo(alarmID.toString())==0){
-                System.out.println("here");
+//                System.out.println("here");
                 clock.dt = ZonedDateTime.now().plusMinutes(1);
                 System.out.println(clock.dt.getMinute());
                 try {

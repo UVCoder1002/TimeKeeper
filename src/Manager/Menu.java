@@ -1,11 +1,10 @@
 package Manager;
 
 
+import Stopwatch.StopwatchUI;
 import Timer.TimerUI;
-import Stopwatch.*;
 
 import javax.swing.*;
-import javax.swing.plaf.basic.BasicSplitPaneUI;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -77,7 +76,7 @@ public class Menu extends JPanel{
             public void actionPerformed(ActionEvent e) {
                 if (stopwatchUI == null) {
                     timeManager = new TimeManager();
-                    stopwatchUI = new StopwatchUI(timeManager);
+//                    stopwatchUI = new StopwatchUI(timeManager);
                 }
                 else
                     timerUI.timerFrameVisible();

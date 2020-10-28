@@ -1,2 +1,15 @@
+Etc/GMT+9
 Africa/Nairobi
 Pacific/Kwajalein
+Chile/Continental
+Africa/Nairobi
+Australia/Hobart
+America/Marigot
+Africa/Nairobi
+Asia/Aqtau
+Europe/Warsaw
+Asia/Kashgar
+Pacific/Kwajalein
+Asia/Aqtau
+America/Marigot
+Africa/Nairobi
