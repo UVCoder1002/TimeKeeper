@@ -113,7 +113,9 @@ public class StandardClock extends JPanel implements Runnable {
                 Thread.sleep(100);
 //                System.out.println("repaint");
             }
-            catch (InterruptedException e) {}
+            catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             repaint();
         }
         thread = null;

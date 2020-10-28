@@ -20,6 +20,7 @@ public class TimeZones extends JPanel{
     FileWriter fWrite;
     BufferedReader bRead;
     BufferedWriter bWrite;
+    JScrollPane scrollPane;
     String line;
     public TimeZones() throws IOException {
         setLayout(new GridBagLayout());

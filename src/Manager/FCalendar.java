@@ -59,6 +59,10 @@ public class FCalendar extends JPanel {
     }
 
     public void drawCal() {
+        System.out.println("drawcal");
+        this.setMaximumSize(new Dimension(300,300)  );
+        this.setPreferredSize(new Dimension(300,300));
+        this.setBackground(Color.BLUE);
         cal.setLayout(new GridLayout(0, 7,5,5));
         cal.setBorder(BorderFactory.createEmptyBorder(2,2,2,2));
         lp.add(details,-1);
@@ -67,7 +71,6 @@ public class FCalendar extends JPanel {
         lp.setBorder(BorderFactory.createTitledBorder(
                 "CALY"));
         this.add(lp);
-        this.setPreferredSize(new Dimension(300,500));
         SimpleDateFormat dateFormat = new SimpleDateFormat("y", Locale.getDefault());
         dateFormat.applyPattern("y");
 
@@ -93,9 +96,9 @@ public class FCalendar extends JPanel {
 
                 cal.removeAll();
                 details.removeAll();
-                if(mon==1){
-                    showCal(12,yr-1);}
-                else
+                if(mon==1) {
+                    showCal(12,yr-1);
+                }else
                 {
                     showCal(mon-1,yr);
                 }
@@ -104,7 +107,7 @@ public class FCalendar extends JPanel {
                 details.revalidate();
                 arrows.revalidate();
                 details.repaint();
-//                calendar.repaint();
+                calendar.repaint();
 
             }
         });
