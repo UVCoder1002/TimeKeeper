@@ -33,6 +33,8 @@ public class StopwatchUI extends JPanel{
     Thread thread = null;
     String[] s;
     Menu menu;
+    JFrame frame = null;
+    JFrame jFrame;
 
     public Integer getHr() {
         return Integer.parseInt(hrTxt.getText());
@@ -63,11 +65,9 @@ public class StopwatchUI extends JPanel{
 
 
     public StopwatchUI(TimeManager tm) {
-
-        timeManager = new TimeManager();
-
-        //tCD.setLayout(new GridLayout());
-        JFrame frame = new JFrame("Time Keeper");
+        if(frame==null)
+        {
+        frame = new JFrame("Time Keeper");
         frame.setContentPane(stopwatchJp);
         //JScrollPane jScrollPane = new JScrollPane(stopwatchJp);
         //scrollBar1.setOrientation(Adjustable.VERTICAL);
@@ -77,8 +77,9 @@ public class StopwatchUI extends JPanel{
         frame.setSize(1010, 500);
         frame.setLocation(250,100);
         //frame.add(tCD);
-        frame.setVisible(true);
         timeManager = tm;
+        } else
+            stopwatchFrameVisible();
 
         startBT.addActionListener(new ActionListener() {
             @Override
@@ -138,11 +139,19 @@ public class StopwatchUI extends JPanel{
             @Override
             public void actionPerformed(ActionEvent e) {
                 frame.setVisible(false);
-                menu.frameVisible();
+                jFrame.setVisible(true);
             }
         });
     }
 
+    public void stopwatchFrameVisible()
+    {
+        frame.setVisible(true);
+    }
+    public void passFrame(JFrame jframe)
+    {
+        this.jFrame = jframe;
+    }
 
     public static void main(String[] args) {
         StopwatchUI tCD = new StopwatchUI(new TimeManager());

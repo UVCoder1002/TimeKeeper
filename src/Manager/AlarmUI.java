@@ -198,8 +198,6 @@ public class AlarmUI extends JPanel {
 
             }
         };
-
-
     }
      void printAlarmitem(){
         scrollPaneContent.removeAll();

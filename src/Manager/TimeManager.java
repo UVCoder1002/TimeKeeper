@@ -6,9 +6,11 @@ import java.util.ArrayList;
 
 public class TimeManager implements Runnable {
     ArrayList<TimeListener> listeners;
+    //ArrayList<TimerListener> listenersTimer;
     volatile boolean flag = true;
     Thread t1;
     Thread t2;
+    Thread t3;
 
     public TimeManager() {
         t1 = new Thread() {
@@ -91,7 +93,7 @@ public class TimeManager implements Runnable {
                             if (!listener.ispaused) {
                                 if (listener instanceof StopwatchListener) {
                                     StopwatchListener stopwatchListener = (StopwatchListener) listener;
-                                    System.out.println("in");
+                                    //System.out.println("in");
                                     stopwatchListener.milli++;
                                     if (stopwatchListener.milli == 99) {
                                         stopwatchListener.sec++;
@@ -124,27 +126,88 @@ public class TimeManager implements Runnable {
                 }
             }
         };
+
+
+        t3 = new Thread() {
+            @Override
+            public void run() {
+                try {
+                    while (flag) {
+                        ArrayList<TimeListener> array=new ArrayList<>(listeners);
+                        //System.out.println("hi");
+                        for(TimeListener listener:array) {
+                        // System.out.println("in");
+                       if(!listener.ispaused) {
+                           if (listener instanceof TimerListener) {
+                               TimerListener timerListener = (TimerListener) listener;
+                               if (timerListener.sec == 0 && timerListener.min == 0 && timerListener.hr == 0 && timerListener.milli==0) {
+                                   continue;
+                               } else {
+                                   if(timerListener.milli == 0)
+                                   {
+                                        if (timerListener.sec == 0)
+                                        {
+                                            if (timerListener.min == 0)
+                                            {
+                                                timerListener.min = 59;
+                                                timerListener.sec = 59;
+                                                timerListener.milli = 100;
+                                                timerListener.hr--;
+                                            } else {
+                                                timerListener.min--;
+                                                timerListener.sec = 59;
+                                                timerListener.milli = 100;
+                                            }
+                                        } else {
+                                       timerListener.sec--;
+                                       timerListener.milli = 100;
+                                        }
+                                    } else
+                                        timerListener.milli--;
+                               notifyListenersTimer(timerListener.hr, timerListener.min, timerListener.sec);
+                                notifyListenersTimer(timerListener.milli);
+
+                               }
+                               new Thread(){
+                                   @Override
+                                   public void run() {
+                                       notifyListenersTimer(timerListener.hr,timerListener.min,timerListener.sec);
+                                       notifyListenersTimer(timerListener.milli);
+                                   }
+                               }.start();
+                           }
+                       }
+                            Thread.sleep(10);
+                        }
+                    }
+                }catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+
+
+            }
+        };
+
         listeners = new ArrayList<>();
         t1.start();
         t2.start();
-
+        t3.start();
     }
+
 
     public void addTimeListener(TimeListener listener) {//add
         listeners.add(listener);
     }
 
     private void notifyListeners(int hr, int min, int sec) {
-        for (TimeListener listener :
-                listeners) {
+        for (TimeListener listener : listeners) {
             if (listener instanceof StopwatchListener) {
                 listener.timeUpdated(hr, min, sec);
             }
         }
     }
     private void notifyListeners(int milli) {
-        for (TimeListener listener :
-                listeners) {
+        for (TimeListener listener : listeners) {
             if (listener instanceof StopwatchListener) {
                 listener.timeUpdated(milli);
             }
@@ -156,11 +219,27 @@ public class TimeManager implements Runnable {
         listeners.remove(listener);
     }
 
+
+    private void notifyListenersTimer(int hr, int min, int sec) {
+        for (TimeListener listener : listeners) {
+            if (listener instanceof TimerListener) {
+                listener.timeUpdated(hr, min, sec);
+            }
+        }
+    }
+    private void notifyListenersTimer(int milli) {
+        for (TimeListener listener : listeners) {
+            if (listener instanceof TimerListener) {
+                listener.timeUpdated(milli);
+            }
+        }
+    }
+
+
+
     @Override
     public void run() {
         System.out.println("running");
-
-
     }
 
     boolean checkAlarm(TimeListener alarmListener) throws IOException, ClassNotFoundException {
