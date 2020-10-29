@@ -101,6 +101,7 @@ public class AlarmUI extends JPanel {
         yrText = new JTextField();
         dayText = new JTextField();
         scrollPaneContent=new JPanel();
+        scrollPaneContent.setLayout(new BoxLayout(scrollPaneContent,BoxLayout.Y_AXIS));
         scrollPane=new JScrollPane(scrollPaneContent);
         scrollPane.setPreferredSize(new Dimension(400,400));
         scrollPaneContent.setPreferredSize(new Dimension(400,400));

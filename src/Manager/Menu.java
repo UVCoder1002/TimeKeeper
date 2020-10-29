@@ -1,9 +1,15 @@
 package Manager;
 
+
 import Timer.TimerUI;
 import Stopwatch.*;
+
+
+import Stopwatch.StopwatchUI;
+import Timer.TimerUI;
+
+
 import javax.swing.*;
-import javax.swing.plaf.basic.BasicSplitPaneUI;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -23,9 +29,11 @@ public class Menu extends JPanel{
     JFrame frame;
     String[] s;
     FlowLayout flowLayout;
+    StopwatchBack stopwatchBack;
 
     public Menu() {
-
+timeManager=new TimeManager();
+ stopwatchBack=new StopwatchBack(timeManager);
         jPanelCal1=new JPanel();
         flowLayout= new FlowLayout();
         FCalendar calendarObj = new FCalendar();
@@ -64,7 +72,7 @@ public class Menu extends JPanel{
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (timerUI == null) {
-                    timeManager = new TimeManager();
+
                     timerUI = new TimerUI(timeManager);
                     timerUI.timerFrameVisible();
                     timerUI.passFrame(frame);
@@ -77,11 +85,14 @@ public class Menu extends JPanel{
         stopwatchButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (stopwatchUI == null) {
-                    timeManager = new TimeManager();
-                    stopwatchUI = new StopwatchUI(timeManager);
+                if (stopwatchUI == null) {//dekh rhi na timemanager kitni baar banaya hai :(
+
+                    stopwatchUI = new StopwatchUI(stopwatchBack);
                     stopwatchUI.stopwatchFrameVisible();
                     stopwatchUI.passFrame(frame);
+
+//                    stopwatchUI = new StopwatchUI(timeManager);
+//
                 }
                 else
                     stopwatchUI.stopwatchFrameVisible();

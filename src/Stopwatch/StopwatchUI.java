@@ -1,16 +1,18 @@
 package Stopwatch;
 
 import Manager.Menu;
-import Manager.StopwatchListener;
 import Manager.TimeListener;
 import Manager.TimeManager;
+import Manager.UniqueCode;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.UUID;
 
-public class StopwatchUI extends JPanel{
+public class StopwatchUI extends JPanel {
     private JTextArea hrTxt;
     private JTextArea minTxt;
     private JTextArea secTxt;
@@ -26,15 +28,20 @@ public class StopwatchUI extends JPanel{
     private JPanel stopwatchJp;
     //private JTextField millisec;
     private JTextArea milliTxt;
-    int noOfClickLap=0;
+    int noOfClickLap = 0;
     int flag = 1;
     TimeManager timeManager;
     TimeListener listener;
     Thread thread = null;
     String[] s;
     Menu menu;
+
     JFrame frame = null;
     JFrame jFrame;
+    StopwatchUI stopWatchui;
+    StopwatchBack stopWatchBack;
+    HashMap<UUID, StopWatchItem> map;
+    JPanel scrollPane;
 
     public Integer getHr() {
         return Integer.parseInt(hrTxt.getText());
@@ -47,71 +54,76 @@ public class StopwatchUI extends JPanel{
     public Integer getSec() {
         return Integer.parseInt(secTxt.getText());
     }
-    public Integer getmilli(){
+
+    public Integer getmilli() {
         return Integer.parseInt(milliTxt.getText());
     }
+
     /*public JTextArea getMil() {
         return milTxt;
     }*/
     public void setTimer(int hr, int min, int sec) {
-        hrTxt.setText(""+hr);
-        minTxt.setText(""+min);
-        secTxt.setText(""+sec);
+        hrTxt.setText("" + hr);
+        minTxt.setText("" + min);
+        secTxt.setText("" + sec);
 
     }
-    public void setmilli(int milli){
-        milliTxt.setText(""+milli);
+
+    public void setmilli(int milli) {
+        milliTxt.setText("" + milli);
     }
 
 
-    public StopwatchUI(TimeManager tm) {
-        if(frame==null)
-        {
-        frame = new JFrame("Time Keeper");
+    public StopwatchUI(StopwatchBack stopWatchBack) {
+        if (frame == null) {
+            frame = new JFrame("Time Keeper");
+
+        } else
+            stopwatchFrameVisible();
+//        scrollPane = new JPanel();
+        scrollPane.setLayout(new BoxLayout(scrollPane, BoxLayout.Y_AXIS));
+        map = new HashMap<>();
+        this.stopWatchBack = stopWatchBack;
+        stopWatchui = this;
+        //tCD.setLayout(new GridLayout());
+
+
         frame.setContentPane(stopwatchJp);
+//        stopwatchJp.add(scrollPane,new GridConstraints());
         //JScrollPane jScrollPane = new JScrollPane(stopwatchJp);
         //scrollBar1.setOrientation(Adjustable.VERTICAL);
         //frame.getContentPane().add(jScrollPane);
+//        stopwatchJp.add(scrollPane);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setSize(1010, 500);
-        frame.setLocation(250,100);
+        frame.setLocation(250, 100);
         //frame.add(tCD);
-        timeManager = tm;
-        } else
-            stopwatchFrameVisible();
+
+        frame.setVisible(true);
+
 
         startBT.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                startBT.setEnabled(false);
-                timeManager.addTimeListener(listener = new StopwatchListener() {
+                UniqueCode id = new UniqueCode();
+                StopWatch stopwatch = new StopWatch(id.generateunicode());
+                stopWatchBack.startStopWatch(stopwatch);
 
-                    @Override
-                    public void timeUpdated(int hr, int min, int sec) {
-                        setTimer(hr,min,sec);
-                    }
-
-                    @Override
-                    public void timeUpdated(int milli) {
-                      setmilli(milli);
-                    }
-                });
-                flag = 0;
             }
         });
+        stopWatchui.stopWatchBack.stopWatchListener = this::printStopWatch;
         pauseBT.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(flag==0) {
-                   listener.ispaused=true;
+                if (flag == 0) {
+                    listener.ispaused = true;
                     pauseBT.setText("Resume");
-                    flag=1;
-                }
-                else{
-                    listener.ispaused=false;
+                    flag = 1;
+                } else {
+                    listener.ispaused = false;
                     pauseBT.setText("Pause");
-                    flag=0;
+                    flag = 0;
                 }
             }
         });
@@ -119,7 +131,7 @@ public class StopwatchUI extends JPanel{
             @Override
             public void actionPerformed(ActionEvent e) {
                 noOfClickLap++;
-                lapOutput.append(noOfClickLap+". "+getHr()+":"+getMin()+":"+getSec()+"."+getmilli()+"\n");
+                lapOutput.append(noOfClickLap + ". " + getHr() + ":" + getMin() + ":" + getSec() + "." + getmilli() + "\n");
             }
         });
         resetBT.addActionListener(new ActionListener() {
@@ -127,9 +139,9 @@ public class StopwatchUI extends JPanel{
             public void actionPerformed(ActionEvent e) {
                 timeManager.removeListener(listener);
                 lapOutput.setText("");
-                noOfClickLap=0;
-                flag=1;
-                setTimer(0,0,0);
+                noOfClickLap = 0;
+                flag = 1;
+                setTimer(0, 0, 0);
                 setmilli(0);
                 startBT.setEnabled(true);
             }
@@ -144,19 +156,38 @@ public class StopwatchUI extends JPanel{
         });
     }
 
-    public void stopwatchFrameVisible()
-    {
+    public void stopwatchFrameVisible() {
         frame.setVisible(true);
     }
-    public void passFrame(JFrame jframe)
-    {
+
+    public void passFrame(JFrame jframe) {
         this.jFrame = jframe;
     }
 
     public static void main(String[] args) {
-        StopwatchUI tCD = new StopwatchUI(new TimeManager());
+        TimeManager timeManager = new TimeManager();
+        StopwatchBack stopwatchBack = new StopwatchBack(timeManager);
+        StopwatchUI tCD = new StopwatchUI(stopwatchBack);
 
         //tCD.start();
     }
 
+    void printStopWatch() {
+//           scrollPaneContent.removeAll();
+        scrollPane.removeAll();
+        Iterator<StopWatch> iter = stopWatchBack.stopwatchList.iterator();
+        while (iter.hasNext()) {
+//               System.out.println("print");
+            StopWatch clock = iter.next();
+            StopWatchItem stopWatchItem = new StopWatchItem(clock);
+            map.put(clock.id, stopWatchItem);
+            scrollPane.add(stopWatchItem);
+        }
+//        scrollPane.repaint();
+        scrollPane.revalidate();
+//        revalidate();
+
+
+    }
 }
+

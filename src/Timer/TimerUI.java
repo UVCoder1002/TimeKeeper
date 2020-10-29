@@ -102,6 +102,12 @@ public class TimerUI extends JPanel  {
                         public void timeUpdated(int hr, int min, int sec) {
                             setTime(hr, min, sec);
                         }
+
+                        @Override
+                        public void timeUpdated(int hr, int min, int sec, int milli) {
+
+                        }
+
                         @Override
                         public void timeUpdated(int milli) {
                             if(getHr()==0&&getMin()==0&&getSec()==0&&getMilli()==0)
