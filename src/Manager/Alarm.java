@@ -69,11 +69,6 @@ public class Alarm  {
 
                     }
 
-                    @Override
-                    public void timeUpdated(int milli) {
-
-                    }
-
                 });
             }
 
@@ -104,11 +99,6 @@ public class Alarm  {
 
                @Override
                public void timeUpdated(int hr, int min, int sec, int milli) {
-
-               }
-
-               @Override
-               public void timeUpdated(int milli) {
 
                }
            });

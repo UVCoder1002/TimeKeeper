@@ -71,7 +71,7 @@ public class AlarmUI extends JPanel {
     }
 
     public AlarmUI(Alarm al) throws IOException, ClassNotFoundException {
-//        this.setLayout(new BoxLayout(this,BoxLayout.LINE_AXIS));
+//        this.setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
 //        this.setLayout(new GridLayout(0,0));
 
         this.setLayout(new FlowLayout());
@@ -102,9 +102,10 @@ public class AlarmUI extends JPanel {
         dayText = new JTextField();
         scrollPaneContent=new JPanel();
         scrollPaneContent.setLayout(new BoxLayout(scrollPaneContent,BoxLayout.Y_AXIS));
+//        scrollPaneContent.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
         scrollPane=new JScrollPane(scrollPaneContent);
         scrollPane.setPreferredSize(new Dimension(400,400));
-        scrollPaneContent.setPreferredSize(new Dimension(400,400));
+//        scrollPaneContent.setPreferredSize(new Dimension(400,400));
         scrollPaneContent.setBackground(Color.RED);
         delete=new Button("Stop");
         yrText.setText("2020");
@@ -127,6 +128,7 @@ public class AlarmUI extends JPanel {
         minLabel.setText("Min :");
         secLabel.setText("Sec :");
         set.setLabel("SET");
+//         this.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
         this.add(yrLabel);
         this.add(yrText);
         this.add(monLabel);

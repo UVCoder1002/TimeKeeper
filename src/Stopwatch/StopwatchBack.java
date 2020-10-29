@@ -4,6 +4,7 @@ import Manager.StopwatchListener;
 import Manager.TimeManager;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class StopwatchBack {
     ArrayList<StopWatch> stopwatchList;
@@ -15,29 +16,21 @@ public class StopwatchBack {
          this.timeManager=timeManager;
     }
 
-    void addStopwatch(StopWatch stopwatch){
-      stopwatchList.add(stopwatch);
+    void addStopwatch(StopWatch stopWatch){
+      stopwatchList.add(stopWatch);
 
     }
 
     void startStopWatch(StopWatch stopWatch){
         addStopwatch(stopWatch);
-        timeManager.addTimeListener(listner= new StopwatchListener() {
+        timeManager.addTimeListener(listner= new StopwatchListener(stopWatch) {
             @Override
             public void timeUpdated(int hr, int min, int sec,int milli) {
-                stopWatch.updateValues(hr,min,sec,milli);
-                stopWatchListener.updateui();
-            }
-
-            @Override
-            public void timeUpdated(int hr, int min, int sec) {
-
-            }
-
-            @Override
-            public void timeUpdated(int milli) {
-
+                stopWatchListener.updateui(stopWatch);
             }
         });
+    }
+    void PressedPause(UUID id){
+//        stopwatchList.is
     }
 }

@@ -1,5 +1,7 @@
 package Manager;
 
+import Stopwatch.StopWatch;
+
 import java.io.IOException;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -51,7 +53,7 @@ public class TimeManager implements Runnable {
                                             cl.sec--;
                                         }
 
-                                        notifyListeners(cl.hr, cl.min, cl.sec,0);
+                                        notifyListeners(cl.hr, cl.min, cl.sec, 0);
                                     }
                                 }
 //                                if (listener instanceof StopwatchListener) {
@@ -91,27 +93,24 @@ public class TimeManager implements Runnable {
                             if (!listener.ispaused) {
                                 if (listener instanceof StopwatchListener) {
                                     StopwatchListener stopwatchListener = (StopwatchListener) listener;
+                                    StopWatch stopWatch = stopwatchListener.stopWatch;
                                     System.out.println("in");
-                                    stopwatchListener.milli++;
-                                    if (stopwatchListener.milli == 99) {
-                                        stopwatchListener.sec++;
-                                        stopwatchListener.milli = 0;
+                                    stopWatch.milli++;
+                                    if (stopWatch.milli == 99) {
+                                        stopWatch.sec++;
+                                        stopWatch.milli = 0;
                                     }
-                                    if (stopwatchListener.sec == 59) {
-                                        stopwatchListener.min++;
-                                        stopwatchListener.sec = 0;
+                                    if (stopWatch.sec == 59) {
+                                        stopWatch.min++;
+                                        stopWatch.sec = 0;
                                     }
-                                    if (stopwatchListener.min == 59) {
-                                        stopwatchListener.hr++;
-                                        stopwatchListener.min = 0;
+                                    if (stopWatch.min == 59) {
+                                        stopWatch.hr++;
+                                        stopWatch.min = 0;
                                     }
-                                    new Thread(){
-                                        @Override
-                                        public void run() {
-                                            notifyListeners(stopwatchListener.hr,stopwatchListener.min,stopwatchListener.sec,stopwatchListener.milli);
+
+                                    notifyListeners(stopWatch.hr, stopWatch.min, stopWatch.sec, stopWatch.milli);
 //                                            notifyListeners(stopwatchListener.milli);
-                                        }
-                                   }.start();
 
                                 }
 
@@ -134,23 +133,15 @@ public class TimeManager implements Runnable {
         listeners.add(listener);
     }
 
-    private void notifyListeners(int hr, int min, int sec,int milli) {
+    private void notifyListeners(int hr, int min, int sec, int milli) {
+        ArrayList<TimeListener> timeListeners=new ArrayList<>(listeners);
         for (TimeListener listener :
-                listeners) {
+                timeListeners) {
             if (listener instanceof StopwatchListener) {
-                listener.timeUpdated(hr, min, sec,milli);
+                listener.timeUpdated(hr, min, sec, milli);
             }
         }
     }
-    private void notifyListeners(int milli) {
-        for (TimeListener listener :
-                listeners) {
-            if (listener instanceof StopwatchListener) {
-                listener.timeUpdated(milli);
-            }
-        }
-    }
-
 
     public void removeListener(TimeListener listener) {//add
         listeners.remove(listener);
