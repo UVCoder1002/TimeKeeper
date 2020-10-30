@@ -9,8 +9,6 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 import java.util.UUID;
 
 public class StopwatchUI extends JPanel {
@@ -22,7 +20,7 @@ public class StopwatchUI extends JPanel {
     private JButton resetBT;
     private JButton lapBT;
     private JButton Back;
-    private JTextArea lapOutput;
+    public JTextArea lapOutput;
     private JLabel hrL;
     private JLabel minL;
     private JLabel secL;
@@ -131,7 +129,7 @@ public class StopwatchUI extends JPanel {
             public void updateui(StopWatch stopWatch) {
                 printStopWatch(stopWatch);
 
-                stopWatchBack.startStopWatch(stopWatch);
+
 
             }
         };
@@ -152,11 +150,7 @@ public class StopwatchUI extends JPanel {
             }
         });
 
-        Iterator<Map.Entry<UUID, StopWatchItem>> iter=map.entrySet().iterator();
-        while(iter.hasNext()){
-            UUID clockId=iter.next().getKey();
-            stopWatchBack.PressedPause(clockId);
-        }
+
 //        pauseBT.addActionListener(new ActionListener() {
 //            @Override
 //            public void actionPerformed(ActionEvent e) {
@@ -180,18 +174,18 @@ public class StopwatchUI extends JPanel {
                 lapOutput.append(noOfClickLap + ". " + getHr() + ":" + getMin() + ":" + getSec() + "." + getmilli() + "\n");
             }
         });
-        resetBT.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                timeManager.removeListener(listener);
-                lapOutput.setText("");
-                noOfClickLap = 0;
-                flag = 1;
-                setTimer(0, 0, 0);
-                setmilli(0);
-                startBT.setEnabled(true);
-            }
-        });
+//        resetBT.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                timeManager.removeListener(listener);
+//                lapOutput.setText("");
+//                noOfClickLap = 0;
+//                flag = 1;
+//                setTimer(0, 0, 0);
+//                setmilli(0);
+//                startBT.setEnabled(true);
+//            }
+//        });
 
         Back.addActionListener(new ActionListener() {
             @Override
@@ -201,7 +195,13 @@ public class StopwatchUI extends JPanel {
             }
         });
     }
-
+//    public void addActionListner(){
+//        Iterator<Map.Entry<UUID, StopWatchItem>> iter=map.entrySet().iterator();
+//        while(iter.hasNext()){
+//            StopWatchItem stopWatchItem=iter.next().getValue();
+//            stopWatchBack.isPressedPause(stopWatchItem);
+//        }
+//    }
     public void stopwatchFrameVisible() {
         frame.setVisible(true);
     }
@@ -226,7 +226,7 @@ public class StopwatchUI extends JPanel {
 
 
     void addStopwatch(StopWatch clock) {
-        StopWatchItem stopWatchItem = new StopWatchItem(clock);
+        StopWatchItem stopWatchItem = new StopWatchItem(clock,stopWatchui);
         map.put(clock.id, stopWatchItem);
         scrollPane.add(stopWatchItem);
         scrollPane.repaint();

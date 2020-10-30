@@ -3,6 +3,7 @@ package Timer;
 import Manager.TimeListener;
 import Manager.TimeManager;
 import Manager.TimerListener;
+import Manager.UniqueCode;
 
 import javax.sound.sampled.*;
 import javax.swing.*;
@@ -25,6 +26,7 @@ public class TimerUI extends JPanel  {
     private JButton backBT;
     private JComboBox comboBox1;
     private JTextField milli;
+    public JPanel scrollPane;
     TimeManager timeManager;
     TimeListener listener;
     JFrame frame=null;
@@ -39,8 +41,8 @@ public class TimerUI extends JPanel  {
     FileWriter fileWrite;
     AudioInputStream audioTnSt;
     Clip clip;
-
-
+    TimerBack timerBack;
+    UniqueCode uniId;
     public Integer getHr() {
         return Integer.parseInt(hr.getText());
     }
@@ -67,7 +69,8 @@ public class TimerUI extends JPanel  {
     }
 
     public TimerUI(TimeManager tm) {
-
+        uniId=new UniqueCode();
+        this.timerBack=timerBack;
         //TimerUI tCD = new TimerUI();
         //tCD.setLayout(new GridLayout());
         tone = Objects.requireNonNull(comboBox1.getSelectedItem()).toString();
@@ -95,45 +98,44 @@ public class TimerUI extends JPanel  {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //System.out.println("start");
-                int min=getMin();
-                int sec=getMin();
-                if (min>=0&&min<60&&sec>=0&&sec<60) {
-                    startBT.setEnabled(false);
-                    timeManager.addTimeListener(listener = new TimerListener(getHr(),getMin(),getSec(),getMilli()) {
-                        @Override
-                        public void timeUpdated(int hr, int min, int sec) {
 
-                        }
+                Timer timer =new Timer(uniId.generateunicode(),getHr(),getMin(),getSec(),getMilli());
+                    timerBack.addTimer(timer);
+//                    timeManager.addTimeListener(listener = new TimerListener(timer) {
+//                        @Override
+//                        public void timeUpdated(int hr, int min, int sec) {
+//
+//                        }
+//
+//                        @Override
+//                        public void timeUpdated(int hr, int min, int sec, int milli) {
+//                            setTime(hr, min, sec);
+//                            setMilli(milli);
+//                            if(getHr()==0&&getMin()==0&&getSec()==0&&getMilli()==0)
+//                            {
+//                                startBT.setEnabled(true);
+//                                clip.start();
+//                            }
+//                        }
 
-                        @Override
-                        public void timeUpdated(int hr, int min, int sec, int milli) {
-                            setTime(hr, min, sec);
-                            setMilli(milli);
-                            if(getHr()==0&&getMin()==0&&getSec()==0&&getMilli()==0)
-                            {
-                                startBT.setEnabled(true);
-                                clip.start();
-                            }
-                        }
+//                        @Override
+//                        public void timeUpdated(int milli) {
+//                            if(getHr()==0&&getMin()==0&&getSec()==0&&getMilli()==0)
+//                            {
+//                                startBT.setEnabled(true);
+//                                clip.start();
+//                            }
+//                            setMilli(milli);
+//                        }
+//                    });
+//                    flag = 0;
 
-                        @Override
-                        public void timeUpdated(int milli) {
-                            if(getHr()==0&&getMin()==0&&getSec()==0&&getMilli()==0)
-                            {
-                                startBT.setEnabled(true);
-                                clip.start();
-                            }
-                            setMilli(milli);
-                        }
-                    });
-                    flag = 0;
-                }
-                else {
-                    timeManager.removeListener(listener);
-                    setTime(0,0,0);
-                    setMilli(0);
-                    flag=1;
-                }
+//                else {
+////                    timeManager.removeListener(listener);
+//                    setTime(0,0,0);
+//                    setMilli(0);
+//                    flag=1;
+//                }
 
                 file = new File(path);
                 if(file.exists())
@@ -180,7 +182,7 @@ public class TimerUI extends JPanel  {
             @Override
             public void actionPerformed(ActionEvent e) {
                 startBT.setEnabled(true);
-                timeManager.removeListener(listener);
+//                timeManager.removeListener(listener);
                 setTime(0,0,0);
                 setMilli(0);
                 flag=1;
@@ -217,7 +219,7 @@ public class TimerUI extends JPanel  {
     }
 
     public static void main(String[] args) {
-
+       TimerBack timerBack=new TimerBack(new Timer());
         new TimerUI(new TimeManager());
     }
 }

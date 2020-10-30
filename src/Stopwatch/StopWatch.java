@@ -1,11 +1,15 @@
 package Stopwatch;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 public class StopWatch {
-    UUID id;
+    public UUID id;
     public int hr,min,sec,milli;
+    ArrayList<String> lap;
+    public boolean isPaused=false;
     StopWatch(UUID id){
+       lap=new ArrayList<>();
       this.id=id;
       this.hr = 0;
       this.min = 0;
