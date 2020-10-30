@@ -11,7 +11,7 @@ public class StopwatchBack {
     TimeManager timeManager;
     StopwatchListener listner;
     StopWatchListener stopWatchListener;
-    StopwatchBack(TimeManager timeManager){
+    public StopwatchBack(TimeManager timeManager){
          stopwatchList = new ArrayList<>();
          this.timeManager=timeManager;
     }

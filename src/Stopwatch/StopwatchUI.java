@@ -36,6 +36,9 @@ public class StopwatchUI extends JPanel {
     Thread thread = null;
     String[] s;
     Menu menu;
+
+    JFrame frame = null;
+    JFrame jFrame;
     StopwatchUI stopWatchui;
     StopwatchBack stopWatchBack;
     HashMap<UUID, StopWatchItem> map;
@@ -73,6 +76,7 @@ public class StopwatchUI extends JPanel {
 
 
     public StopwatchUI(StopwatchBack stopWatchBack) {
+
         scrollPane = new JPanel();
         scrollPane.setLayout(new BoxLayout(scrollPane, BoxLayout.Y_AXIS));
 //        scrollPane.setLayout(new FlowLayout());
@@ -80,8 +84,21 @@ public class StopwatchUI extends JPanel {
         this.stopWatchBack = stopWatchBack;
         stopWatchui = this;
         this.stopWatchBack = stopWatchBack;
+
+        if (frame == null) {
+            frame = new JFrame("Time Keeper");
+
+        } else
+            stopwatchFrameVisible();
+//        scrollPane = new JPanel();
+        scrollPane.setLayout(new BoxLayout(scrollPane, BoxLayout.Y_AXIS));
+        map = new HashMap<>();
+        this.stopWatchBack = stopWatchBack;
+        stopWatchui = this;
+
         //tCD.setLayout(new GridLayout());
-        JFrame frame = new JFrame("Time Keeper");
+
+
         frame.setContentPane(stopwatchJp);
 //        stopwatchJp.add(scrollPane,new GridConstraints());
         //JScrollPane jScrollPane = new JScrollPane(stopwatchJp);
@@ -93,14 +110,18 @@ public class StopwatchUI extends JPanel {
         frame.setSize(1010, 500);
         frame.setLocation(250, 100);
         //frame.add(tCD);
+
         frame.setVisible(true);
+
 
         startBT.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 UniqueCode id = new UniqueCode();
                 StopWatch stopwatch = new StopWatch(id.generateunicode());
+                //adding stopwatch in ui
                 addStopwatch(stopwatch);
+                //Adding stopwatch in backend
                 stopWatchBack.startStopWatch(stopwatch);
             }
         });
@@ -109,8 +130,28 @@ public class StopwatchUI extends JPanel {
             @Override
             public void updateui(StopWatch stopWatch) {
                 printStopWatch(stopWatch);
+
+                stopWatchBack.startStopWatch(stopWatch);
+
             }
         };
+
+        pauseBT.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (flag == 0) {
+                    listener.ispaused = true;
+                    pauseBT.setText("Resume");
+                    flag = 1;
+                } else {
+                    listener.ispaused = false;
+                    pauseBT.setText("Pause");
+                    flag = 0;
+                }
+
+            }
+        });
+
         Iterator<Map.Entry<UUID, StopWatchItem>> iter=map.entrySet().iterator();
         while(iter.hasNext()){
             UUID clockId=iter.next().getKey();
@@ -156,9 +197,17 @@ public class StopwatchUI extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 frame.setVisible(false);
-                menu.frameVisible();
+                jFrame.setVisible(true);
             }
         });
+    }
+
+    public void stopwatchFrameVisible() {
+        frame.setVisible(true);
+    }
+
+    public void passFrame(JFrame jframe) {
+        this.jFrame = jframe;
     }
 
     public static void main(String[] args) {
@@ -169,10 +218,12 @@ public class StopwatchUI extends JPanel {
         //tCD.start();
     }
 
+
     void printStopWatch(StopWatch clock) {
         System.out.println("id is" + clock.id);
         map.get(clock.id).updateui(clock);
     }
+
 
     void addStopwatch(StopWatch clock) {
         StopWatchItem stopWatchItem = new StopWatchItem(clock);
@@ -181,5 +232,7 @@ public class StopwatchUI extends JPanel {
         scrollPane.repaint();
         scrollPane.revalidate();
 //        revalidate();
+
     }
 }
+

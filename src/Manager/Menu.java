@@ -1,6 +1,7 @@
 package Manager;
 
 
+import Stopwatch.StopwatchBack;
 import Stopwatch.StopwatchUI;
 import Timer.TimerUI;
 
@@ -24,9 +25,11 @@ public class Menu extends JPanel{
     JFrame frame;
     String[] s;
     FlowLayout flowLayout;
+    StopwatchBack stopwatchBack;
 
     public Menu() {
-
+timeManager=new TimeManager();
+ stopwatchBack=new StopwatchBack(timeManager);
         jPanelCal1=new JPanel();
         flowLayout= new FlowLayout();
         FCalendar calendarObj = new FCalendar();
@@ -64,22 +67,31 @@ public class Menu extends JPanel{
         timerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (timerUI == null)
-                    timerUI = new TimerUI(frame);
+                if (timerUI == null) {
+
+                    timerUI = new TimerUI(timeManager);
+                    timerUI.timerFrameVisible();
+                    timerUI.passFrame(frame);
+                }
                 else
                     timerUI.timerFrameVisible();
-            frame.setVisible(false);
+                frame.setVisible(false);
             }
         });
         stopwatchButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (stopwatchUI == null) {
-                    timeManager = new TimeManager();
+                if (stopwatchUI == null) {//dekh rhi na timemanager kitni baar banaya hai :(
+
+                    stopwatchUI = new StopwatchUI(stopwatchBack);
+                    stopwatchUI.stopwatchFrameVisible();
+                    stopwatchUI.passFrame(frame);
+
 //                    stopwatchUI = new StopwatchUI(timeManager);
+//
                 }
                 else
-                    timerUI.timerFrameVisible();
+                    stopwatchUI.stopwatchFrameVisible();
                 frame.setVisible(false);
             }
         });
@@ -87,8 +99,10 @@ public class Menu extends JPanel{
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    TimeZones.main(s);
+                    timeZones = new TimeZones();
+                    timeZones.passFrame(frame);
                     frame.setVisible(false);
+                    TimeZones.main(s);
                 } catch (IOException ioException) {
                     ioException.printStackTrace();
                 }
@@ -103,16 +117,15 @@ public class Menu extends JPanel{
                 } catch (IOException | ClassNotFoundException ioException) {
                     ioException.printStackTrace();
                 }
-
             }
         });
     }
 
-    public void frameVisible()
+    /*public void frameVisible()
     {
             frame.setVisible(true);
 
-    }
+    }*/
 
     public static void main(String[] args) {
         new Menu();

@@ -35,3 +35,7 @@ out/
 *.iml
 *.ipr
 *.iws
+
+TimeZones.txt
+Alarm.dat
+Unicode.dat
