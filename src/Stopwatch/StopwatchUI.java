@@ -34,13 +34,15 @@ public class StopwatchUI extends JPanel {
     Thread thread = null;
     String[] s;
     Menu menu;
-
+    JScrollPane OuterScrollPane;
+    JPanel insideScroll;
     JFrame frame = null;
     JFrame jFrame;
     StopwatchUI stopWatchui;
     StopwatchBack stopWatchBack;
     HashMap<UUID, StopWatchItem> map;
     JPanel scrollPane;
+    JPanel OutsidePane;
 
     public Integer getHr() {
         return Integer.parseInt(hrTxt.getText());
@@ -75,9 +77,11 @@ public class StopwatchUI extends JPanel {
 
     public StopwatchUI(StopwatchBack stopWatchBack) {
 
+
         scrollPane = new JPanel();
         scrollPane.setLayout(new BoxLayout(scrollPane, BoxLayout.Y_AXIS));
 //        scrollPane.setLayout(new FlowLayout());
+        OuterScrollPane=new JScrollPane(scrollPane);
         map = new HashMap<>();
         this.stopWatchBack = stopWatchBack;
         stopWatchui = this;
@@ -89,14 +93,12 @@ public class StopwatchUI extends JPanel {
         } else
             stopwatchFrameVisible();
 //        scrollPane = new JPanel();
-        scrollPane.setLayout(new BoxLayout(scrollPane, BoxLayout.Y_AXIS));
         map = new HashMap<>();
         this.stopWatchBack = stopWatchBack;
         stopWatchui = this;
 
         //tCD.setLayout(new GridLayout());
-
-
+        OutsidePane.add(OuterScrollPane);
         frame.setContentPane(stopwatchJp);
 //        stopwatchJp.add(scrollPane,new GridConstraints());
         //JScrollPane jScrollPane = new JScrollPane(stopwatchJp);

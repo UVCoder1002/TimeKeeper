@@ -175,7 +175,7 @@
           <text value="Reset"/>
         </properties>
       </component>
-      <grid id="722da" binding="scrollPane" layout-manager="BorderLayout" hgap="0" vgap="0">
+      <grid id="722da" binding="OutsidePane" layout-manager="BorderLayout" hgap="0" vgap="0">
         <constraints>
           <grid row="5" column="2" row-span="1" col-span="2" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
         </constraints>

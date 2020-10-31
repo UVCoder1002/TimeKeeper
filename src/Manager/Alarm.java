@@ -35,7 +35,7 @@ public class Alarm  {
     String zone;
     UUID id;
 
-    Alarm(TimeManager tm,String zone) throws IOException, ClassNotFoundException {
+    Alarm(TimeManager tm,String zone) {
         System.out.println(zone);
         this.tm = tm;
         this.zone=zone;
@@ -55,7 +55,8 @@ public class Alarm  {
                     @Override
                     public void fireAlarm(UUID alarmid) {
                         System.out.println(alarmid);
-                        System.out.println("Alarm Fired");
+//                        System.out.println("Alarm Fired");
+                        afl.fire(alarmid);
                     }
 
                     @Override
@@ -76,6 +77,8 @@ public class Alarm  {
             ois.close();
         } catch (EOFException | FileNotFoundException | ClassNotFoundException e) {
             System.out.println("Reach end of file");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -110,12 +113,12 @@ public class Alarm  {
            ex.printStackTrace();
        }
    }
-   void setAlarm(int year,int month,int day,int hr,int min,int sec)  {
+   void setAlarm(int year,int month,int day,int hr,int min,int sec,String message)  {
        {
            try {
                UniqueCode uni = new UniqueCode();
 
-               AlarmClock a = new AlarmClock(year, month, day, hr, min, sec, zone, uni.generateunicode());
+               AlarmClock a = new AlarmClock(year, month, day, hr, min, sec, zone, uni.generateunicode(),message);
                System.out.println(a.id);
                setAlarm(a);
            }catch (Exception e){
@@ -131,18 +134,10 @@ public class Alarm  {
             AlarmClock clock=i.next();
             if(clock.id.toString().compareTo(alarmID.toString())==0){
 //                System.out.println("here");
+                clock.isfired=false;
                 clock.dt = ZonedDateTime.now().plusMinutes(1);
                 System.out.println(clock.dt.getMinute());
-                try {
-                    fos = new FileOutputStream("Alarm.dat");
-                    oos = new ObjectOutputStream(fos);
-                    for(AlarmClock alarm:alarmArr){
-                        oos.writeObject(alarm);
-                    }
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-
+                writeAlarmFile();
             }
         }
     }
@@ -154,17 +149,20 @@ public class Alarm  {
             AlarmClock clock = i.next();
             if(clock.id.toString().compareTo(id.toString())==0){
                 alarmArr.remove(clock);
-                try {
-                    fos = new FileOutputStream("Alarm.dat");
-                    oos = new ObjectOutputStream(fos);
-                    for(AlarmClock alarm:alarmArr){
-                        oos.writeObject(alarm);
-                    }
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
+               writeAlarmFile();
 
             }
+        }
+    }
+    void writeAlarmFile(){
+        try {
+            fos = new FileOutputStream("Alarm.dat");
+            oos = new ObjectOutputStream(fos);
+            for(AlarmClock alarm:alarmArr){
+                oos.writeObject(alarm);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
 }

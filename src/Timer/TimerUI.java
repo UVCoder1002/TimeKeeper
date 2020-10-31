@@ -2,20 +2,22 @@ package Timer;
 
 import Manager.TimeListener;
 import Manager.TimeManager;
-import Manager.TimerListener;
 import Manager.UniqueCode;
 
-import javax.sound.sampled.*;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.Clip;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileWriter;
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Objects;
+import java.util.UUID;
 
 
-public class TimerUI extends JPanel  {
+public class TimerUI extends JPanel {
     private JPanel panel1;
     private JTextField hr;
     private JTextField min;
@@ -27,15 +29,16 @@ public class TimerUI extends JPanel  {
     private JComboBox comboBox1;
     private JTextField milli;
     public JPanel scrollPane;
+    private JPanel OutsidePanel;
     TimeManager timeManager;
     TimeListener listener;
-    JFrame frame=null;
+    JFrame frame = null;
     JFrame jFrame;
     //TimerBackEnd tt;
     //Thread t1;
     //TimerUI timer;
-    int flag=1;
-    int temp=1;
+    int flag = 1;
+    int temp = 1;
     File file;
     String tone, path = "src\\ToneSetting\\sounds\\alarm2.wav";
     FileWriter fileWrite;
@@ -43,6 +46,10 @@ public class TimerUI extends JPanel  {
     Clip clip;
     TimerBack timerBack;
     UniqueCode uniId;
+    TimerUI timerui;
+    JScrollPane scrollPaneBar;
+    HashMap<UUID, TimerItem> map;
+
     public Integer getHr() {
         return Integer.parseInt(hr.getText());
     }
@@ -60,24 +67,36 @@ public class TimerUI extends JPanel  {
     }
 
     public void setTime(int hr, int min, int sec) {
-        this.hr.setText(""+hr);
-        this.min.setText(""+min);
-        this.sec.setText(""+sec);
-    }
-    public void setMilli(int milli){
-        this.milli.setText(""+milli);
+        this.hr.setText("" + hr);
+        this.min.setText("" + min);
+        this.sec.setText("" + sec);
     }
 
-    public TimerUI(TimeManager tm) {
-        uniId=new UniqueCode();
-        this.timerBack=timerBack;
+    public void setMilli(int milli) {
+        this.milli.setText("" + milli);
+    }
+
+    public TimerUI(TimerBack timerBack) {
+        timerui = this;
+//        scrollPane.setBackground(Color.red);
+
+        scrollPane=new JPanel();
+        scrollPane.setLayout(new BoxLayout(scrollPane,BoxLayout.Y_AXIS));
+//        scrollPane.setLayout(new BoxLayout(scrollPane, BoxLayout.Y_AXIS));
+        uniId = new UniqueCode();
+        this.timerBack = timerBack;
+        scrollPaneBar=new JScrollPane(scrollPane);
+        map = new HashMap<UUID, TimerItem>();
         //TimerUI tCD = new TimerUI();
         //tCD.setLayout(new GridLayout());
         tone = Objects.requireNonNull(comboBox1.getSelectedItem()).toString();
-        System.out.println( comboBox1.getSelectedItem().toString());
-        if(frame==null) {
+        System.out.println(comboBox1.getSelectedItem().toString());
+        OutsidePanel.add(scrollPaneBar);
+        addAllTimer();
+        if (frame == null) {
             frame = new JFrame("Time Keeper");
-            frame.add(panel1);
+            frame.setContentPane(panel1);
+//            frame.add(panel1);
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.pack();
             frame.setSize(1010, 500);
@@ -86,7 +105,7 @@ public class TimerUI extends JPanel  {
             /*tt = new TimerBackEnd();
             t1 = new Thread(tt);
             t1.start();*/
-            timeManager = tm;
+//            timeManager = tm;
 
         } else frame.setVisible(true);
 
@@ -99,8 +118,9 @@ public class TimerUI extends JPanel  {
             public void actionPerformed(ActionEvent e) {
                 //System.out.println("start");
 
-                Timer timer =new Timer(uniId.generateunicode(),getHr(),getMin(),getSec(),getMilli());
-                    timerBack.addTimer(timer);
+                Timer timer = new Timer(uniId.generateunicode(), getHr(), getMin(), getSec(), getMilli());
+                timerBack.startTimer(timer);
+                timerui.addTimer(timer);
 //                    timeManager.addTimeListener(listener = new TimerListener(timer) {
 //                        @Override
 //                        public void timeUpdated(int hr, int min, int sec) {
@@ -137,57 +157,39 @@ public class TimerUI extends JPanel  {
 //                    flag=1;
 //                }
 
-                file = new File(path);
-                if(file.exists())
-                {
-                    try {
-                        fileWrite=new FileWriter("src\\ToneSetting\\toneSetting.txt");
-                        fileWrite.write(path);
-                        fileWrite.close();
-                    } catch (IOException ioException) {
-                        ioException.printStackTrace();
-                    }
-
-                    try {
-                        audioTnSt = AudioSystem.getAudioInputStream(file);
-                        clip = AudioSystem.getClip();
-                        clip.open(audioTnSt);
-                    } catch (UnsupportedAudioFileException | LineUnavailableException | IOException unsupportedAudioFileException) {
-                        unsupportedAudioFileException.printStackTrace();
-                    }
-                } else
-                {
-                    System.out.println("File doesn't exist");
-                }
+//                file = new File(path);
+//                if(file.exists())
+//                {
+//                    try {
+//                        fileWrite=new FileWriter("src\\ToneSetting\\toneSetting.txt");
+//                        fileWrite.write(path);
+//                        fileWrite.close();
+//                    } catch (IOException ioException) {
+//                        ioException.printStackTrace();
+//                    }
+//
+//                    try {
+//                        audioTnSt = AudioSystem.getAudioInputStream(file);
+//                        clip = AudioSystem.getClip();
+//                        clip.open(audioTnSt);
+//                    } catch (UnsupportedAudioFileException | LineUnavailableException | IOException unsupportedAudioFileException) {
+//                        unsupportedAudioFileException.printStackTrace();
+//                    }
+//                } else
+//                {
+//                    System.out.println("File doesn't exist");
+//                }
             }
 
         });
-
-        pauseBT.addActionListener(new ActionListener() {
+        timerui.timerBack.timerBackEndListener = new TimerBackEndListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                if(flag==0) {
-                    listener.ispaused=true;
-                    pauseBT.setText("Resume");
-                    flag=1;
-                }
-                else{
-                    listener.ispaused=false;
-                    pauseBT.setText("Pause");
-                    flag=0;
-                }
+            public void updateui(Timer timer) {
+                printTimer(timer);
             }
-        });
-        resetBT.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                startBT.setEnabled(true);
-//                timeManager.removeListener(listener);
-                setTime(0,0,0);
-                setMilli(0);
-                flag=1;
-            }
-        });
+
+        };
+
         backBT.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -199,7 +201,7 @@ public class TimerUI extends JPanel  {
             @Override
             public void actionPerformed(ActionEvent e) {
                 tone = comboBox1.getSelectedItem().toString();
-                System.out.println("tone is"+tone);
+                System.out.println("tone is" + tone);
                 if (tone.equals("Tone1")) {
                     path = "src\\ToneSetting\\sounds\\alarm2.wav";
                 } else if (tone.equals("Tone2")) {
@@ -209,17 +211,45 @@ public class TimerUI extends JPanel  {
         });
     }
 
-    public void timerFrameVisible()
-    {
+    public void timerFrameVisible() {
         frame.setVisible(true);
     }
-    public void passFrame(JFrame jframe)
-    {
+
+    public void passFrame(JFrame jframe) {
         this.jFrame = jframe;
     }
 
-    public static void main(String[] args) {
-       TimerBack timerBack=new TimerBack(new Timer());
-        new TimerUI(new TimeManager());
+    void printTimer(Timer timer) {
+//        System.out.println("id is" + timer.id);
+        try {
+            map.get(timer.id).updateui(timer);
+        }
+        catch(Exception e){
+            System.out.println(e.getMessage());
+        }
     }
+
+
+    void addTimer(Timer timer) {
+        TimerItem timerItem = new TimerItem(timer, timerui);
+        map.put(timer.id, timerItem);
+        scrollPane.add(timerItem);
+        scrollPane.repaint();
+//        scrollPane.revalidate();
+//        revalidate();
+
+    }
+
+    void addAllTimer(){
+        ArrayList<Timer> initialTimers =  new ArrayList<>(timerBack.timerList);
+        for (Timer initialTimer : initialTimers) {
+            TimerItem timerItem = new TimerItem(initialTimer, timerui);
+            map.put(initialTimer.id,timerItem);
+            scrollPane.add(timerItem);
+        }
+        scrollPane.repaint();
+    }
+//    public static void main(String[] args) {
+//       TimerBack timerBack=new TimerBack(new TimeManager());
+//    }
 }

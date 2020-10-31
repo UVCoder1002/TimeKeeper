@@ -1,38 +1,76 @@
 package Timer;
 
-import Manager.CountdownListener;
 import Manager.TimeManager;
+import Manager.TimerListener;
 
+import java.io.*;
 import java.util.ArrayList;
 
 public class TimerBack {
     ArrayList<Timer> timerList;
     TimeManager timeManager;
-   CountdownListener listner;
+     TimerListener listner;
     TimerBackEndListener timerBackEndListener;
-    public TimerBack(TimeManager timeManager){
+    FileInputStream fis;
+    ObjectInputStream ois;
+    FileOutputStream fos;
+    ObjectOutputStream oos;
+
+    public TimerBack(TimeManager timeManager) {
         timerList = new ArrayList<>();
         this.timeManager=timeManager;
+        try {
+            fis = new FileInputStream("Timer.dat");
+            ois = new ObjectInputStream(fis);
+
+            while (fis.available() > 0) {
+                System.out.println("Reading obj");
+                Timer timer=(Timer) ois.readObject();
+                 timerList.add(timer);
+                timeManager.addTimeListener(listner= new TimerListener(timer) {
+                    @Override
+                    public void timeUpdated(int hr, int min, int sec, int milli) {
+//                        System.out.println("second:"+sec);
+                        if(timerBackEndListener != null) {
+                        timerBackEndListener.updateui(timer);
+                        }
+                    }
+                });
+            }
+            ois.close();
+        }catch (Exception e){
+        e.printStackTrace();}
     }
     void addTimer(Timer timer){
         timerList.add(timer);
 
     }
-    void startStopWatch(Timer timer){
+    void startTimer(Timer timer) {
         addTimer(timer);
-        timeManager.addTimeListener(listner= new CountdownListener(timer) {
-            @Override
-            public void timeUpdated(int hr, int min, int sec) {
 
-            }
 
+        timeManager.addTimeListener(listner = new TimerListener(timer) {
             @Override
-            public void timeUpdated(int hr, int min, int sec,int milli) {
-               timerBackEndListener.updateui(timer);
+            public void timeUpdated(int hr, int min, int sec, int milli) {
+//                System.out.println("second:" + sec);
+                timerBackEndListener.updateui(timer);
             }
         });
-
+       writeTimerFile();
     }
+  public  void writeTimerFile(){
+        try {
+            fos = new FileOutputStream("Timer.dat");
+            oos = new ObjectOutputStream(fos);
+            for (Timer timers : timerList) {
+                oos.writeObject(timers);
+            }
+            oos.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     void PressedPause(Timer timer){
         if(timer.isPaused){
             timer.isPaused=false;

@@ -92,10 +92,10 @@ public class TimeZones extends JPanel{
             timezones.add( ""+ zoneId);
         });
         String[] array = timezones.toArray(new String[timezones.size()]);
-        JComboBox<String> Tz=new JComboBox<String>(array);
-        Tz.setPreferredSize(new Dimension(100,20));
-        this.add(Tz);
-        this.add(clocks);
+        JComboBox<String> timeZonesList=new JComboBox<String>(array);
+        timeZonesList.setPreferredSize(new Dimension(100,20));
+        this.add(timeZonesList);
+//        this.add(clocks);
         //jPanelTimeZone.add(this);
 
 //        this.add(clocks);
@@ -104,11 +104,11 @@ public class TimeZones extends JPanel{
         this.setLayout(flowLayout);
         this.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
         //timezone = this;
-        Tz.addActionListener(new ActionListener() {
+        timeZonesList.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                   bWrite.write(Tz.getSelectedItem().toString());
+                   bWrite.write(timeZonesList.getSelectedItem().toString());
                    bWrite.newLine();
                     //bWrite.write("urvashi");
                     bWrite.flush();
@@ -116,7 +116,7 @@ public class TimeZones extends JPanel{
                     ex.printStackTrace();
                 }
                 finally {
-                    stdclock = new StandardClock(Tz.getSelectedItem().toString());
+                    stdclock = new StandardClock(timeZonesList.getSelectedItem().toString());
                     clocks.add(stdclock);
                     stdclock.start();
                     clocks.revalidate();
@@ -128,7 +128,7 @@ public class TimeZones extends JPanel{
             }
         });
 
-        // Tz.setVisible(true);
+        // timeZonesList.setVisible(true);
     }
 
     /*public void displayFrame()
@@ -161,7 +161,7 @@ public class TimeZones extends JPanel{
         frame.setSize(1010, 500);
        frame.setLocation(200,100);
         timeZone.displayZones();
-        timeZone.frame.setVisible(true);
+       frame.setVisible(true);
     }
 
 }

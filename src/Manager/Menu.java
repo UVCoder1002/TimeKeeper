@@ -3,12 +3,11 @@ package Manager;
 
 import Stopwatch.StopwatchBack;
 import Stopwatch.StopwatchUI;
-import Timer.TimerUI;
+import Timer.*;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.io.IOException;
 
 public class Menu extends JPanel{
@@ -26,10 +25,13 @@ public class Menu extends JPanel{
     String[] s;
     FlowLayout flowLayout;
     StopwatchBack stopwatchBack;
-
+    TimerBack timerBack;
+    Alarm alarmBack;
     public Menu() {
 timeManager=new TimeManager();
  stopwatchBack=new StopwatchBack(timeManager);
+ timerBack=new TimerBack(timeManager);
+ alarmBack=new Alarm(timeManager,"Asia/Kolkata");
         jPanelCal1=new JPanel();
         flowLayout= new FlowLayout();
         FCalendar calendarObj = new FCalendar();
@@ -61,7 +63,22 @@ timeManager=new TimeManager();
         //frame.add(calendarObj,BorderLayout.CENTER);
         //frame.add(tCD);
         frame.setVisible(true);
+        frame.addWindowListener(new WindowAdapter() {
 
+
+            @Override
+            public void windowClosing(WindowEvent e) {
+                    timerBack.writeTimerFile();
+                    alarmBack.writeAlarmFile();
+            }
+
+            @Override
+            public void windowClosed(WindowEvent e) {
+
+            }
+
+
+        });
 
 
         timerButton.addActionListener(new ActionListener() {
@@ -69,7 +86,7 @@ timeManager=new TimeManager();
             public void actionPerformed(ActionEvent e) {
                 if (timerUI == null) {
 
-                    timerUI = new TimerUI(timeManager);
+                    timerUI = new TimerUI(timerBack);
                     timerUI.timerFrameVisible();
                     timerUI.passFrame(frame);
                 }
@@ -111,12 +128,10 @@ timeManager=new TimeManager();
         alarmButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                try {
-                    AlarmUI.main(s);
-                    frame.setVisible(false);
-                } catch (IOException | ClassNotFoundException ioException) {
-                    ioException.printStackTrace();
-                }
+
+                    AlarmUI.start(alarmBack);
+//                    frame.setVisible(false);
+
             }
         });
     }

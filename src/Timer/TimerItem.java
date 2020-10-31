@@ -15,9 +15,10 @@ public class TimerItem extends JPanel{
     TimerItem timerItem;
     TimerItem(Timer timer, TimerUI timerUI){
         timerItem=this;
-        this.setPreferredSize(new Dimension(200,100));
-        this.setMaximumSize(new Dimension(200,100));
-        this.setMinimumSize(new Dimension(200,100));
+
+        this.setPreferredSize(new Dimension(300,50));
+        this.setMaximumSize(new Dimension(300,50));
+        this.setMinimumSize(new Dimension(300,50));
         this.hr=new JLabel("0");
         this.min=new JLabel("0");
         this.sec=new JLabel("0");
@@ -32,18 +33,18 @@ public class TimerItem extends JPanel{
 //        this.min.setText(stopWatch.min+"");
 //        this.sec.setText(stopWatch.sec+"");
 //        this.milli.setText(stopWatch.milli+"");
-        this.add(this.hr);
-        this.add(this.min);
-        this.add(this.sec);
-        this.add(this.milli);
-        this.add(this.pause);
-        this.add(this.delete);
+        this.add(this.hr,BorderLayout.CENTER);
+        this.add(this.min,BorderLayout.CENTER);
+        this.add(this.sec,BorderLayout.CENTER);
+        this.add(this.milli,BorderLayout.CENTER);
+        this.add(this.pause,BorderLayout.CENTER);
+        this.add(this.delete,BorderLayout.CENTER);
         pause.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 timerUI.timerBack.PressedPause(timer);
                 if(timer.isPaused){
-                    pause.setText("Resume");
+                    pause.setText("RESUME");
                 }
                 else
                 {

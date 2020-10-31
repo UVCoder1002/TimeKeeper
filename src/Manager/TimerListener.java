@@ -1,17 +1,16 @@
 package Manager;
 
+import Timer.Timer;
+
 public abstract class TimerListener extends TimeListener {
     int hr;
     int min;
     int sec;
     int milli;
+    Timer timer;
+    public TimerListener(Timer timer) {
+        this.timer=timer;
 
-    protected TimerListener(int hr, int min, int sec, int milli){
-        this.hr=hr;
-        this.min=min;
-        this.sec=sec;
-        this.milli=milli;
     }
-    public abstract void timeUpdated(int hr, int min, int sec);
-    public abstract void timeUpdated(int milli);
+
 }
