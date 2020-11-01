@@ -23,8 +23,6 @@ public class TimerUI extends JPanel {
     private JTextField min;
     private JTextField sec;
     private JButton startBT;
-    private JButton pauseBT;
-    private JButton resetBT;
     private JButton backBT;
     private JComboBox comboBox1;
     private JTextField milli;

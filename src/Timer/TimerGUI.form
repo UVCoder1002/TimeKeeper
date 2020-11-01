@@ -76,22 +76,6 @@
           <text value="0"/>
         </properties>
       </component>
-      <component id="a7e05" class="javax.swing.JButton" binding="pauseBT">
-        <constraints>
-          <grid row="3" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties>
-          <text value="Pause"/>
-        </properties>
-      </component>
-      <component id="5d830" class="javax.swing.JButton" binding="resetBT">
-        <constraints>
-          <grid row="3" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties>
-          <text value="Reset"/>
-        </properties>
-      </component>
       <component id="579a" class="javax.swing.JLabel">
         <constraints>
           <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>

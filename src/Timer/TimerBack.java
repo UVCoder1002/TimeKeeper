@@ -29,7 +29,7 @@ public class TimerBack {
                  timerList.add(timer);
                 timeManager.addTimeListener(listner= new TimerListener(timer) {
                     @Override
-                    public void timeUpdated(int hr, int min, int sec, int milli) {
+                    public void timeUpdated() {
 //                        System.out.println("second:"+sec);
                         if(timerBackEndListener != null) {
                         timerBackEndListener.updateui(timer);
@@ -51,7 +51,7 @@ public class TimerBack {
 
         timeManager.addTimeListener(listner = new TimerListener(timer) {
             @Override
-            public void timeUpdated(int hr, int min, int sec, int milli) {
+            public void timeUpdated() {
 //                System.out.println("second:" + sec);
                 timerBackEndListener.updateui(timer);
             }

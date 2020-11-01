@@ -17,7 +17,6 @@ public class StopwatchUI extends JPanel {
     private JTextArea secTxt;
     private JButton startBT;
     private JButton pauseBT;
-    private JButton resetBT;
     private JButton lapBT;
     private JButton Back;
     public JTextArea lapOutput;
@@ -136,21 +135,6 @@ public class StopwatchUI extends JPanel {
             }
         };
 
-        pauseBT.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (flag == 0) {
-                    listener.ispaused = true;
-                    pauseBT.setText("Resume");
-                    flag = 1;
-                } else {
-                    listener.ispaused = false;
-                    pauseBT.setText("Pause");
-                    flag = 0;
-                }
-
-            }
-        });
 
 
 //        pauseBT.addActionListener(new ActionListener() {
@@ -169,13 +153,7 @@ public class StopwatchUI extends JPanel {
 //            }
 //        });
 
-        lapBT.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                noOfClickLap++;
-                lapOutput.append(noOfClickLap + ". " + getHr() + ":" + getMin() + ":" + getSec() + "." + getmilli() + "\n");
-            }
-        });
+
 //        resetBT.addActionListener(new ActionListener() {
 //            @Override
 //            public void actionPerformed(ActionEvent e) {
