@@ -165,8 +165,9 @@ public class AlarmUI extends JPanel {
         message.setPreferredSize(new Dimension(400, 50));
         this.add(message);
         this.add(scrollPane);
+        this.add(comboBoxTone);
         backButton = new Button("Back");
-        this.add(backButton,BorderLayout.NORTH);
+        this.add(backButton,BorderLayout.WEST);
         map = new HashMap<>();
         printAlarmitem();
 
@@ -250,7 +251,7 @@ public class AlarmUI extends JPanel {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     System.out.println(clock);
-                    al.deleteAlarm(clock.id);
+                    al.deleteAlarm(clock.id,clip);
                     printAlarmitem();
                 }
             });
@@ -275,6 +276,8 @@ public class AlarmUI extends JPanel {
         snooze.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                if(clip!=null)
+                clip.stop();
                 al.setSnooze(clock.id);
                 map.get(clock.id).remove(snooze);
                 notify = new Notifications(alui, clock.id, map);

@@ -99,7 +99,7 @@ timeManager=new TimeManager();
         stopwatchButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (stopwatchUI == null) {//dekh rhi na timemanager kitni baar banaya hai :(
+                if (stopwatchUI == null) {
 
                     stopwatchUI = new StopwatchUI(stopwatchBack);
                     stopwatchUI.stopwatchFrameVisible();

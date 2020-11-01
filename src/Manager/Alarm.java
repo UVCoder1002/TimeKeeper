@@ -1,5 +1,6 @@
 package Manager;
 
+import javax.sound.sampled.Clip;
 import javax.swing.*;
 import java.awt.*;
 import java.io.*;
@@ -141,7 +142,7 @@ public class Alarm  {
             }
         }
     }
-    void deleteAlarm(UUID id){
+    void deleteAlarm(UUID id, Clip clip){
         ArrayList<AlarmClock> arrayList=new ArrayList<>(alarmArr);
         Iterator<AlarmClock> i=arrayList.iterator();
         while(i.hasNext()) {
@@ -150,7 +151,8 @@ public class Alarm  {
             if(clock.id.toString().compareTo(id.toString())==0){
                 alarmArr.remove(clock);
                writeAlarmFile();
-
+               if(clip!=null)
+               clip.stop();
             }
         }
     }
