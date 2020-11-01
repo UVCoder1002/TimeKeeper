@@ -10,8 +10,8 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.UUID;
 
-public class Alarm  {
-    TimeManager tm ;
+public class Alarm {
+    TimeManager tm;
     AlarmFireListener afl;
     Date date;
     String[] ampm;
@@ -36,13 +36,14 @@ public class Alarm  {
     String zone;
     UUID id;
 
-    Alarm(TimeManager tm,String zone) {
-        System.out.println(zone);
+    Alarm(TimeManager tm, String zone) {
+
         this.tm = tm;
-        this.zone=zone;
-        UniqueCode uni=new UniqueCode();
-        this.id=uni.generateunicode();
+        this.zone = zone;
         alarmArr = new ArrayList<AlarmClock>();
+        UniqueCode uni = new UniqueCode();
+        this.id = uni.generateunicode();
+
         try {
             fis = new FileInputStream("Alarm.dat");
             ois = new ObjectInputStream(fis);
@@ -51,13 +52,13 @@ public class Alarm  {
                 System.out.println("Reading obj");
                 setA = (AlarmClock) ois.readObject();
                 alarmArr.add(setA);
-                System.out.println(setA.dt.getHour() + " " + setA.dt.getMinute() + " " + setA.dt.getSecond()+" "+setA.path);
+//                System.out.println(setA.dt.getHour() + " " + setA.dt.getMinute() + " " + setA.dt.getSecond()+" "+setA.path);
+
+                //Passing alarmclock object to alarmlistener and adding timemanager listener to the object in file
                 tm.addTimeListener(new AlarmListener(setA) {
                     @Override
                     public void fireAlarm(UUID alarmid, String path) {
-                        System.out.println(alarmid);
-//                        System.out.println("Alarm Fired");
-                        afl.fire(alarmid,path);
+                        afl.fire(alarmid, path);
                     }
 
 
@@ -78,81 +79,86 @@ public class Alarm  {
         }
     }
 
-   void setAlarm(AlarmClock setA){
-       try {
-           fos = new FileOutputStream("Alarm.dat");
-           oos = new ObjectOutputStream(fos);
-           alarmArr.add(setA);
-           tm.addTimeListener(new AlarmListener(setA) {
-               @Override
-               public void fireAlarm(UUID alarmid, String path) {
-                   System.out.println("Alarm Fired");
-                   afl.fire(alarmid,path);
-               }
+    void setAlarm(AlarmClock setA) {
+        //New Alarm Added to AlarmArr and in file
+        try {
+            fos = new FileOutputStream("Alarm.dat");
+            oos = new ObjectOutputStream(fos);
+            alarmArr.add(setA);
+            tm.addTimeListener(new AlarmListener(setA) {
+                @Override
+                public void fireAlarm(UUID alarmid, String path) {
 
-               @Override
-               public void timeUpdated() {
+                    afl.fire(alarmid, path);
+                }
 
-               }
-           });
-           for(AlarmClock alarm : alarmArr) {
-               oos.writeObject(alarm);
-           }
-           oos.close();
-       } catch (IOException ex) {
-           ex.printStackTrace();
-       }
-   }
-   void setAlarm(int year,int month,int day,int hr,int min,int sec,String message,String path)  {
-       {
-           try {
-               UniqueCode uni = new UniqueCode();
+                @Override
+                public void timeUpdated() {
 
-               AlarmClock a = new AlarmClock(year, month, day, hr, min, sec, zone, uni.generateunicode(),message,path);
-               System.out.println(a.id);
-               setAlarm(a);
-           }catch (Exception e){
-               e.printStackTrace();
-           }
-       }
-   }
-  void setSnooze(UUID alarmID)  {
-      System.out.println("in");
-        Iterator<AlarmClock> i=alarmArr.iterator();
-        while(i.hasNext()){
-            System.out.println("in2");
-            AlarmClock clock=i.next();
-            if(clock.id.toString().compareTo(alarmID.toString())==0){
-//                System.out.println("here");
-                clock.isfired=false;
+                }
+            });
+            for (AlarmClock alarm : alarmArr) {
+                oos.writeObject(alarm);
+            }
+            oos.close();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    void setAlarm(int year, int month, int day, int hr, int min, int sec, String message, String path) {
+        {
+            try {
+                UniqueCode uni = new UniqueCode();
+
+                AlarmClock a = new AlarmClock(year, month, day, hr, min, sec, zone, uni.generateunicode(), message, path);
+                System.out.println(a.id);
+                setAlarm(a);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    void setSnooze(UUID alarmID) {
+        //getting the alarm from the arrayList
+        Iterator<AlarmClock> i = alarmArr.iterator();
+        while (i.hasNext()) {
+            AlarmClock clock = i.next();
+            if (clock.id.toString().compareTo(alarmID.toString()) == 0) {
+                clock.isfired = false;
+
+                //snoozing by one minute from the time snooze is pressed
                 clock.dt = ZonedDateTime.now().plusMinutes(1);
-                System.out.println(clock.dt.getMinute());
                 writeAlarmFile();
             }
         }
     }
+
     void deleteAlarm(UUID id, Clip clip){
         ArrayList<AlarmClock> arrayList=new ArrayList<>(alarmArr);
         Iterator<AlarmClock> i=arrayList.iterator();
         while(i.hasNext()) {
-//            System.out.println("in2");
             AlarmClock clock = i.next();
-            if(clock.id.toString().compareTo(id.toString())==0){
+            if (clock.id.toString().compareTo(id.toString()) == 0) {
+                //removing clock from array
                 alarmArr.remove(clock);
-               writeAlarmFile();
+       writeAlarmFile();
                if(clip!=null)
                clip.stop();
+
             }
         }
     }
-    void writeAlarmFile(){
+
+    void writeAlarmFile() {
         try {
             fos = new FileOutputStream("Alarm.dat");
             oos = new ObjectOutputStream(fos);
-            for(AlarmClock alarm:alarmArr){
+            for (AlarmClock alarm : alarmArr) {
                 oos.writeObject(alarm);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

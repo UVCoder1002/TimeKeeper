@@ -67,8 +67,6 @@ public class TimeManager implements Runnable {
                                     if (stopWatch.milli == 99) {
                                         stopWatch.sec++;
                                         stopWatch.milli = 0;
-
-                                        //System.out.println("in");
                                     }
                                     if (stopWatch.sec == 59) {
                                         stopWatch.min++;
@@ -78,9 +76,6 @@ public class TimeManager implements Runnable {
                                         stopWatch.hr++;
                                         stopWatch.min = 0;
                                     }
-
-
-//                                            notifyListeners(stopwatchListener.milli);
 
                                 }
                                 listener.timeUpdated();
@@ -134,8 +129,7 @@ public class TimeManager implements Runnable {
                                             timer.milli--;
                                         }
 
-//                                   notifyListeners(timer.hr, timer.min, timer.sec, timer.milli);
-//                                notifyListenersTimer(timerListener.milli);
+//
                                         listener.timeUpdated();
 
                                     }
@@ -190,14 +184,12 @@ public class TimeManager implements Runnable {
     }
 
     boolean checkAlarm(TimeListener alarmListener) throws IOException, ClassNotFoundException {
-        //if (time.getHr() == getA.getHr() && time.getMin() == getA.getMin() && time.getSec() == getA.getSec() && time.getAmpm().compareToIgnoreCase(getA.getAmpm()) == 0) {
+
         if (((AlarmListener) alarmListener).alarmClock.getDt().toEpochSecond() == ZonedDateTime.now().toEpochSecond()) {
 
-//            System.out.println("matched successfully");
-            System.out.println("Alarm Fired");
             return true;
         }
-//        System.out.println("not matched");
+
         return false;
     }
 }

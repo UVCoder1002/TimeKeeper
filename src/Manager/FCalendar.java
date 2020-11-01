@@ -32,8 +32,12 @@ public class FCalendar extends JPanel {
     Button prev;
     Button next;
     HashMap<String,Integer> map;
+
     FCalendar(){
+       // to show current date
         details=new JPanel(new GridLayout(1,2,5,5));
+
+        //for manipulating buttons
         arrows=new JPanel(new GridLayout(1,2));
         prev=new Button("<");
         next=new Button(">");
@@ -41,13 +45,14 @@ public class FCalendar extends JPanel {
         daysOfMonths = new int[]{31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
         dayNames = new String[]{"MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"};
         currentDate = new Date();
+        map=new HashMap<>();
         cal = new JPanel();
         task = new JPanel();
         lp = new JLayeredPane();
         lp.setLayout(new FlowLayout());
         lp.setPreferredSize(new Dimension(310, 310));
         calendar=this;
-        map=new HashMap<>();
+
         map.put("MONDAY",0);
         map.put("TUESDAY",1);
         map.put("WEDNESDAY",2);
@@ -55,12 +60,13 @@ public class FCalendar extends JPanel {
         map.put("FRIDAY",4);
         map.put("SATURDAY",5);
         map.put("SUNDAY",6);
+
         this.drawCal();
     }
 
     public void drawCal() {
-        System.out.println("drawcal");
-        this.setMaximumSize(new Dimension(300,300)  );
+
+        this.setMaximumSize(new Dimension(300,300));
         this.setPreferredSize(new Dimension(300,300));
 
         cal.setLayout(new GridLayout(0, 7,5,5));
@@ -75,16 +81,14 @@ public class FCalendar extends JPanel {
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("y", Locale.getDefault());
         dateFormat.applyPattern("y");
-
         currentYear = Integer.parseInt(dateFormat.format(currentDate));
-
         dateFormat.applyPattern("M");
         currentMonth = Integer.parseInt(dateFormat.format(currentDate));
         dateFormat.applyPattern("d");
         currentDateNum = Integer.parseInt(dateFormat.format(currentDate));
         dateFormat.applyPattern("E");
         dayName = dateFormat.format(currentDate);
-        System.out.println(currentYear+""+currentMonth+""+currentDateNum+""+currentDate);
+
 
         showCal(currentMonth, currentYear);
     }
@@ -132,39 +136,43 @@ public class FCalendar extends JPanel {
                 details.repaint();
                 cal.repaint();
                 arrows.repaint();
-//                calendar.repaint();
+
             }
         });
         int counter = 0;
+
+        //checking if leap year
         if ((yr % 4 == 0 && yr % 100 != 0) || (yr % 400 == 0)) {
             daysOfMonths[1] = 29;
         }
-//        System.out.println(months[mon - 1] + " " + yr);
 
-//        int space = ((mon-1 + daysOfMonths[mon - 2]) % 7)/2 +1;
         int space=calSpaces(yr,mon);
-        System.out.println(space);
         System.out.println();
+
         Border border = BorderFactory.createLineBorder(Color.BLACK, 2);
+
         dateLabel = new JLabel("",SwingConstants.CENTER);
         dateLabel.setOpaque(true);
         dateLabel.setBackground(new Color(0,204,0));
         dateLabel.setBorder(border);
         dateLabel.setText(currentDateNum+"");
+
         monthLabel = new JLabel("",SwingConstants.CENTER);
         monthLabel.setOpaque(true);
         monthLabel.setBackground(new Color(0,204,0));
         monthLabel.setBorder(border);
         monthLabel.setText(mon+"");
+
         yrLabel = new JLabel("",SwingConstants.CENTER);
         yrLabel.setOpaque(true);
         yrLabel.setBackground(new Color(0,204,0));
         yrLabel.setBorder(border);
         yrLabel.setText(yr+"");
+
         details.add(dateLabel);
         details.add(monthLabel);
         details.add(yrLabel);
-
+        //adding Daynames Labels
         for (int i = 0; i < 7; i++) {
             labels[i] = new JLabel("",SwingConstants.CENTER);
             labels[i].setOpaque(true);
@@ -173,6 +181,7 @@ public class FCalendar extends JPanel {
             labels[i].setText(dayNames[i]);
             cal.add(labels[i]);
         }
+        //adding initial Spaces
         for (int i = 0; i <space; i++) {
             labels[i] = new JLabel("",SwingConstants.CENTER);
             labels[counter].setOpaque(true);
@@ -183,20 +192,18 @@ public class FCalendar extends JPanel {
             counter++;
             cal.add(labels[i]);
         }
-        System.out.print(counter);
-        //System.out.println();
+
+        //adding dates to calendar
         for (int i = 1; i <= daysOfMonths[mon - 1]; i++) {
             labels[counter] = new JLabel("",SwingConstants.CENTER);
             labels[counter].setOpaque(true);
             labels[counter].setBackground(Color.CYAN);
             labels[counter].setBorder(border);
-//
             labels[counter].setText(" " + i + "  ");
             labels[counter].addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     super.mouseClicked(e);
-//                    cal.removeAll();
                     task.removeAll();
                     lp.add(task,1);
                     JLabel j1=new JLabel("Your scheduled Task");
@@ -215,41 +222,7 @@ public class FCalendar extends JPanel {
     int calSpaces(int yr,int mon){
         YearMonth ym = YearMonth.of(yr,mon);
         String day=ym.atDay(1).getDayOfWeek().name();
-//        System.out.println(day);
-//        if(day.compareToIgnoreCase("sunday")==0){
-//            return 6;
-//        }
-//        else  if(day.compareToIgnoreCase("monday")==0){
-//            return 0;
-//        }
-//        else if(day.compareToIgnoreCase("tuesday")==0){
-//            return 1;
-//        }
-//        else if(day.compareToIgnoreCase("wednesday")==0){
-//            return 2;
-//        }
-//        else if(day.compareToIgnoreCase("thursday")==0){
-//            return 3;
-//        }
-//        else if(day.compareToIgnoreCase("friday")==0){
-//            return 4;
-//        }
-//        else {
-//            return 5;
-//        }
-
                 return map.get(day);
 
     }
-//    public static void main(String[] args) {
-//        JFrame window = new JFrame();
-//        Color c = new Color(118, 73, 190);
-//        window.setBackground(c);
-//        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//        window.setBounds(0, 0, 1000, 1000);
-//        FCalendar fCal = new FCalendar();
-//        window.add(fCal);
-//        window.setVisible(true);
-//    }
-//
 }

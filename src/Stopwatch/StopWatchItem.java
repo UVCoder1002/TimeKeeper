@@ -2,8 +2,6 @@ package Stopwatch;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class StopWatchItem extends JPanel{
     JLabel hr;
@@ -16,9 +14,11 @@ public class StopWatchItem extends JPanel{
     StopWatchItem stopWatchItem;
     StopWatchItem(StopWatch stopWatch,StopwatchUI stopwatchUI){
         stopWatchItem=this;
+
         this.setPreferredSize(new Dimension(200,100));
         this.setMaximumSize(new Dimension(200,100));
         this.setMinimumSize(new Dimension(200,100));
+
         this.hr=new JLabel("0");
         hr.setFont(new Font("Arial",Font.BOLD,16));
         this.min=new JLabel("0");
@@ -30,6 +30,7 @@ public class StopWatchItem extends JPanel{
         this.delete=new JButton("STOP");
         this.pause=new JButton("PAUSE");
         this.lap=new JButton("LAP");
+
         hr.setPreferredSize(new Dimension(20,20));
         min.setPreferredSize(new Dimension(20,20));
         sec.setPreferredSize(new Dimension(20,20));
@@ -40,38 +41,27 @@ public class StopWatchItem extends JPanel{
         this.add(this.pause);
         this.add(this.delete);
         this.add(this.lap);
-        pause.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                stopwatchUI.stopWatchBack.PressedPause(stopWatch);
-                if(stopWatch.isPaused){
-                    pause.setText("Resume");
-                }
-                else
-                {
-                    pause.setText("Pause");
-                }
+
+        pause.addActionListener(e -> {
+
+            stopwatchUI.stopWatchBack.PressedPause(stopWatch);
+            if(stopWatch.isPaused){
+                pause.setText("Resume");
+            }
+            else
+            {
+                pause.setText("Pause");
             }
         });
+        delete.addActionListener(e -> {
 
-
-        delete.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                stopwatchUI.stopWatchBack.PressedDelete(stopWatch);
-                stopwatchUI.scrollPane.remove(stopWatchItem);
-                stopwatchUI.scrollPane.repaint();
-                stopwatchUI.lapOutput.setText(stopwatchUI.stopWatchBack.AddLap(stopWatch)+"");
-            }
+            stopwatchUI.stopWatchBack.PressedDelete(stopWatch);
+            stopwatchUI.scrollPane.remove(stopWatchItem);
+            stopwatchUI.scrollPane.repaint();
+            stopwatchUI.lapOutput.setText(stopwatchUI.stopWatchBack.AddLap(stopWatch)+"");
         });
-        lap.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-//                System.out.println(stopwatchUI.stopWatchBack.AddLap(stopWatch));
-                stopwatchUI.lapOutput.setText(stopwatchUI.stopWatchBack.AddLap(stopWatch)+"");
 
-            }
-        });
+        lap.addActionListener(e -> stopwatchUI.lapOutput.setText(stopwatchUI.stopWatchBack.AddLap(stopWatch)+""));
     }
 
     void updateUI(StopWatch clock){

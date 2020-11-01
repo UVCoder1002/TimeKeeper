@@ -7,6 +7,7 @@ import java.io.*;
 import java.util.ArrayList;
 
 public class TimerBack {
+
     ArrayList<Timer> timerList;
     TimeManager timeManager;
      TimerListener listner;
@@ -24,9 +25,11 @@ public class TimerBack {
             ois = new ObjectInputStream(fis);
 
             while (fis.available() > 0) {
-                System.out.println("Reading obj");
+
                 Timer timer=(Timer) ois.readObject();
-                 timerList.add(timer);
+                //Adding timer to list in array
+                timerList.add(timer);
+                //Adding Listener to timer
                 timeManager.addTimeListener(listner= new TimerListener(timer) {
                     @Override
                     public void timeUpdated() {
@@ -47,12 +50,11 @@ public class TimerBack {
     }
     void startTimer(Timer timer) {
         addTimer(timer);
-
-
+        //adding timeListener to newly Added Timer
         timeManager.addTimeListener(listner = new TimerListener(timer) {
             @Override
             public void timeUpdated() {
-//                System.out.println("second:" + sec);
+
                 timerBackEndListener.updateui(timer);
             }
         });

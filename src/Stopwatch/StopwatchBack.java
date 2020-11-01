@@ -7,11 +7,13 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public class StopwatchBack {
+
     ArrayList<StopWatch> stopwatchList;
     ArrayList<String> laps;
     TimeManager timeManager;
     StopwatchListener listner;
     StopWatchListener stopWatchListener;
+
     public StopwatchBack(TimeManager timeManager){
         laps=new ArrayList<>();
          stopwatchList = new ArrayList<>();
@@ -24,6 +26,7 @@ public class StopwatchBack {
     }
 
     void startStopWatch(StopWatch stopWatch){
+        //adding stopwatch into list and adding listener to each
         addStopwatch(stopWatch);
         timeManager.addTimeListener(listner= new StopwatchListener(stopWatch) {
             @Override
@@ -49,10 +52,14 @@ public class StopwatchBack {
         stopwatchList.remove(stopWatch);
     }
     StringBuilder AddLap(StopWatch stopWatch){
+
         StringBuilder laps=new StringBuilder();
+        //adding time to lapArray
         stopWatch.lap.add(stopWatch.hr+":"+stopWatch.min+":"+stopWatch.sec+":"+stopWatch.milli);
         Iterator<StopWatch> stopWatchIterator=stopwatchList.iterator();
         int OuterCount=1,innerCount;
+
+        //writing all laps of all stopwatches
         while(stopWatchIterator.hasNext()){
             innerCount=0;
             StopWatch stop=stopWatchIterator.next();

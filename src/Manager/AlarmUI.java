@@ -9,16 +9,16 @@ import java.io.*;
 import java.util.*;
 
 public class AlarmUI extends JPanel {
-    Alarm al;
+    Alarm alarm;
     JLabel hourLabel, yrLabel, dayLabel, monLabel;
     JLabel minLabel;
     JLabel secLabel;
-    String[] ampm;
     JTextField hrText, monText, yrText, dayText;
     JTextField minText;
     JTextField secText;
     Button set;
     ArrayList<AlarmClock> alarmArr;
+    CurrentTime time;
     JScrollPane scrollPane;
     JPanel scrollPaneContent;
     AlarmUI alui;
@@ -38,6 +38,10 @@ public class AlarmUI extends JPanel {
     JButton Back;
 
 
+    public Alarm getAl() {
+        return alarm;
+    }
+    // Setter And Getter Functions To Take Values From UI
     public Integer getHrText() {
         return Integer.parseInt(hrText.getText());
     }
@@ -65,14 +69,15 @@ public class AlarmUI extends JPanel {
     public String getPath() {
         return path;
     }
+    // Initialising AlarmUI with backend Object
 
-    public AlarmUI(Alarm al) {
+    public AlarmUI(Alarm alarm){
+
         this.setLayout(new FlowLayout());
         alui = this;
-        Back=new JButton("Back");
-        alarmArr = al.alarmArr;
-        this.al = al;
-        ampm = new String[]{"AM", "PM"};
+        Back = new JButton("Back");
+        alarmArr = alarm.alarmArr;
+        this.alarm = alarm;
         yrLabel = new JLabel();
         monLabel = new JLabel();
         dayLabel = new JLabel();
@@ -89,24 +94,25 @@ public class AlarmUI extends JPanel {
         scrollPaneContent = new JPanel();
         scrollPaneContent.setLayout(new BoxLayout(scrollPaneContent, BoxLayout.Y_AXIS));
         scrollPaneContent.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
+        set = new Button();
+        backButton = new Button("Back");
+        map = new HashMap<>();
+        time=new CurrentTime("Asia/Kolkata");
+
+        //Setting Layout in The List Of Alarms Along Y axis
+        scrollPaneContent.setLayout(new BoxLayout(scrollPaneContent, BoxLayout.Y_AXIS));
+
+        //adding scrollbar to The list
         scrollPane = new JScrollPane(scrollPaneContent);
         scrollPane.setPreferredSize(new Dimension(400, 400));
         scrollPaneContent.setBackground(Color.GRAY);
 
-        yrText.setText("2020");
-        monText.setText("11");
-        dayText.setText("1");
-        hrText.setText("0");
-
-        yrText.setPreferredSize(new Dimension(50, 30));
-        monText.setPreferredSize(new Dimension(40, 30));
-        dayText.setPreferredSize(new Dimension(40, 30));
-        hrText.setPreferredSize(new Dimension(40, 30));
-        minText.setPreferredSize(new Dimension(40, 30));
-        secText.setPreferredSize(new Dimension(40, 30));
-
-
-        set = new Button();
+        //Setting default Values to the Inputs
+        time.setCurrentTime();
+        yrText.setText(time.yr + "");
+        monText.setText(time.mon + "");
+        dayText.setText(time.day + "");
+        hrText.setText(time.hr + "");
         yrLabel.setText("Year :");
         monLabel.setText("Month :");
         dayLabel.setText("Day :");
@@ -115,6 +121,17 @@ public class AlarmUI extends JPanel {
         secLabel.setText("Sec :");
         set.setLabel("SET");
 
+        // Setting Dimensions Of Inputs Area
+        yrText.setPreferredSize(new Dimension(50, 30));
+        monText.setPreferredSize(new Dimension(40, 30));
+        dayText.setPreferredSize(new Dimension(40, 30));
+        hrText.setPreferredSize(new Dimension(40, 30));
+        minText.setPreferredSize(new Dimension(40, 30));
+        secText.setPreferredSize(new Dimension(40, 30));
+        message.setPreferredSize(new Dimension(400, 50));
+
+
+        //Adding Components to The UI
         this.add(yrLabel);
         this.add(yrText);
         this.add(monLabel);
@@ -128,48 +145,46 @@ public class AlarmUI extends JPanel {
         this.add(secLabel);
         this.add(secText);
         this.add(set);
-        message.setPreferredSize(new Dimension(400, 50));
         this.add(message);
         this.add(scrollPane);
+
+
+        //Printing List After Every Run from the File
+
         this.add(comboBoxTone);
         backButton = new Button("Back");
         this.add(backButton,BorderLayout.WEST);
         map = new HashMap<>();
+
         printAlarmitem();
 
-        set.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                al.setAlarm(getYrText(), getMonText(), getDayText(), getHrText(), getMinText(), getSecText(), message.getText(), getPath());
-                printAlarmitem();
+        set.addActionListener(e -> {
+            alarm.setAlarm(getYrText(), getMonText(), getDayText(), getHrText(), getMinText(), getSecText(), message.getText(), getPath());
+            printAlarmitem();
+        });
+
+        backButton.addActionListener(e -> {
+            frame.setVisible(true);
+            jframe.setVisible(false);
+        });
+
+        comboBoxTone.addActionListener(e -> {
+            tone = comboBoxTone.getSelectedItem().toString();
+            if (tone.equals("Tone1")) {
+                path = "src\\ToneSetting\\sounds\\alarm2.wav";
+            } else if (tone.equals("Tone2")) {
+                path = "src\\ToneSetting\\sounds\\ringtone1.wav";
             }
         });
 
-        backButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                frame.setVisible(true);
-                jframe.setVisible(false);
-            }
-        });
+        //getting id of the AlarmClock Passed in the backend
+        UUID code = alarm.id;
 
-        comboBoxTone.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                tone = comboBoxTone.getSelectedItem().toString();
-                if (tone.equals("Tone1")) {
-                    path = "src\\ToneSetting\\sounds\\alarm2.wav";
-                } else if (tone.equals("Tone2")) {
-                    path = "src\\ToneSetting\\sounds\\ringtone1.wav";
-                }
-            }
-        });
-
-
-        UUID code = al.id;
-        al.afl = new AlarmFireListener() {
+        //Creating Anonymous object of AlarmFireListener which is called when alarm is fired from TimeManager
+        alarm.afl = new AlarmFireListener() {
             @Override
             public void fire(UUID id, String path) {
+
                 file = new File(path);
                 if (file.exists()) {
                     try {
@@ -184,8 +199,12 @@ public class AlarmUI extends JPanel {
                 }
                 clip.start();
                 clip.loop(Clip.LOOP_CONTINUOUSLY);
+                //Getting Alarmitem from the map
                 AlarmItem item = map.get(id);
+
+                //Adding snooze and Message Button
                 addSnoozeAndMessage(item);
+                //revalidating ui
                 item.revalidate();
                 scrollPaneContent.revalidate();
                 scrollPane.revalidate();
@@ -193,7 +212,7 @@ public class AlarmUI extends JPanel {
         };
     }
 
-
+    //Repaint the scrollPane when a New Alarm is added
     void printAlarmitem() {
         scrollPaneContent.removeAll();
         Iterator<AlarmClock> iter = alarmArr.iterator();
@@ -201,19 +220,25 @@ public class AlarmUI extends JPanel {
             System.out.println("print");
             AlarmClock clock = iter.next();
             AlarmItem alarmItem = new AlarmItem(alui, clock);
+
+            //adding delete button to each of the alarmItem
             JButton delete = new JButton("DELETE");
             delete.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     System.out.println(clock);
-                    al.deleteAlarm(clock.id,clip);
+                    alarm.deleteAlarm(clock.id,clip);
                     printAlarmitem();
                 }
             });
             alarmItem.add(delete);
+            //checking if fired then show snooze and Message components
             if (clock.isfired) {
                 addSnoozeAndMessage(alarmItem);
             }
+
+            //Adding alarm item to map
+            //map is used to identify a particular item using id
             map.put(clock.id, alarmItem);
             scrollPaneContent.add(alarmItem);
         }
@@ -221,7 +246,7 @@ public class AlarmUI extends JPanel {
         scrollPane.revalidate();
     }
 
-
+  //function to add snooze and message
     void addSnoozeAndMessage(AlarmItem item) {
         AlarmClock clock = item.alarmClock;
         JButton snooze = new JButton("Snooze");
@@ -231,7 +256,7 @@ public class AlarmUI extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 if(clip!=null)
                 clip.stop();
-                al.setSnooze(clock.id);
+                alarm.setSnooze(clock.id);
                 map.get(clock.id).remove(snooze);
                 notify = new Notifications(alui, clock.id, map);
                 Thread t = new Thread(notify);
@@ -242,16 +267,15 @@ public class AlarmUI extends JPanel {
         item.add(message);
     }
 
-
-
-    public static void start(Alarm alarm, JFrame frame) {
+   //function to initiate alarmui
+    public static void start(Alarm alarm, JFrame frame){
             AlarmUI alarmui = new AlarmUI(alarm);
             alarmui.setPreferredSize(new Dimension(100,100));
             alarmui.frame = frame;
             alarmui.jframe = new JFrame();
             alarmui.jframe.add(alarmui);
             alarmui.jframe.setSize(1000, 500);
-            alarmui.jframe.setLocation(200,100);
+            alarmui.jframe.setLocation(200, 100);
             alarmui.jframe.setVisible(true);
     }
 }

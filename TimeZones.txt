@@ -1,1 +1,2 @@
-America/Cuiaba
+Etc/GMT+8
+Asia/Aqtau
