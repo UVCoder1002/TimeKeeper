@@ -15,9 +15,7 @@ public class StandardClock extends JPanel implements Runnable {
 
     public StandardClock(String timezone) {
         selectedtimezone= timezone;
-//        System.out.println(timezone);
         time=new CurrentTime(selectedtimezone);
-//        System.out.println(time.zone);
         currentTime = new JLabel("Test");
         currentTime.setForeground(Color.BLACK);
         this.setPreferredSize(new Dimension(500,500));
@@ -25,12 +23,11 @@ public class StandardClock extends JPanel implements Runnable {
         this.setLayout(new FlowLayout());
         currentTime.setBackground(Color.RED);
         this.add(currentTime);
-//        this.setBounds(0,0,700,700);
     }
 
     private void drawClock(Graphics g){
         g.setFont(new Font("Algerian",Font.BOLD,20));
-//       g.setColor(new Color(229,218,218));
+
         g.setColor(Color.BLACK);
         g.fillOval(xcenter - 155,ycenter - 155,310,310);
         g.setColor(Color.WHITE);
@@ -44,9 +41,11 @@ public class StandardClock extends JPanel implements Runnable {
         g.drawString("6", xcenter - 10, ycenter + 143);
     }
     public void paint(Graphics g){
+
         g.clearRect(0,0,250,250);
         g.setColor(new Color(241, 241, 241));
         g.fillRect(0,0,500,500);
+
         int hx,hy,mx,my,sx,sy,min=0,hr=0,sec=0;
         String ampm="AM";
         drawClock(g);
@@ -55,27 +54,19 @@ public class StandardClock extends JPanel implements Runnable {
         min=time.getMin();
         sec=time.getSec();
         ampm=time.getAmpm();
-//       g.setColor(Color.WHITE);
-//       JLabel time= new JLabel("HII");
-//       JPanel panel= new JPanel();
-//       time.setForeground(Color.WHITE);
-//       time.setBounds(xcenter,ycenter,100,100);
         g.setColor(Color.BLACK);
         String s=hr + " : "+ min + " : "+ sec+" "+ampm;
         g.drawString(s, xcenter - 55,ycenter + 200);
         g.drawString(" "+selectedtimezone,xcenter - 60,ycenter+250);
-//       String s=hr + " : "+ min + " : "+ sec;
-//       time.setText(s);
-        // g.setFont(new Font("TimesRoman",Font.BOLD,20));
 
 
-        //(hr * 60 + (int)(min/2)) * 3.14f / 1800
         sx=(int)(Math.cos(sec*3.14f/30 -3.14f/2)*120 + xcenter);
         sy=(int)(Math.sin(sec*3.14f/30 -3.14f/2)*120 + ycenter);
         mx=(int)(Math.cos(min * 3.14f/30 +sec*3.14f/1800 - 3.14f / 2)*102+ xcenter);
         my=(int)(Math.sin(min * 3.14f/30 + sec*3.14f/1800 - 3.14f / 2)*102 + ycenter);
         hx=(int)(Math.cos((hr * 30 + min / 2) * 3.14f / 180- 3.14f / 2)*70 + xcenter);
         hy=(int)(Math.sin((hr * 30 + min / 2) * 3.14f / 180 - 3.14f / 2)*70 + ycenter);
+
         Graphics2D g2 = (Graphics2D) g;
         g2.setStroke(new BasicStroke(3));
         g2.setColor(Color.RED);
@@ -129,9 +120,6 @@ public class StandardClock extends JPanel implements Runnable {
     public static void main(String args[])
     {
         JFrame window = new JFrame();
-//        Color c = new Color(118, 73, 190);
-//        window.setBackground(Color.white);
-//        window.setBackground(c);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setBounds(0, 0, 400, 400);
         StandardClock clock = new StandardClock("Asia/Kolkata");

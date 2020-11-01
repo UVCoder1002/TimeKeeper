@@ -1,0 +1,2 @@
+Etc/GMT+8
+Africa/Mbabane

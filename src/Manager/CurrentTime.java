@@ -9,6 +9,10 @@ public class CurrentTime {
     int hr;
     int min;
     int sec;
+    int mon;
+    int yr;
+    int day;
+
     String ampm;
     SimpleDateFormat dateFormat;
    String zone;
@@ -20,19 +24,28 @@ public class CurrentTime {
     void setCurrentTime() {
        currentDate=new Date();
         dateFormat =new SimpleDateFormat("s", Locale.getDefault());
-//        System.out.println(currentDate);
+
         dateFormat.setTimeZone(TimeZone.getTimeZone(zone));
         dateFormat.applyPattern("s");
         sec = Integer.parseInt(dateFormat.format(currentDate));
         dateFormat.applyPattern("m");
         min = Integer.parseInt(dateFormat.format(currentDate));
-//       System.out.println(min);
-        dateFormat.applyPattern("h");
+
+        dateFormat.applyPattern("H");
         hr = Integer.parseInt(dateFormat.format(currentDate));
-//        System.out.println(hr);
+
 
         dateFormat.applyPattern("a");
         ampm = dateFormat.format(currentDate);
+
+        dateFormat.applyPattern("M");
+        mon = Integer.parseInt(dateFormat.format(currentDate));
+
+        dateFormat.applyPattern("y");
+        yr = Integer.parseInt(dateFormat.format(currentDate));
+
+        dateFormat.applyPattern("d");
+        day = Integer.parseInt(dateFormat.format(currentDate));
     }
 
     public int getHr() {
@@ -55,10 +68,10 @@ public class CurrentTime {
         return zone;
     }
 
-    public static void main(String[] args) {
-        CurrentTime time=new CurrentTime("Asia/Kolkata");
-        time.setCurrentTime();
-        System.out.println(time.getHr() + " : " + time.getMin() + " : " + time.getSec());
-
-    }
+//    public static void main(String[] args) {
+//        CurrentTime time=new CurrentTime("Asia/Kolkata");
+//        time.setCurrentTime();
+//        System.out.println(time.getHr() + " : " + time.getMin() + " : " + time.getSec());
+//
+//    }
 }

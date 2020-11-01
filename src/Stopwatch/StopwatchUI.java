@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.UUID;
 
 public class StopwatchUI extends JPanel {
+
     private JTextArea hrTxt;
     private JTextArea minTxt;
     private JTextArea secTxt;

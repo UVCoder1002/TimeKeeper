@@ -28,17 +28,14 @@ public class TimerItem extends JPanel{
         hr.setPreferredSize(new Dimension(20,20));
         min.setPreferredSize(new Dimension(20,20));
         sec.setPreferredSize(new Dimension(20,20));
-//        this.hr.setText(stopWatch.hr+"");
 
-//        this.min.setText(stopWatch.min+"");
-//        this.sec.setText(stopWatch.sec+"");
-//        this.milli.setText(stopWatch.milli+"");
         this.add(this.hr,BorderLayout.CENTER);
         this.add(this.min,BorderLayout.CENTER);
         this.add(this.sec,BorderLayout.CENTER);
         this.add(this.milli,BorderLayout.CENTER);
         this.add(this.pause,BorderLayout.CENTER);
         this.add(this.delete,BorderLayout.CENTER);
+
         pause.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -52,6 +49,7 @@ public class TimerItem extends JPanel{
                 }
             }
         });
+
         delete.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
