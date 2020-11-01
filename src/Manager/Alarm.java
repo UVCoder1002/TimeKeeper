@@ -1,5 +1,6 @@
 package Manager;
 
+import javax.sound.sampled.Clip;
 import javax.swing.*;
 import java.awt.*;
 import java.io.*;
@@ -134,17 +135,17 @@ public class Alarm {
         }
     }
 
-    void deleteAlarm(UUID id) {
-
-        ArrayList<AlarmClock> arrayList = new ArrayList<>(alarmArr);
-        Iterator<AlarmClock> i = arrayList.iterator();
-        while (i.hasNext()) {
-//            System.out.println("in2");
+    void deleteAlarm(UUID id, Clip clip){
+        ArrayList<AlarmClock> arrayList=new ArrayList<>(alarmArr);
+        Iterator<AlarmClock> i=arrayList.iterator();
+        while(i.hasNext()) {
             AlarmClock clock = i.next();
             if (clock.id.toString().compareTo(id.toString()) == 0) {
                 //removing clock from array
                 alarmArr.remove(clock);
-                writeAlarmFile();
+       writeAlarmFile();
+               if(clip!=null)
+               clip.stop();
 
             }
         }

@@ -172,9 +172,15 @@ public class AlarmUI extends JPanel {
         this.add(set);
         this.add(message);
         this.add(scrollPane);
-        this.add(backButton, BorderLayout.NORTH);
+
 
         //Printing List After Every Run from the File
+
+        this.add(comboBoxTone);
+        backButton = new Button("Back");
+        this.add(backButton,BorderLayout.WEST);
+        map = new HashMap<>();
+
         printAlarmitem();
 
         set.addActionListener(new ActionListener() {
@@ -192,7 +198,8 @@ public class AlarmUI extends JPanel {
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new Menu();
+
+                frame.setVisible(true);
 
                 jframe.setVisible(false);
             }
@@ -266,7 +273,9 @@ public class AlarmUI extends JPanel {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     System.out.println(clock);
-                    alarm.deleteAlarm(clock.id);
+
+                    alarm.deleteAlarm(clock.id,clip);
+
                     printAlarmitem();
                 }
             });
@@ -296,6 +305,8 @@ public class AlarmUI extends JPanel {
         snooze.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                if(clip!=null)
+                clip.stop();
                 alarm.setSnooze(clock.id);
                 map.get(clock.id).remove(snooze);
                 notify = new Notifications(alui, clock.id, map);
@@ -307,20 +318,19 @@ public class AlarmUI extends JPanel {
         item.add(message);
     }
 
+
     public void passFrame(JFrame frame) {
         this.frame = frame;
     }
 
    //function to initiate alarmui
-    public static void start(Alarm alarm) {
+
+    public static void start(Alarm alarm, JFrame frame) {
+
         try {
-
             AlarmUI alarmui = new AlarmUI(alarm);
-
-            alarmui.setPreferredSize(new Dimension(100, 100));
-//            jframe.add(alarmui);
-//            jframe.setVisible(true);
-
+            alarmui.setPreferredSize(new Dimension(100,100));
+            alarmui.frame = frame;
             alarmui.jframe = new JFrame();
             alarmui.jframe.add(alarmui);
             alarmui.jframe.setSize(1000, 500);

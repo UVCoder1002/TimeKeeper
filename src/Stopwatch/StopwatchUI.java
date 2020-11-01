@@ -41,7 +41,7 @@ public class StopwatchUI extends JPanel {
     StopwatchUI stopWatchui;
     StopwatchBack stopWatchBack;
     HashMap<UUID, StopWatchItem> map;
-    JPanel scrollPane;
+    JPanel scrollPane=null;
     JPanel OutsidePane;
 
     public Integer getHr() {
@@ -76,8 +76,7 @@ public class StopwatchUI extends JPanel {
 
 
     public StopwatchUI(StopwatchBack stopWatchBack) {
-
-
+        if(scrollPane==null)
         scrollPane = new JPanel();
         scrollPane.setLayout(new BoxLayout(scrollPane, BoxLayout.Y_AXIS));
 //        scrollPane.setLayout(new FlowLayout());
@@ -85,33 +84,34 @@ public class StopwatchUI extends JPanel {
         map = new HashMap<>();
         this.stopWatchBack = stopWatchBack;
         stopWatchui = this;
-        this.stopWatchBack = stopWatchBack;
+        //this.stopWatchBack = stopWatchBack;
 
         if (frame == null) {
             frame = new JFrame("Time Keeper");
+            map = new HashMap<>();
+            this.stopWatchBack = stopWatchBack;
+            stopWatchui = this;
+
+            //tCD.setLayout(new GridLayout());
+            OutsidePane.add(OuterScrollPane);
+            frame.setContentPane(stopwatchJp);
+//        stopwatchJp.add(scrollPane,new GridConstraints());
+            //JScrollPane jScrollPane = new JScrollPane(stopwatchJp);
+            //scrollBar1.setOrientation(Adjustable.VERTICAL);
+            //frame.getContentPane().add(jScrollPane);
+//        stopwatchJp.add(scrollPane);
+            //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.pack();
+            frame.setSize(1010, 500);
+            frame.setLocation(250, 100);
+            //frame.add(tCD);
+            frame.setVisible(true);
 
         } else
-            stopwatchFrameVisible();
+            frame.setVisible(true);
 //        scrollPane = new JPanel();
-        map = new HashMap<>();
-        this.stopWatchBack = stopWatchBack;
-        stopWatchui = this;
 
-        //tCD.setLayout(new GridLayout());
-        OutsidePane.add(OuterScrollPane);
-        frame.setContentPane(stopwatchJp);
-//        stopwatchJp.add(scrollPane,new GridConstraints());
-        //JScrollPane jScrollPane = new JScrollPane(stopwatchJp);
-        //scrollBar1.setOrientation(Adjustable.VERTICAL);
-        //frame.getContentPane().add(jScrollPane);
-//        stopwatchJp.add(scrollPane);
-        //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.pack();
-        frame.setSize(1010, 500);
-        frame.setLocation(250, 100);
-        //frame.add(tCD);
 
-        frame.setVisible(true);
 
 
         startBT.addActionListener(new ActionListener() {
@@ -166,7 +166,7 @@ public class StopwatchUI extends JPanel {
 
 
     void printStopWatch(StopWatch clock) {
-        System.out.println("id is" + clock.id);
+        //System.out.println("id is" + clock.id);
         map.get(clock.id).updateui(clock);
     }
 
