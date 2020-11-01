@@ -7,10 +7,10 @@ So we can distribute time for all our work. We just need a timekeeper.
 So, here we created an application having following features and functionalities.
 
 # Features:
-1.Clock : display current date, day and time.(Analog + digital)
-2.Stopwatch : start, pause, resume, lap functionalities.(Multiple Stopwatch)
-3.Alarm : time based event triggering, snooze option. (diffrent tone for different alarm)
-4.Timer : set time and it runs backward, start, pause, resume, stop functionalities.(Multiple Timers)
-5.Calendar : display of all months (with navigation).
-6. Time Zones : add and display clocks for different time zones.
+1.Clock : display current date, day and time.(Analog + digital)<br />
+2.Stopwatch : start, pause, resume, lap functionalities.(Multiple Stopwatch)<br />
+3.Alarm : time based event triggering, snooze option. (diffrent tone for different alarm)<br />
+4.Timer : set time and it runs backward, start, pause, resume, stop functionalities.(Multiple Timers)<br />
+5.Calendar : display of all months (with navigation)<br />
+6. Time Zones : add and display clocks for different time zones<br />
 **State will be saved even after program restarts.**
