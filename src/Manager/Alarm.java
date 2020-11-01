@@ -60,14 +60,9 @@ public class Alarm  {
                         afl.fire(alarmid,path);
                     }
 
-                    @Override
-                    public void deleteListener(AlarmListener listener) {
-
-                    }
-
 
                     @Override
-                    public void timeUpdated(int hr, int min, int sec, int milli) {
+                    public void timeUpdated() {
 
                     }
 
@@ -96,13 +91,7 @@ public class Alarm  {
                }
 
                @Override
-               public void deleteListener(AlarmListener listener) {
-
-               }
-
-
-               @Override
-               public void timeUpdated(int hr, int min, int sec, int milli) {
+               public void timeUpdated() {
 
                }
            });

@@ -86,21 +86,20 @@ timeManager=new TimeManager();
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (timerUI == null) {
-
                     timerUI = new TimerUI(timerBack);
                     timerUI.timerFrameVisible();
                     timerUI.passFrame(frame);
                 }
                 else
                     timerUI.timerFrameVisible();
-                frame.setVisible(false);
+                    frame.setVisible(false);
+
             }
         });
         stopwatchButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (stopwatchUI == null) {
-
                     stopwatchUI = new StopwatchUI(stopwatchBack);
                     stopwatchUI.stopwatchFrameVisible();
                     stopwatchUI.passFrame(frame);
@@ -134,9 +133,9 @@ timeManager=new TimeManager();
                     ioException.printStackTrace();
                 }
                 alarmUI.passFrame(frame);*/
-                frame.setVisible(false);
-                    AlarmUI.start(alarmBack);
-//                    frame.setVisible(false);
+
+                    AlarmUI.start(alarmBack,frame);
+                    frame.setVisible(false);
 
             }
         });

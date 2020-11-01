@@ -83,7 +83,7 @@ public class TimeManager implements Runnable {
 //                                            notifyListeners(stopwatchListener.milli);
 
                                 }
-                                notifyListeners(stopWatch.hr, stopWatch.min, stopWatch.sec, stopWatch.milli);
+                                listener.timeUpdated();
                             }
 
 
@@ -136,7 +136,7 @@ public class TimeManager implements Runnable {
 
 //                                   notifyListeners(timer.hr, timer.min, timer.sec, timer.milli);
 //                                notifyListenersTimer(timerListener.milli);
-                                        listener.timeUpdated(timer.hr, timer.min, timer.sec, timer.milli);
+                                        listener.timeUpdated();
 
                                     }
                                 }
@@ -177,18 +177,6 @@ public class TimeManager implements Runnable {
         }
     }
 
-
-    private void notifyListeners(int hr, int min, int sec, int milli) {
-        ArrayList<TimeListener> timeListeners = new ArrayList<>(listeners);
-        for (TimeListener listener :
-                timeListeners) {
-            if (listener instanceof StopwatchListener || listener instanceof TimerListener) {
-                listener.timeUpdated(hr, min, sec, milli);
-            } else {
-                listener.timeUpdated(hr, min, sec, 0);
-            }
-        }
-    }
 
     public void removeListener(UUID id) {//add
         listeners.remove(map.get(id));

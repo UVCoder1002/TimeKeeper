@@ -10,5 +10,6 @@ public abstract class AlarmListener extends TimeListener {
     }
 
     public abstract void fireAlarm(UUID alarmid,String path);
-    public abstract void deleteListener(AlarmListener listener);
+
+
 }

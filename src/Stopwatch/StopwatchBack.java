@@ -27,7 +27,7 @@ public class StopwatchBack {
         addStopwatch(stopWatch);
         timeManager.addTimeListener(listner= new StopwatchListener(stopWatch) {
             @Override
-            public void timeUpdated(int hr, int min, int sec,int milli) {
+            public void timeUpdated() {
                 stopWatchListener.updateui(stopWatch);
             }
         });

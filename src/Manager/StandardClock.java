@@ -129,9 +129,9 @@ public class StandardClock extends JPanel implements Runnable {
     public static void main(String args[])
     {
         JFrame window = new JFrame();
-        Color c = new Color(118, 73, 190);
+//        Color c = new Color(118, 73, 190);
 //        window.setBackground(Color.white);
-        window.setBackground(c);
+//        window.setBackground(c);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setBounds(0, 0, 400, 400);
         StandardClock clock = new StandardClock("Asia/Kolkata");

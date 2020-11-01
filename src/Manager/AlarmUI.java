@@ -57,6 +57,7 @@ public class AlarmUI extends JPanel {
     JFrame frame;
 
     JTextArea message;
+    JButton Back;
 
 
     public Alarm getAl() {
@@ -98,6 +99,9 @@ public class AlarmUI extends JPanel {
         this.setLayout(new FlowLayout());
         alui = this;
 
+
+        Back=new JButton("Back");
+
         alarmArr = al.alarmArr;
         this.al = al;
         JPanel currentJpanel = this;
@@ -124,22 +128,32 @@ public class AlarmUI extends JPanel {
         dayText = new JTextField();
         message = new JTextArea();
         scrollPaneContent = new JPanel();
+//        yrText.setPreferredSize(new Dimension(60,30));
+//       dayText.setPreferredSize(new Dimension(60,30));
+//        minText.setPreferredSize(new Dimension(60,30));
+//        secText.setPreferredSize(new Dimension(60,30));
+//        monText.setPreferredSize(new Dimension(60,30));
+
         scrollPaneContent.setLayout(new BoxLayout(scrollPaneContent, BoxLayout.Y_AXIS));
 //        scrollPaneContent.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
         scrollPane = new JScrollPane(scrollPaneContent);
         scrollPane.setPreferredSize(new Dimension(400, 400));
 //        scrollPaneContent.setPreferredSize(new Dimension(400,400));
+
         scrollPaneContent.setBackground(Color.GRAY);
+
         yrText.setText("2020");
         monText.setText("11");
         dayText.setText("1");
         hrText.setText("0");
+
         yrText.setPreferredSize(new Dimension(50, 30));
         monText.setPreferredSize(new Dimension(40, 30));
         dayText.setPreferredSize(new Dimension(40, 30));
         hrText.setPreferredSize(new Dimension(40, 30));
         minText.setPreferredSize(new Dimension(40, 30));
         secText.setPreferredSize(new Dimension(40, 30));
+
 
         set = new Button();
         yrLabel.setText("Year :");
@@ -149,6 +163,7 @@ public class AlarmUI extends JPanel {
         minLabel.setText("Min :");
         secLabel.setText("Sec :");
         set.setLabel("SET");
+
         this.add(yrLabel);
         this.add(yrText);
         this.add(monLabel);
@@ -186,8 +201,8 @@ public class AlarmUI extends JPanel {
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new Menu();
-                //frame.setVisible(true);
+                //new Menu();
+                frame.setVisible(true);
                 jframe.setVisible(false);
             }
         });
@@ -235,6 +250,7 @@ public class AlarmUI extends JPanel {
                 scrollPane.revalidate();
             }
         };
+
     }
 
 
@@ -269,6 +285,7 @@ public class AlarmUI extends JPanel {
 
     }
 
+
     void addSnoozeAndMessage(AlarmItem item) {
         AlarmClock clock = item.alarmClock;
         JButton snooze = new JButton("Snooze");
@@ -289,21 +306,21 @@ public class AlarmUI extends JPanel {
         item.add(message);
     }
 
-    public void passFrame(JFrame frame)
-    {
-        this.frame = frame;
-    }
 
 
-    public static void start(Alarm alarm) {
+    public static void start(Alarm alarm, JFrame frame) {
         try {
-
             AlarmUI alarmui = new AlarmUI(alarm);
+            alarmui.setPreferredSize(new Dimension(100,100));
+//            jframe.add(alarmui);
+//            jframe.setVisible(true);
+            alarmui.frame = frame;
             alarmui.jframe = new JFrame();
             alarmui.jframe.add(alarmui);
             alarmui.jframe.setSize(1000, 500);
             alarmui.jframe.setLocation(200,100);
             alarmui.jframe.setVisible(true);
+
         } catch (ClassNotFoundException | IOException e) {
             e.printStackTrace();
         }

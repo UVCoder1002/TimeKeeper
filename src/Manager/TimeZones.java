@@ -76,9 +76,9 @@ public class TimeZones extends JPanel{
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new Menu();
+                jframe.setVisible(true);
                 frame.setVisible(false);
-                //jframe.setVisible(true);
+
             }
         });
     }
