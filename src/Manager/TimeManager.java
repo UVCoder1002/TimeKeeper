@@ -34,7 +34,7 @@ public class TimeManager implements Runnable {
                                 if (!ac.isfired && checkAlarm(listener)) {
                                     System.out.println("time match");
                                     ((AlarmListener) listener).alarmClock.isfired = true;
-                                    ((AlarmListener) listener).fireAlarm(ac.id);
+                                    ((AlarmListener) listener).fireAlarm(ac.id,ac.path);
                                 }
                             }
                             Thread.sleep(100);

@@ -50,13 +50,13 @@ public class Alarm  {
                 System.out.println("Reading obj");
                 setA = (AlarmClock) ois.readObject();
                 alarmArr.add(setA);
-                System.out.println(setA.dt.getHour() + "" + setA.dt.getMinute() + "" + setA.dt.getSecond());
+                System.out.println(setA.dt.getHour() + " " + setA.dt.getMinute() + " " + setA.dt.getSecond()+" "+setA.path);
                 tm.addTimeListener(new AlarmListener(setA) {
                     @Override
-                    public void fireAlarm(UUID alarmid) {
+                    public void fireAlarm(UUID alarmid, String path) {
                         System.out.println(alarmid);
 //                        System.out.println("Alarm Fired");
-                        afl.fire(alarmid);
+                        afl.fire(alarmid,path);
                     }
 
 
@@ -84,9 +84,9 @@ public class Alarm  {
            alarmArr.add(setA);
            tm.addTimeListener(new AlarmListener(setA) {
                @Override
-               public void fireAlarm(UUID alarmid) {
+               public void fireAlarm(UUID alarmid, String path) {
                    System.out.println("Alarm Fired");
-                   afl.fire(alarmid);
+                   afl.fire(alarmid,path);
                }
 
                @Override
@@ -102,12 +102,12 @@ public class Alarm  {
            ex.printStackTrace();
        }
    }
-   void setAlarm(int year,int month,int day,int hr,int min,int sec,String message)  {
+   void setAlarm(int year,int month,int day,int hr,int min,int sec,String message,String path)  {
        {
            try {
                UniqueCode uni = new UniqueCode();
 
-               AlarmClock a = new AlarmClock(year, month, day, hr, min, sec, zone, uni.generateunicode(),message);
+               AlarmClock a = new AlarmClock(year, month, day, hr, min, sec, zone, uni.generateunicode(),message,path);
                System.out.println(a.id);
                setAlarm(a);
            }catch (Exception e){

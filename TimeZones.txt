@@ -1,5 +1,0 @@
-Etc/GMT+9
-Asia/Aqtau
-Europe/Brussels
-Etc/GMT-9
-Europe/London

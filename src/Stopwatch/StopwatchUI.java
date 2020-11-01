@@ -104,7 +104,7 @@ public class StopwatchUI extends JPanel {
         //scrollBar1.setOrientation(Adjustable.VERTICAL);
         //frame.getContentPane().add(jScrollPane);
 //        stopwatchJp.add(scrollPane);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setSize(1010, 500);
         frame.setLocation(250, 100);
@@ -129,43 +129,8 @@ public class StopwatchUI extends JPanel {
             @Override
             public void updateui(StopWatch stopWatch) {
                 printStopWatch(stopWatch);
-
-
-
             }
         };
-
-
-
-//        pauseBT.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                stopWatchBack.pauseClock
-//                if (flag == 0) {
-//                    listener.ispaused = true;
-//                    pauseBT.setText("Resume");
-//                    flag = 1;
-//                } else {
-//                    listener.ispaused = false;
-//                    pauseBT.setText("Pause");
-//                    flag = 0;
-//                }
-//            }
-//        });
-
-
-//        resetBT.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                timeManager.removeListener(listener);
-//                lapOutput.setText("");
-//                noOfClickLap = 0;
-//                flag = 1;
-//                setTimer(0, 0, 0);
-//                setmilli(0);
-//                startBT.setEnabled(true);
-//            }
-//        });
 
         Back.addActionListener(new ActionListener() {
             @Override

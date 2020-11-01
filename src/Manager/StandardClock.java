@@ -45,7 +45,7 @@ public class StandardClock extends JPanel implements Runnable {
     }
     public void paint(Graphics g){
         g.clearRect(0,0,250,250);
-        g.setColor(Color.white);
+        g.setColor(new Color(241, 241, 241));
         g.fillRect(0,0,500,500);
         int hx,hy,mx,my,sx,sy,min=0,hr=0,sec=0;
         String ampm="AM";

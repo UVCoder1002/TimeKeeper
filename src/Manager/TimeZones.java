@@ -72,11 +72,13 @@ public class TimeZones extends JPanel{
         clocks.revalidate();
         jScrollPaneTimeZOne.revalidate();
       bRead.close();
+
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                new Menu();
                 frame.setVisible(false);
-                jframe.setVisible(true);
+                //jframe.setVisible(true);
             }
         });
     }
@@ -138,30 +140,30 @@ public class TimeZones extends JPanel{
 
     public void passFrame(JFrame jFrame)
     {
-        jframe=jFrame;
+        this.jframe=jFrame;
     }
 
     public static void main(String[] args) throws IOException {
         TimeZones timeZone = new TimeZones();
-        JFrame frame=new JFrame("Time Keeper");
-//        timeZone.frame.add(timeZone.jPanelTimeZone,BorderLayout.WEST);
+        timeZone.frame=new JFrame("Time Keeper");
+        timeZone.frame.add(timeZone.jPanelTimeZone,BorderLayout.WEST);
 //        timeZone.frame.add(timeZone,BorderLayout.CENTER);
 //        timeZone.frame.add(timeZone.jScrollPaneTimeZOne);
 //        frame.add(timeZone.jPanelTimeZone,BorderLayout.WEST);
-        frame.add(timeZone,BorderLayout.CENTER);
+        timeZone.frame.add(timeZone,BorderLayout.CENTER);
 //        frame.add(timeZone.jScrollPaneTimeZOne);
 
 //        timeZone.jPanelTimeZone.add(timeZone.timezone);
 //        timeZone.jPanelTimeZone=new JPanel();
 //        timeZone.jPanelTimeZone.add(timeZone.jScrollBar);
-        frame.setLocation(0,0);
+        timeZone.frame.setLocation(0,0);
 //        timeZone.jScrollBar = new JScrollBar();
 //        timeZone.jScrollBar.setOrientation(Adjustable.VERTICAL);
 //        frame.add(timeZone.jScrollBar,BorderLayout.EAST);
-        frame.setSize(1010, 500);
-       frame.setLocation(200,100);
+        timeZone.frame.setSize(1010, 500);
+        timeZone.frame.setLocation(200,100);
         timeZone.displayZones();
-       frame.setVisible(true);
+        timeZone.frame.setVisible(true);
     }
 
 }

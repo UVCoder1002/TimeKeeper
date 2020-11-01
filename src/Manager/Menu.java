@@ -27,6 +27,7 @@ public class Menu extends JPanel{
     StopwatchBack stopwatchBack;
     TimerBack timerBack;
     Alarm alarmBack;
+    AlarmUI alarmUI;
     public Menu() {
 timeManager=new TimeManager();
  stopwatchBack=new StopwatchBack(timeManager);
@@ -54,7 +55,7 @@ timeManager=new TimeManager();
         //jPanelCal.setPreferredSize(new Dimension(310,310));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
-        frame.setSize(900, 500);
+        frame.setSize(1000, 500);
         frame.setLocation(200,100);
         //setBackground(Color.BLACK);
         jPanelCal1.add(calendarObj);
@@ -103,9 +104,8 @@ timeManager=new TimeManager();
                     stopwatchUI = new StopwatchUI(stopwatchBack);
                     stopwatchUI.stopwatchFrameVisible();
                     stopwatchUI.passFrame(frame);
-
+                    frame.setVisible(false);
 //                    stopwatchUI = new StopwatchUI(timeManager);
-//
                 }
                 else
                     stopwatchUI.stopwatchFrameVisible();
@@ -128,7 +128,13 @@ timeManager=new TimeManager();
         alarmButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                /*try {
+                    alarmUI = new AlarmUI(alarmBack);
+                } catch (IOException | ClassNotFoundException ioException) {
+                    ioException.printStackTrace();
+                }
+                alarmUI.passFrame(frame);*/
+                frame.setVisible(false);
                     AlarmUI.start(alarmBack);
                     frame.setVisible(false);
 
@@ -136,11 +142,11 @@ timeManager=new TimeManager();
         });
     }
 
-    /*public void frameVisible()
+    public void frameVisible()
     {
             frame.setVisible(true);
 
-    }*/
+    }
 
     public static void main(String[] args) {
         new Menu();
