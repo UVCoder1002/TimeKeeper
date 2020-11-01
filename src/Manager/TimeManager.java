@@ -28,7 +28,7 @@ public class TimeManager implements Runnable {
 //                            System.out.println("Checking Alarm For : " + ac.getDt().toString());
                                     if (checkAlarm(listener)) {
                                         ((AlarmListener) listener).alarmClock.isfired = true;
-                                        ((AlarmListener) listener).fireAlarm(ac.id);
+                                        ((AlarmListener) listener).fireAlarm(ac.id,ac.path);
 //                                        listeners.remove(listener);
                                     }
 

@@ -37,7 +37,7 @@ public class AlarmItem extends JPanel {
         this.add(hour);
         this.add(min);
         this.add(sec);
-        this.setBackground(Color.BLUE);
+        this.setBackground(Color.PINK);
 
 
     }

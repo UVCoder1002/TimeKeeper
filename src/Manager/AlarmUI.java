@@ -1,5 +1,6 @@
 package Manager;
 
+import javax.sound.sampled.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -14,7 +15,7 @@ public class AlarmUI extends JPanel {
     JLabel hourLabel,yrLabel,dayLabel,monLabel;
     JLabel minLabel;
     JLabel secLabel;
-//    JComboBox<String> ampmDrop;
+    //    JComboBox<String> ampmDrop;
     Date date;
     String[] ampm;
     JLabel timeLeft;
@@ -41,6 +42,20 @@ public class AlarmUI extends JPanel {
     AlarmUI alui;
     HashMap<UUID,AlarmItem> map;
     Notifications notify;
+    FlowLayout flowLayout;
+    Button backButton;
+    JPanel currentJpanel;
+    JFrame jframe;
+    String[] tones = {"Tone1", "Tone2"};
+    JComboBox comboBoxTone = new JComboBox(tones);
+    String tone;
+    String path="src\\ToneSetting\\sounds\\alarm2.wav";
+    File file;
+    Clip clip;
+    AudioInputStream audioTnSt;
+    ArrayList<AlarmTone> alarmTones;
+
+
 
     public Alarm getAl() {
         return al;
@@ -70,6 +85,10 @@ public class AlarmUI extends JPanel {
         return Integer.parseInt(secText.getText());
     }
 
+    public String getPath() {
+        return path;
+    }
+
     public AlarmUI(Alarm al) throws IOException, ClassNotFoundException {
 //        this.setLayout(new BoxLayout(this,BoxLayout.LINE_AXIS));
 //        this.setLayout(new GridLayout(0,0));
@@ -79,9 +98,9 @@ public class AlarmUI extends JPanel {
         snooze = new Button();
         snooze.setLabel("Snooze");
         alarmArr =al.alarmArr;
-        JPanel currentJpanel = this;
+        currentJpanel = this;
         //Alarm newAlarm = new Alarm(zone);
-       // Thread t1 = new Thread(newAlarm);
+        // Thread t1 = new Thread(newAlarm);
         //this.setLayout();
         //t1.start();
         //TimeZones tzone=new TimeZones();
@@ -105,18 +124,18 @@ public class AlarmUI extends JPanel {
         scrollPane=new JScrollPane(scrollPaneContent);
         scrollPane.setPreferredSize(new Dimension(400,400));
         scrollPaneContent.setPreferredSize(new Dimension(400,400));
-        scrollPaneContent.setBackground(Color.RED);
+        scrollPaneContent.setBackground(Color.GRAY);
         delete=new Button("Stop");
         yrText.setText("2020");
         monText.setText("10");
-        dayText.setText("21");
-        hrText.setText("22");
-        yrText.setPreferredSize(new Dimension(20, 30));
-        monText.setPreferredSize(new Dimension(20, 30));
-        dayText.setPreferredSize(new Dimension(20, 30));
-        hrText.setPreferredSize(new Dimension(20, 30));
-        minText.setPreferredSize(new Dimension(20, 30));
-        secText.setPreferredSize(new Dimension(20, 30));
+        dayText.setText("31");
+        hrText.setText("20");
+        yrText.setPreferredSize(new Dimension(50, 30));
+        monText.setPreferredSize(new Dimension(40, 30));
+        dayText.setPreferredSize(new Dimension(40, 30));
+        hrText.setPreferredSize(new Dimension(40, 30));
+        minText.setPreferredSize(new Dimension(40, 30));
+        secText.setPreferredSize(new Dimension(40, 30));
         set = new Button();
         snooze=new Button("Snooze");
         stop=new Button("Stop");
@@ -142,27 +161,68 @@ public class AlarmUI extends JPanel {
 //        this.add(ampmDrop);
         this.add(set);
         this.add(scrollPane);
+        backButton = new Button("Back");
+
         map = new HashMap<>();
-        printAlarmitem();
+        printAlarmItem();
 
         set.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
-                al.setAlarm(getYrText(),getMonText(),getDayText(),getHrText(),getMinText(),getSecText());
-                printAlarmitem();
+                al.setAlarm(getYrText(),getMonText(),getDayText(),getHrText(),getMinText(),getSecText(),getPath());
+                printAlarmItem();
 
 
             }
-
         });
 
-        UUID code=al.id;
-        al.afl = new AlarmFireListener() {
+        backButton.addActionListener(new ActionListener() {
             @Override
-            public void fire(UUID id) {
-               map.get(id).add(snooze);
-               map.get(id).add(delete);
+            public void actionPerformed(ActionEvent e) {
+                Menu menu = new Menu();
+                menu.frameVisible();
+                jframe.setVisible(false);
+            }
+        });
+
+        comboBoxTone.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                tone = comboBoxTone.getSelectedItem().toString();
+                if (tone.equals("Tone1")) {
+                    path = "src\\ToneSetting\\sounds\\alarm2.wav";
+                } else if (tone.equals("Tone2")) {
+                    path = "src\\ToneSetting\\sounds\\ringtone1.wav";
+                }
+            }
+        });
+
+
+
+        UUID code=al.id;
+        al.afl = new AlarmFireListener() {//tone will be fired here
+            @Override
+            public void fire(UUID id,String path) {
+
+                file = new File(path);
+                if(file.exists())
+                {
+                    try {
+                        audioTnSt = AudioSystem.getAudioInputStream(file);
+                        clip = AudioSystem.getClip();
+                        clip.open(audioTnSt);
+                    } catch (UnsupportedAudioFileException | LineUnavailableException | IOException unsupportedAudioFileException) {
+                        unsupportedAudioFileException.printStackTrace();
+                    }
+                } else
+                {
+                    System.out.println("File doesn't exist");
+                }
+
+                clip.start();
+                clip.loop(Clip.LOOP_CONTINUOUSLY);
+                map.get(id).add(snooze);
+                map.get(id).add(delete);
                 snooze.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
@@ -171,6 +231,7 @@ public class AlarmUI extends JPanel {
                         notify=new Notifications(alui,id,map);
                         Thread t=new Thread(notify);
                         t.start();
+                        clip.close();
 //                        JLabel msg = new JLabel("Alarm snoozed for 5 minutes");
 //                        map.get(id).add(msg);
 //                      map.get(id).revalidate();
@@ -186,23 +247,22 @@ public class AlarmUI extends JPanel {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         al.deleteAlarm(id);
-                        printAlarmitem();
+                        printAlarmItem();
+                        clip.close();
 //                        alui.revalidate();
                     }
                 });
 //                alui.revalidate();
-                 map.get(id).revalidate();
+                map.get(id).revalidate();
 //                 alui.revalidate();
 //                 map.get(id).repaint();
-                 scrollPaneContent.revalidate();
-                 scrollPane.revalidate();
+                scrollPaneContent.revalidate();
+                scrollPane.revalidate();
 
             }
         };
-
-
     }
-     void printAlarmitem(){
+    void printAlarmItem(){
         scrollPaneContent.removeAll();
         Iterator<AlarmClock> iter=alarmArr.iterator();
         while(iter.hasNext()) {
@@ -212,22 +272,30 @@ public class AlarmUI extends JPanel {
             map.put(clock.id,alarmItem);
             scrollPaneContent.add(alarmItem);
         }
-         scrollPaneContent.repaint();
-         scrollPane.revalidate();
+        scrollPaneContent.repaint();
+        scrollPane.revalidate();
 //        revalidate();
 
-     }
+    }
     public static void main(String[] args) throws IOException, ClassNotFoundException {
-        JFrame jframe = new JFrame();
-        TimeZones timezon = new TimeZones();
+        TimeZones timezone = new TimeZones();
         TimeManager tm = new TimeManager();
-        Alarm al = new Alarm(tm,timezon.dateFormat.getTimeZone().getID());
-       AlarmUI alarm = new AlarmUI(al);
-
-      //  System.out.println(alarm);
-    //    Alarm alarm = new Alarm(TimeZone.getDefault().toString());
-        jframe.add(alarm);
-        jframe.setVisible(true);
+        Alarm al = new Alarm(tm,timezone.dateFormat.getTimeZone().getID());
+        AlarmUI alarm = new AlarmUI(al);
+        alarm.jframe = new JFrame();
+        alarm.flowLayout = new FlowLayout();
+        alarm.jframe.setLayout(alarm.flowLayout);
+        alarm.jframe.add(alarm.comboBoxTone,BorderLayout.EAST);
+        alarm.jframe.add(alarm.backButton,BorderLayout.NORTH);
+        alarm.currentJpanel.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
+        //jframe.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
+        //  System.out.println(alarm);
+        //    Alarm alarm = new Alarm(TimeZone.getDefault().toString());
+        alarm.jframe.setSize(1000, 500);
+        alarm.jframe.setLocation(200,100);
+        alarm.jframe.add(alarm);
+        //alarm.jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        alarm.jframe.setVisible(true);
 
     }
 }
