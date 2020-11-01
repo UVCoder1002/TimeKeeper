@@ -27,6 +27,7 @@ public class TimeZones extends JPanel{
     FlowLayout flowLayout= new FlowLayout();
     String[] s;
     JFrame frame=null;
+    JFrame jframe;
     Menu menu;
 
 
@@ -71,11 +72,13 @@ public class TimeZones extends JPanel{
         clocks.revalidate();
         jScrollPaneTimeZOne.revalidate();
       bRead.close();
+
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                new Menu();
                 frame.setVisible(false);
-                menu.frameVisible();
+                //jframe.setVisible(true);
             }
         });
     }
@@ -91,19 +94,23 @@ public class TimeZones extends JPanel{
             timezones.add( ""+ zoneId);
         });
         String[] array = timezones.toArray(new String[timezones.size()]);
-        JComboBox<String> Tz=new JComboBox<String>(array);
-        Tz.setPreferredSize(new Dimension(100,20));
-        this.add(Tz);
+        JComboBox<String> timeZonesList=new JComboBox<String>(array);
+        timeZonesList.setPreferredSize(new Dimension(100,20));
+        this.add(timeZonesList);
+//        this.add(clocks);
+        //jPanelTimeZone.add(this);
+
 //        this.add(clocks);
 //        jPanelTimeZone.add(this);
+
         this.setLayout(flowLayout);
         this.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
         //timezone = this;
-        Tz.addActionListener(new ActionListener() {
+        timeZonesList.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                   bWrite.write(Tz.getSelectedItem().toString());
+                   bWrite.write(timeZonesList.getSelectedItem().toString());
                    bWrite.newLine();
                     //bWrite.write("urvashi");
                     bWrite.flush();
@@ -111,7 +118,7 @@ public class TimeZones extends JPanel{
                     ex.printStackTrace();
                 }
                 finally {
-                    stdclock = new StandardClock(Tz.getSelectedItem().toString());
+                    stdclock = new StandardClock(timeZonesList.getSelectedItem().toString());
                     clocks.add(stdclock);
                     stdclock.start();
                     clocks.revalidate();
@@ -123,32 +130,40 @@ public class TimeZones extends JPanel{
             }
         });
 
-        // Tz.setVisible(true);
+        // timeZonesList.setVisible(true);
     }
 
-    public void displayFrame(TimeZones timeZone,JFrame jFrame)
+    /*public void displayFrame()
     {
+        frame.setVisible(true);
+    }*/
 
+    public void passFrame(JFrame jFrame)
+    {
+        this.jframe=jFrame;
     }
 
     public static void main(String[] args) throws IOException {
-
-        JFrame frame=new JFrame("Time Keeper");
         TimeZones timeZone = new TimeZones();
+        timeZone.frame=new JFrame("Time Keeper");
+        timeZone.frame.add(timeZone.jPanelTimeZone,BorderLayout.WEST);
+//        timeZone.frame.add(timeZone,BorderLayout.CENTER);
+//        timeZone.frame.add(timeZone.jScrollPaneTimeZOne);
 //        frame.add(timeZone.jPanelTimeZone,BorderLayout.WEST);
-        frame.add(timeZone,BorderLayout.CENTER);
+        timeZone.frame.add(timeZone,BorderLayout.CENTER);
 //        frame.add(timeZone.jScrollPaneTimeZOne);
+
 //        timeZone.jPanelTimeZone.add(timeZone.timezone);
 //        timeZone.jPanelTimeZone=new JPanel();
 //        timeZone.jPanelTimeZone.add(timeZone.jScrollBar);
-        frame.setLocation(0,0);
+        timeZone.frame.setLocation(0,0);
 //        timeZone.jScrollBar = new JScrollBar();
 //        timeZone.jScrollBar.setOrientation(Adjustable.VERTICAL);
 //        frame.add(timeZone.jScrollBar,BorderLayout.EAST);
-        frame.setSize(1010, 500);
-        frame.setLocation(200,100);
+        timeZone.frame.setSize(1010, 500);
+        timeZone.frame.setLocation(200,100);
         timeZone.displayZones();
-        frame.setVisible(true);
+        timeZone.frame.setVisible(true);
     }
 
 }

@@ -62,7 +62,7 @@ public class FCalendar extends JPanel {
         System.out.println("drawcal");
         this.setMaximumSize(new Dimension(300,300)  );
         this.setPreferredSize(new Dimension(300,300));
-        this.setBackground(Color.BLUE);
+        //this.setBackground(Color.BLUE);
         cal.setLayout(new GridLayout(0, 7,5,5));
         cal.setBorder(BorderFactory.createEmptyBorder(2,2,2,2));
         lp.add(details,-1);

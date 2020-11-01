@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class AlarmItem extends JPanel {
+    AlarmClock alarmClock;
     JLabel date;
     JLabel month;
     JLabel year;
@@ -13,6 +14,7 @@ public class AlarmItem extends JPanel {
     Button snooze;
     Button delete;
     AlarmItem(AlarmUI alarmUI,AlarmClock alarmclock){
+        this.alarmClock=alarmclock;
         AlarmItem alarmItem=this;
         date=new JLabel();
         month=new JLabel();

@@ -38,7 +38,6 @@ public class UniqueCode {
                 flag = 0;
                 while (it.hasNext()) {
                     UUID itU = it.next();
-                    System.out.println(itU.toString());
                     if (itU.toString().compareTo(uniqueKey.toString())==0){
                         flag=1;
                         break;}

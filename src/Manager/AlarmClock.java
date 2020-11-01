@@ -11,12 +11,17 @@ public class AlarmClock implements Serializable {
     UUID id;
     String path;
     boolean isfired;
+    String message;
 
-    AlarmClock(int year,int month,int day,int hr,int min,int sec,String zone,UUID uni, String path){
+
+
+    AlarmClock(int year,int month,int day,int hr,int min,int sec,String zone,UUID uni,String message,String path){
         isfired=false;
         id=uni;
         dt= ZonedDateTime.of(year,month,day,hr,min,sec,0, ZoneId.of(zone));
-        this.path = path;
+        this.message = message;
+            this.path = path;
+
     }
 
     public ZonedDateTime getDt() {
