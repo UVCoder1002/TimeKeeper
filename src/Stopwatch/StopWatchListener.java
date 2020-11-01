@@ -1,5 +1,5 @@
 package Stopwatch;
 
 public interface StopWatchListener {
-    void updateui(StopWatch stopWatch);
+    void updateUI(StopWatch stopWatch);
 }

@@ -9,42 +9,22 @@ import java.io.*;
 import java.util.*;
 
 public class AlarmUI extends JPanel {
-    TextArea textArea;
     Alarm al;
     JLabel hourLabel, yrLabel, dayLabel, monLabel;
     JLabel minLabel;
     JLabel secLabel;
-    //    JComboBox<String> ampmDrop;
-    Date date;
     String[] ampm;
-    JLabel timeLeft;
     JTextField hrText, monText, yrText, dayText;
     JTextField minText;
     JTextField secText;
     Button set;
-    AlarmClock setA, getA;
-    JLayeredPane lp;
-    CurrentTime time;
     ArrayList<AlarmClock> alarmArr;
-    int hr = 0, min = 0, sec = 0;
-    Button stop;
-    String amOrpm;
-    FileOutputStream fos;
-    ObjectOutputStream oos;
-    FileInputStream fis;
-    ObjectInputStream ois;
-    Iterator<AlarmClock> iter;
-    Iterator<AlarmClock> iter2;
     JScrollPane scrollPane;
     JPanel scrollPaneContent;
-    AlarmItem alarmItem;
     AlarmUI alui;
     HashMap<UUID, AlarmItem> map;
     Notifications notify;
-
-    FlowLayout flowLayout;
     Button backButton;
-    JPanel currentJpanel;
     String[] tones = {"Tone1", "Tone2"};
     JComboBox comboBoxTone = new JComboBox(tones);
     String tone;
@@ -52,17 +32,11 @@ public class AlarmUI extends JPanel {
     File file;
     Clip clip;
     AudioInputStream audioTnSt;
-    ArrayList<AlarmTone> alarmTones;
     JFrame jframe;
     JFrame frame;
-
     JTextArea message;
     JButton Back;
 
-
-    public Alarm getAl() {
-        return al;
-    }
 
     public Integer getHrText() {
         return Integer.parseInt(hrText.getText());
@@ -92,28 +66,13 @@ public class AlarmUI extends JPanel {
         return path;
     }
 
-    public AlarmUI(Alarm al) throws IOException, ClassNotFoundException {
-//        this.setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
-//        this.setLayout(new GridLayout(0,0));
-
+    public AlarmUI(Alarm al) {
         this.setLayout(new FlowLayout());
         alui = this;
-
-
         Back=new JButton("Back");
-
         alarmArr = al.alarmArr;
         this.al = al;
-        JPanel currentJpanel = this;
-
-        //Alarm newAlarm = new Alarm(zone);
-        // Thread t1 = new Thread(newAlarm);
-        //this.setLayout();
-        //t1.start();
-        //TimeZones tzone=new TimeZones();
-
         ampm = new String[]{"AM", "PM"};
-//        ampmDrop = new JComboBox<String>(ampm);
         yrLabel = new JLabel();
         monLabel = new JLabel();
         dayLabel = new JLabel();
@@ -128,18 +87,10 @@ public class AlarmUI extends JPanel {
         dayText = new JTextField();
         message = new JTextArea();
         scrollPaneContent = new JPanel();
-//        yrText.setPreferredSize(new Dimension(60,30));
-//       dayText.setPreferredSize(new Dimension(60,30));
-//        minText.setPreferredSize(new Dimension(60,30));
-//        secText.setPreferredSize(new Dimension(60,30));
-//        monText.setPreferredSize(new Dimension(60,30));
-
         scrollPaneContent.setLayout(new BoxLayout(scrollPaneContent, BoxLayout.Y_AXIS));
-//        scrollPaneContent.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
+        scrollPaneContent.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
         scrollPane = new JScrollPane(scrollPaneContent);
         scrollPane.setPreferredSize(new Dimension(400, 400));
-//        scrollPaneContent.setPreferredSize(new Dimension(400,400));
-
         scrollPaneContent.setBackground(Color.GRAY);
 
         yrText.setText("2020");
@@ -189,19 +140,14 @@ public class AlarmUI extends JPanel {
         set.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
-
                 al.setAlarm(getYrText(), getMonText(), getDayText(), getHrText(), getMinText(), getSecText(), message.getText(), getPath());
                 printAlarmitem();
-
-
             }
         });
 
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //new Menu();
                 frame.setVisible(true);
                 jframe.setVisible(false);
             }
@@ -222,7 +168,6 @@ public class AlarmUI extends JPanel {
 
         UUID code = al.id;
         al.afl = new AlarmFireListener() {
-
             @Override
             public void fire(UUID id, String path) {
                 file = new File(path);
@@ -237,25 +182,19 @@ public class AlarmUI extends JPanel {
                 } else {
                     System.out.println("File doesn't exist");
                 }
-
                 clip.start();
                 clip.loop(Clip.LOOP_CONTINUOUSLY);
-
-
                 AlarmItem item = map.get(id);
                 addSnoozeAndMessage(item);
                 item.revalidate();
-
                 scrollPaneContent.revalidate();
                 scrollPane.revalidate();
             }
         };
-
     }
 
 
     void printAlarmitem() {
-
         scrollPaneContent.removeAll();
         Iterator<AlarmClock> iter = alarmArr.iterator();
         while (iter.hasNext()) {
@@ -277,12 +216,9 @@ public class AlarmUI extends JPanel {
             }
             map.put(clock.id, alarmItem);
             scrollPaneContent.add(alarmItem);
-
         }
         scrollPaneContent.repaint();
         scrollPane.revalidate();
-//        revalidate();
-
     }
 
 
@@ -309,20 +245,13 @@ public class AlarmUI extends JPanel {
 
 
     public static void start(Alarm alarm, JFrame frame) {
-        try {
             AlarmUI alarmui = new AlarmUI(alarm);
             alarmui.setPreferredSize(new Dimension(100,100));
-//            jframe.add(alarmui);
-//            jframe.setVisible(true);
             alarmui.frame = frame;
             alarmui.jframe = new JFrame();
             alarmui.jframe.add(alarmui);
             alarmui.jframe.setSize(1000, 500);
             alarmui.jframe.setLocation(200,100);
             alarmui.jframe.setVisible(true);
-
-        } catch (ClassNotFoundException | IOException e) {
-            e.printStackTrace();
-        }
     }
 }

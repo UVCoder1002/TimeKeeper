@@ -32,11 +32,6 @@ public class TimerUI extends JPanel {
     TimeListener listener;
     JFrame frame = null;
     JFrame jFrame;
-    //TimerBackEnd tt;
-    //Thread t1;
-    //TimerUI timer;
-    int flag = 1;
-    int temp = 1;
     File file;
     String tone, path = "src\\ToneSetting\\sounds\\alarm2.wav";
     FileWriter fileWrite;
@@ -64,23 +59,11 @@ public class TimerUI extends JPanel {
         return Integer.parseInt(milli.getText());
     }
 
-    public void setTime(int hr, int min, int sec) {
-        this.hr.setText("" + hr);
-        this.min.setText("" + min);
-        this.sec.setText("" + sec);
-    }
-
-    public void setMilli(int milli) {
-        this.milli.setText("" + milli);
-    }
 
     public TimerUI(TimerBack timerBack) {
         timerui = this;
-//        scrollPane.setBackground(Color.red);
-
         scrollPane=new JPanel();
         scrollPane.setLayout(new BoxLayout(scrollPane,BoxLayout.Y_AXIS));
-//        scrollPane.setLayout(new BoxLayout(scrollPane, BoxLayout.Y_AXIS));
         uniId = new UniqueCode();
         this.timerBack = timerBack;
         scrollPaneBar=new JScrollPane(scrollPane);

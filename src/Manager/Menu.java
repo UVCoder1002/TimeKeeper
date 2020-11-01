@@ -1,6 +1,5 @@
 package Manager;
 
-
 import Stopwatch.StopwatchBack;
 import Stopwatch.StopwatchUI;
 import Timer.*;
@@ -16,136 +15,109 @@ public class Menu extends JPanel{
     private JButton timerButton;
     private JButton timeZonesButton;
     private JButton alarmButton;
-    private JPanel jPanelCal1;
+    private JPanel jPanelCalendar;
     TimeManager timeManager;
     TimerUI timerUI=null;
     StopwatchUI stopwatchUI= null;
     TimeZones timeZones = null;
-    JFrame frame;
+    JFrame jFrameMenu;
     String[] s;
     FlowLayout flowLayout;
-    StopwatchBack stopwatchBack;
-    TimerBack timerBack;
-    Alarm alarmBack;
-    AlarmUI alarmUI;
+    StopwatchBack stopwatchBackEnd;
+    TimerBack timerBackEnd;
+    Alarm alarmBackEnd;
+
     public Menu() {
-timeManager=new TimeManager();
- stopwatchBack=new StopwatchBack(timeManager);
- timerBack=new TimerBack(timeManager);
- alarmBack=new Alarm(timeManager,"Asia/Kolkata");
-        jPanelCal1=new JPanel();
+        timeManager=new TimeManager();
+        stopwatchBackEnd =new StopwatchBack(timeManager);
+        timerBackEnd =new TimerBack(timeManager);
+        alarmBackEnd =new Alarm(timeManager,"Asia/Kolkata");
+        jPanelCalendar =new JPanel();
         flowLayout= new FlowLayout();
+
         FCalendar calendarObj = new FCalendar();
         StandardClock standardClock= new StandardClock("Asia/Kolkata");
         standardClock.start();
-        //tCD.setLayout(new GridLayout());
-        frame = new JFrame("Time Keeper");
-        //timerUI=new TimerUI(frame);
-        //frame.setContentPane(new Menu().jPanelMenu);
-        //frame.setBackground(new Color(255,255,255));
-        frame.setLayout(flowLayout);
-        frame.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
-        frame.add(jPanelMenu);
+
+        jFrameMenu = new JFrame("Time Keeper");
+        jFrameMenu.setLayout(flowLayout);
+        jFrameMenu.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
+
+        jFrameMenu.add(jPanelMenu);
         try {
-            UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+            UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");//plaf = pluggable look and feel
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
             e.printStackTrace();
         }
-        jPanelCal1.setPreferredSize(new Dimension(310,310));
-        //jPanelCal.setPreferredSize(new Dimension(310,310));
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.pack();
-        frame.setSize(1000, 500);
-        frame.setLocation(200,100);
-        //setBackground(Color.BLACK);
-        jPanelCal1.add(calendarObj);
-        frame.add(standardClock,BorderLayout.EAST);
-        frame.add(jPanelCal1,BorderLayout.CENTER);
-        //frame.add(calendarObj,BorderLayout.CENTER);
-        //frame.add(tCD);
-        frame.setVisible(true);
-        frame.addWindowListener(new WindowAdapter() {
 
+        jPanelCalendar.setPreferredSize(new Dimension(310,310));
+        jFrameMenu.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        jFrameMenu.pack();
+        jFrameMenu.setSize(1000, 500);
+        jFrameMenu.setLocation(200,100);
 
+        jPanelCalendar.add(calendarObj);
+        jFrameMenu.add(standardClock,BorderLayout.EAST);
+        jFrameMenu.add(jPanelCalendar,BorderLayout.CENTER);
+        jFrameMenu.setVisible(true);
+        jFrameMenu.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                    timerBack.writeTimerFile();
-                    alarmBack.writeAlarmFile();
+                    timerBackEnd.writeTimerFile();
+                    alarmBackEnd.writeAlarmFile();
             }
-
             @Override
-            public void windowClosed(WindowEvent e) {
-
-            }
-
-
+            public void windowClosed(WindowEvent e) { }
         });
 
 
-        timerButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (timerUI == null) {
-                    timerUI = new TimerUI(timerBack);
-                    timerUI.timerFrameVisible();
-                    timerUI.passFrame(frame);
-                }
-                else
-                    timerUI.timerFrameVisible();
-                    frame.setVisible(false);
-
-            }
+        /*ALARM LISTENER - IF ALARM OBJECT NULL CREATING NEW AND PASSING FRAME*/
+        alarmButton.addActionListener(e -> {
+            AlarmUI.start(alarmBackEnd, jFrameMenu);
+            jFrameMenu.setVisible(false);
         });
-        stopwatchButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (stopwatchUI == null) {
-                    stopwatchUI = new StopwatchUI(stopwatchBack);
-                    stopwatchUI.stopwatchFrameVisible();
-                    stopwatchUI.passFrame(frame);
-                    frame.setVisible(false);
-//                    stopwatchUI = new StopwatchUI(timeManager);
-                }
-                else
-                    stopwatchUI.stopwatchFrameVisible();
-                frame.setVisible(false);
-            }
-        });
-        timeZonesButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    timeZones = new TimeZones();
-                    timeZones.passFrame(frame);
-                    frame.setVisible(false);
-                    TimeZones.main(s);
-                } catch (IOException ioException) {
-                    ioException.printStackTrace();
-                }
-            }
-        });
-        alarmButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                /*try {
-                    alarmUI = new AlarmUI(alarmBack);
-                } catch (IOException | ClassNotFoundException ioException) {
-                    ioException.printStackTrace();
-                }
-                alarmUI.passFrame(frame);*/
 
-                    AlarmUI.start(alarmBack,frame);
-                    frame.setVisible(false);
 
+        /*STOPWATCH LISTENER - IF STOPWATCH OBJECT NULL CREATING NEW AND PASSING FRAME*/
+        stopwatchButton.addActionListener(e -> {
+            if (stopwatchUI == null) {
+                stopwatchUI = new StopwatchUI(stopwatchBackEnd);
+                stopwatchUI.stopwatchFrameVisible();
+                stopwatchUI.passFrame(jFrameMenu);
+                jFrameMenu.setVisible(false);
+            }
+            else
+                stopwatchUI.stopwatchFrameVisible();
+            jFrameMenu.setVisible(false);
+        });
+
+
+        /*TIMER LISTENER - IF TIMER OBJECT NULL CREATING NEW AND PASSING FRAME*/
+        timerButton.addActionListener(e -> {
+            if (timerUI == null) {
+                timerUI = new TimerUI(timerBackEnd);
+                timerUI.timerFrameVisible();
+                timerUI.passFrame(jFrameMenu);
+            }
+            else
+                timerUI.timerFrameVisible();/*OTHERWISE ONLY MAKE THE FRAME VISIBLE*/
+                jFrameMenu.setVisible(false);
+        });
+
+
+        /*TIME ZONE LISTENER - IF TIME ZONE OBJECT NULL CREATING NEW AND PASSING FRAME*/
+        timeZonesButton.addActionListener(e -> {
+            try {
+                timeZones = new TimeZones();
+                timeZones.passFrame(jFrameMenu);
+                jFrameMenu.setVisible(false);
+                TimeZones.main(s);
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
             }
         });
     }
 
-    public void frameVisible()
-    {
-            frame.setVisible(true);
-
-    }
 
     public static void main(String[] args) {
         new Menu();

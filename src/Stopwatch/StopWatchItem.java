@@ -20,20 +20,19 @@ public class StopWatchItem extends JPanel{
         this.setMaximumSize(new Dimension(200,100));
         this.setMinimumSize(new Dimension(200,100));
         this.hr=new JLabel("0");
+        hr.setFont(new Font("Arial",Font.BOLD,16));
         this.min=new JLabel("0");
+        min.setFont(new Font("Arial",Font.BOLD,16));
         this.sec=new JLabel("0");
+        sec.setFont(new Font("Arial",Font.BOLD,16));
         this.milli=new JLabel("0");
+        milli.setFont(new Font("Arial",Font.BOLD,16));
         this.delete=new JButton("STOP");
         this.pause=new JButton("PAUSE");
         this.lap=new JButton("LAP");
         hr.setPreferredSize(new Dimension(20,20));
         min.setPreferredSize(new Dimension(20,20));
         sec.setPreferredSize(new Dimension(20,20));
-//        this.hr.setText(stopWatch.hr+"");
-
-//        this.min.setText(stopWatch.min+"");
-//        this.sec.setText(stopWatch.sec+"");
-//        this.milli.setText(stopWatch.milli+"");
         this.add(this.hr);
         this.add(this.min);
         this.add(this.sec);
@@ -54,6 +53,8 @@ public class StopWatchItem extends JPanel{
                 }
             }
         });
+
+
         delete.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -73,7 +74,7 @@ public class StopWatchItem extends JPanel{
         });
     }
 
-    void updateui(StopWatch clock){
+    void updateUI(StopWatch clock){
         this.hr.setText(clock.hr+"");
         this.min.setText(clock.min+"");
         this.sec.setText(clock.sec+"");
