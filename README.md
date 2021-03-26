@@ -6,6 +6,11 @@ We lose track of time and we sometimes, miss some important work that was to be 
 So we can distribute time for all our work. We just need a timekeeper.
 So, here we created an application having following features and functionalities.
 
+# HOW TO USE
+Install Intellij <br/>
+Run main function at the Menu.java page<br/>
+Enjoy our App Functionalitites :)<br/>
+
 # Features:
 1.Clock : display current date, day and time.(Analog + digital)<br />
 2.Stopwatch : start, pause, resume, lap functionalities.(Multiple Stopwatch)<br />
@@ -14,3 +19,11 @@ So, here we created an application having following features and functionalities
 5.Calendar : display of all months (with navigation)<br />
 6. Time Zones : add and display clocks for different time zones<br />
 **State will be saved even after program restarts.**
+# Glimpse Of our Project
+<p>
+  <img src="MainPageSS.jpeg" width="400" title="MAIN-PAGE">
+</p>
+<p>
+  <img src="MultipleStopwatchSS.jpeg" width="400" title="STOPWATCH">
+</p>
+
